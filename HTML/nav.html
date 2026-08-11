@@ -1,120 +1,314 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
+  <meta charset="UTF-8">
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Trinisha Bakery Navbar</title>
 
   <style>
+
+    /* Reset */
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       font-family: Arial, sans-serif;
     }
 
-    nav {
+
+    /* Navbar */
+
+    .navbar {
       background-color: #7b3f00;
       padding: 16px 30px;
+    }
+
+
+    .navbar-container {
+      max-width: 1200px;
+      margin: auto;
+
       display: flex;
       align-items: center;
-      gap: 24px;
     }
 
-    a {
-      color: white;
-      text-decoration: none;
-      font-size: 16px;
-    }
+
+    /* Brand */
 
     .brand {
-      font-size: 22px;
+      color: white;
+      text-decoration: none;
+
+      font-size: 24px;
       font-weight: bold;
+
       margin-right: auto;
     }
 
+
+    /* Navigation */
+
     .nav-links {
+      list-style: none;
+
       display: flex;
       align-items: center;
-      gap: 24px;
+      gap: 25px;
+
+      margin: 0;
+      padding: 0;
     }
+
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+
+      font-size: 16px;
+
+      position: relative;
+    }
+
+
+    /* Hover underline */
+
+    .nav-links a::after {
+
+      content: "";
+
+      position: absolute;
+
+      width: 0;
+      height: 2px;
+
+      background-color: white;
+
+      bottom: -6px;
+      left: 0;
+
+      transition: width 0.3s ease;
+
+    }
+
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+
+    /* CTA Button */
 
     .cta {
       background-color: white;
-      color: #7b3f00;
-      padding: 8px 14px;
+      color: #7b3f00 !important;
+
+      padding: 10px 18px;
+
       border-radius: 6px;
+
       font-weight: bold;
     }
+
+
+    .cta::after {
+      display: none;
+    }
+
 
     .cta:hover {
       background-color: #f4d7b5;
     }
 
+
+
+    /* Hamburger */
+
     .hamburger {
+
       display: none;
+
       background: none;
       border: none;
+
       color: white;
-      font-size: 28px;
+
+      font-size: 30px;
+
       cursor: pointer;
     }
 
-    @media (max-width: 600px) {
-      nav {
+
+
+    /* Mobile */
+
+    @media(max-width:700px) {
+
+
+      .navbar-container {
+
         flex-wrap: wrap;
+
       }
+
 
       .hamburger {
+
         display: block;
+
       }
+
+
 
       .nav-links {
-        display: none;
-        width: 100%;
+
+
+        width:100%;
+
         flex-direction: column;
-        align-items: flex-start;
-        gap: 16px;
-        margin-top: 16px;
+
+        align-items:flex-start;
+
+
+        max-height:0;
+
+        overflow:hidden;
+
+
+        transition:max-height 0.4s ease;
+
       }
 
-      .nav-links.show {
-        display: flex;
+
+
+      .nav-links.active {
+
+        max-height:300px;
+
+        margin-top:20px;
+
       }
 
-      .brand {
-        margin-right: auto;
-      }
+
     }
+
+
   </style>
+
 </head>
+
 
 <body>
 
-  <nav>
-    <a href="/" class="brand">Ucl Bakery</a>
 
-    <button class="hamburger" id="hamburgerBtn" onclick="toggleMenu()">☰</button>
+<nav class="navbar">
 
-    <div class="nav-links" id="navLinks">
-      <a href="/menu">Menu</a>
-      <a href="https://maps.app.goo.gl/uQ8o3grnUYztHUL48">Locations</a>
-      <a href="/customise">Customise</a>
-      <a href="https://bellschool1992.com/index.php" class="cta">Order Now</a>
-    </div>
-  </nav>
 
-  <script>
-    function toggleMenu() {
-      const navLinks = document.getElementById("navLinks");
-      const hamburgerBtn = document.getElementById("hamburgerBtn");
+  <div class="navbar-container">
 
-      navLinks.classList.toggle("show");
 
-      if (navLinks.classList.contains("show")) {
-        hamburgerBtn.textContent = "×";
-      } else {
-        hamburgerBtn.textContent = "☰";
-      }
-    }
-  </script>
+    <a href="/" class="brand">
+      UCL Bakery
+    </a>
+
+
+
+    <button 
+      class="hamburger"
+      id="hamburger"
+      aria-label="Open navigation menu"
+      aria-expanded="false">
+
+      ☰
+
+    </button>
+
+
+
+
+    <ul class="nav-links" id="navLinks">
+
+
+      <li>
+        <a href="/menu">
+          Menu
+        </a>
+      </li>
+
+
+      <li>
+        <a href="https://maps.app.goo.gl/uQ8o3grnUYztHUL48">
+          Locations
+        </a>
+      </li>
+
+
+      <li>
+        <a href="/customise">
+          Customise
+        </a>
+      </li>
+
+
+      <li>
+        <a href="https://bellschool1992.com/index.php"
+           class="cta">
+
+          Order Now
+
+        </a>
+      </li>
+
+
+    </ul>
+
+
+  </div>
+
+
+</nav>
+
+
+
+
+<script>
+
+
+const hamburger = document.getElementById("hamburger");
+
+const navLinks = document.getElementById("navLinks");
+
+
+
+hamburger.addEventListener("click",()=>{
+
+
+  navLinks.classList.toggle("active");
+
+
+  const opened = navLinks.classList.contains("active");
+
+
+  hamburger.setAttribute(
+    "aria-expanded",
+    opened
+  );
+
+
+  hamburger.textContent = opened ? "×" : "☰";
+
+
+});
+
+
+</script>
+
+
 
 </body>
+
 </html>
