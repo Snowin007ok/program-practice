@@ -1,314 +1,172 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Trinisha Bakery Navbar</title>
-
-  <style>
-
-    /* Reset */
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-    }
-
-
-    /* Navbar */
-
-    .navbar {
-      background-color: #7b3f00;
-      padding: 16px 30px;
-    }
-
-
-    .navbar-container {
-      max-width: 1200px;
-      margin: auto;
-
-      display: flex;
-      align-items: center;
-    }
-
-
-    /* Brand */
-
-    .brand {
-      color: white;
-      text-decoration: none;
-
-      font-size: 24px;
-      font-weight: bold;
-
-      margin-right: auto;
-    }
-
-
-    /* Navigation */
-
-    .nav-links {
-      list-style: none;
-
-      display: flex;
-      align-items: center;
-      gap: 25px;
-
-      margin: 0;
-      padding: 0;
-    }
-
-
-    .nav-links a {
-      color: white;
-      text-decoration: none;
-
-      font-size: 16px;
-
-      position: relative;
-    }
-
-
-    /* Hover underline */
-
-    .nav-links a::after {
-
-      content: "";
-
-      position: absolute;
-
-      width: 0;
-      height: 2px;
-
-      background-color: white;
-
-      bottom: -6px;
-      left: 0;
-
-      transition: width 0.3s ease;
-
-    }
-
-
-    .nav-links a:hover::after {
-      width: 100%;
-    }
-
-
-    /* CTA Button */
-
-    .cta {
-      background-color: white;
-      color: #7b3f00 !important;
-
-      padding: 10px 18px;
-
-      border-radius: 6px;
-
-      font-weight: bold;
-    }
-
-
-    .cta::after {
-      display: none;
-    }
-
-
-    .cta:hover {
-      background-color: #f4d7b5;
-    }
-
-
-
-    /* Hamburger */
-
-    .hamburger {
-
-      display: none;
-
-      background: none;
-      border: none;
-
-      color: white;
-
-      font-size: 30px;
-
-      cursor: pointer;
-    }
-
-
-
-    /* Mobile */
-
-    @media(max-width:700px) {
-
-
-      .navbar-container {
-
-        flex-wrap: wrap;
-
-      }
-
-
-      .hamburger {
-
-        display: block;
-
-      }
-
-
-
-      .nav-links {
-
-
-        width:100%;
-
-        flex-direction: column;
-
-        align-items:flex-start;
-
-
-        max-height:0;
-
-        overflow:hidden;
-
-
-        transition:max-height 0.4s ease;
-
-      }
-
-
-
-      .nav-links.active {
-
-        max-height:300px;
-
-        margin-top:20px;
-
-      }
-
-
-    }
-
-
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trinisha Bakery Navbar</title>
+
+<style>
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+}
+
+.navbar{
+  background-color:#7b3f00;
+  padding:16px 30px;
+}
+
+.container{
+  max-width:1200px;
+  width:90%;
+  margin:auto;
+  display:flex;
+  align-items:center;
+}
+
+.brand{
+  color:white;
+  text-decoration:none;
+  font-size:24px;
+  font-weight:bold;
+  margin-right:auto;
+}
+
+.nav-links{
+  list-style:none;
+  display:flex;
+  align-items:center;
+  gap:25px;
+  margin:0;
+  padding:0;
+}
+
+.nav-links a{
+  color:white;
+  text-decoration:none;
+  font-size:16px;
+  position:relative;
+}
+
+.nav-links a::after{
+  content:"";
+  position:absolute;
+  width:0;
+  height:2px;
+  background:white;
+  bottom:-6px;
+  left:0;
+  transition:width .3s ease;
+}
+
+.nav-links a:hover::after{
+  width:100%;
+}
+
+.cta{
+  background:white;
+  color:#7b3f00!important;
+  padding:10px 18px;
+  border-radius:6px;
+  font-weight:bold;
+}
+
+.cta::after{
+  display:none;
+}
+
+.cta:hover{
+  background:#f4d7b5;
+}
+
+.hamburger{
+  display:none;
+  background:none;
+  border:none;
+  color:white;
+  font-size:30px;
+  cursor:pointer;
+}
+
+@media(max-width:700px){
+
+.container{
+  flex-wrap:wrap;
+}
+
+.hamburger{
+  display:block;
+}
+
+.nav-links{
+  width:100%;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:18px;
+  max-height:0;
+  overflow:hidden;
+  transition:max-height .4s ease;
+}
+
+.nav-links.active{
+  max-height:300px;
+  margin-top:20px;
+}
+
+}
+</style>
 
 </head>
 
-
 <body>
-
 
 <nav class="navbar">
 
+<div class="container">
 
-  <div class="navbar-container">
+<a href="/" class="brand">Trinisha Bakery</a>
 
+<button 
+class="hamburger"
+id="hamburgerBtn"
+aria-label="Open navigation menu"
+aria-expanded="false">
+☰
+</button>
 
-    <a href="/" class="brand">
-      UCL Bakery
-    </a>
+<ul class="nav-links" id="navLinks">
+<li><a href="/menu">Menu</a></li>
+<li><a href="https://maps.app.goo.gl/uQ8o3grnUYztHUL48">Locations</a></li>
+<li><a href="/customise">Customise</a></li>
+<li><a href="https://bellschool1992.com/index.php" class="cta">Order Now</a></li>
+</ul>
 
-
-
-    <button 
-      class="hamburger"
-      id="hamburger"
-      aria-label="Open navigation menu"
-      aria-expanded="false">
-
-      ☰
-
-    </button>
-
-
-
-
-    <ul class="nav-links" id="navLinks">
-
-
-      <li>
-        <a href="/menu">
-          Menu
-        </a>
-      </li>
-
-
-      <li>
-        <a href="https://maps.app.goo.gl/uQ8o3grnUYztHUL48">
-          Locations
-        </a>
-      </li>
-
-
-      <li>
-        <a href="/customise">
-          Customise
-        </a>
-      </li>
-
-
-      <li>
-        <a href="https://bellschool1992.com/index.php"
-           class="cta">
-
-          Order Now
-
-        </a>
-      </li>
-
-
-    </ul>
-
-
-  </div>
-
+</div>
 
 </nav>
 
-
-
-
 <script>
 
+const hamburgerBtn=document.getElementById("hamburgerBtn");
+const navLinks=document.getElementById("navLinks");
 
-const hamburger = document.getElementById("hamburger");
+hamburgerBtn.addEventListener("click",()=>{
 
-const navLinks = document.getElementById("navLinks");
+navLinks.classList.toggle("active");
 
+const isOpen=navLinks.classList.contains("active");
 
+hamburgerBtn.setAttribute("aria-expanded",isOpen);
 
-hamburger.addEventListener("click",()=>{
-
-
-  navLinks.classList.toggle("active");
-
-
-  const opened = navLinks.classList.contains("active");
-
-
-  hamburger.setAttribute(
-    "aria-expanded",
-    opened
-  );
-
-
-  hamburger.textContent = opened ? "×" : "☰";
-
+hamburgerBtn.textContent=isOpen?"×":"☰";
 
 });
 
-
 </script>
 
-
-
 </body>
-
 </html>
