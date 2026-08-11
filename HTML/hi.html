@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MIST OF MANJOLAI — The Mountain Remembers Everyone Who Disappears</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #0a0a0a;
+            color: #e0e0e0;
+            font-family: 'Segoe UI', 'Noto Sans Tamil', sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        #gameCanvas {
+            border: 2px solid #333;
+            background: #0d1b0d;
+            cursor: crosshair;
+        }
+        #ui {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 12px;
+            color: #aaa;
+            pointer-events: none;
+            z-index: 10;
+        }
+        #dialogueBox {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 700px;
+            background: rgba(0,0,0,0.92);
+            border: 1px solid #444;
+            border-left: 3px solid #c4a35a;
+            padding: 18px;
+            font-size: 14px;
+            line-height: 1.6;
+            display: none;
+            z-index: 20;
+        }
+        #dialogueBox .speaker {
+            color: #c4a35a;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+        #dialogueBox .tamil {
+            color: #8ab4c7;
+            font-style: italic;
+        }
+        #phone {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            width: 320px;
+            height: 580px;
+            background: #1a1a1a;
+            border: 3px solid #333;
+            border-radius: 24px;
+            padding: 12px;
+            z-index: 50;
+            transition: transform 0.3s;
+            display: none;
+        }
+        #phone.open { transform: translate(-50%, -50%) scale(1); display: block; }
+        #phoneScreen {
+            width: 100%;
+            height: calc(100% - 40px);
+            background: #0a0a0a;
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+        }
+        .phoneStatus {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 12px;
+            font-size: 11px;
+            background: #222;
+        }
+        .phoneApps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            padding: 16px;
+        }
+        .appIcon {
+            aspect-ratio: 1;
+            background: #2a2a2a;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .appIcon:hover { background: #3a3a3a; }
+        .appIcon .icon { font-size: 24px; margin-bottom: 4px; }
+        #phone .appScreen {
+            display: none;
+            padding: 12px;
+            height: calc(100% - 30px);
+            overflow-y: auto;
+        }
+        #phone .appScreen.active { display: block; }
+        .signal-bars { display: flex; gap: 2px; align-items: flex-end; }
+        .signal-bar { width: 4px; background: #666; border-radius: 1px; }
+        .signal-bar.on { background: #4caf50; }
+        .battery { display: flex; align-items: center; gap: 4px; }
+        .battery-level {
+            width: 20px;
+            height: 10px;
+            border: 1px solid #666;
+            border-radius: 2px;
+            position: relative;
+        }
+        .battery-level::after {
+            content: '';
+            position: absolute;
+            right: -3px;
+            top: 2px;
+            width: 2px;
+            height: 6px;
+            background: #666;
+            border-radius: 0 1px 1px 0;
+        }
+        .battery-fill {
+            height: 100%;
+            background: #4caf50;
+            border-radius: 1px;
+        }
+        #evidenceBoard {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            font-size: 11px;
+        }
+        .evidenceItem {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            padding: 8px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .evidenceItem.found { border-color: #c4a35a; }
+        .evidenceItem.connected { border-color: #4caf50; background: #0d2818; }
+        #cameraOverlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            display: none;
+            z-index: 15;
+        }
+        #cameraOverlay.active { display: block; }
+        .cameraFrame {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%; height: 60%;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        .cameraCorner {
+            position: absolute;
+            width: 20px; height: 20px;
+            border-color: #fff;
+            border-style: solid;
+        }
+        .cameraCorner.tl { top: -2px; left: -2px; border-width: 2px 0 0 2px; }
+        .cameraCorner.tr { top: -2px; right: -2px; border-width: 2px 2px 0 0; }
+        .cameraCorner.bl { bottom: -2px; left: -2px; border-width: 0 0 2px 2px; }
+        .cameraCorner.br { bottom: -2px; right: -2px; border-width: 0 2px 2px 0; }
+        .cameraUI {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+        }
+        .shutterBtn {
+            width: 60px; height: 60px;
+            border: 3px solid #fff;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            cursor: pointer;
+        }
+        #radioOverlay {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.95);
+            border: 2px solid #444;
+            padding: 30px;
+            display: none;
+            z-index: 25;
+            text-align: center;
+        }
+        #radioOverlay.active { display: block; }
+        .radioDial {
+            width: 200px; height: 200px;
+            border: 3px solid #666;
+            border-radius: 50%;
+            margin: 20px auto;
+            position: relative;
+            background: #1a1a1a;
+        }
+        .radioNeedle {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 2px; height: 80px;
+            background: #c4a35a;
+            transform-origin: bottom center;
+            transform: translate(-50%, -100%) rotate(-45deg);
+            transition: transform 0.3s;
+        }
+        .radioFreq {
+            font-size: 32px;
+            font-family: monospace;
+            color: #c4a35a;
+        }
+        #titleScreen {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #0a0a0a;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            transition: opacity 2s;
+        }
+        #titleScreen.fade { opacity: 0; pointer-events: none; }
+        .titleMain {
+            font-size: 48px;
+            color: #c4a35a;
+            letter-spacing: 8px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(196,163,90,0.3);
+        }
+        .titleSub {
+            font-size: 14px;
+            color: #888;
+            letter-spacing: 4px;
+            margin-bottom: 60px;
+        }
+        .startBtn {
+            padding: 16px 48px;
+            background: transparent;
+            border: 1px solid #c4a35a;
+            color: #c4a35a;
+            font-size: 14px;
+            letter-spacing: 3px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .startBtn:hover {
+            background: #c4a35a;
+            color: #0a0a0a;
+        }
+        #endingScreen {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #0a0a0a;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            padding: 40px;
+            text-align: center;
+        }
+        #endingScreen.active { display: flex; }
+        .endingTitle { font-size: 28px; color: #c4a35a; margin-bottom: 20px; }
+        .endingText { font-size: 14px; line-height: 2; color: #aaa; max-width: 600px; }
+        #notification {
+            position: absolute;
+            top: 60px;
+            right: 20px;
+            background: rgba(0,0,0,0.9);
+            border-left: 3px solid #c4a35a;
+            padding: 12px 16px;
+            font-size: 12px;
+            display: none;
+            z-index: 30;
+            max-width: 250px;
+        }
+        #notification.show { display: block; animation: slideIn 0.3s; }
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        .choiceButtons {
+            display: flex;
+            gap: 12px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+        .choiceBtn {
+            padding: 8px 16px;
+            background: #1a1a1a;
+            border: 1px solid #444;
+            color: #ccc;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .choiceBtn:hover {
+            border-color: #c4a35a;
+            color: #c4a35a;
+        }
+        #mapOverlay {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%; height: 90%;
+            background: rgba(10,20,10,0.98);
+            border: 2px solid #444;
+            display: none;
+            z-index: 25;
+            padding: 20px;
+        }
+        #mapOverlay.active { display: block; }
+        .mapArea {
+            fill: #1a2a1a;
+            stroke: #444;
+            stroke-width: 1;
+        }
+        .mapArea.discovered { fill: #2a3a2a; }
+        .mapArea.current { fill: #3a4a3a; stroke: #c4a35a; }
+        .mapLabel {
+            fill: #888;
+            font-size: 11px;
+            text-anchor: middle;
+        }
+        #healthBar, #sanityBar {
+            position: absolute;
+            right: 20px;
+            width: 120px;
+            height: 6px;
+            background: #222;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        #healthBar { top: 20px; }
+        #sanityBar { top: 32px; }
+        .barFill {
+            height: 100%;
+            transition: width 0.3s;
+        }
+        .healthFill { background: #c44; }
+        .sanityFill { background: #48c; }
+        #timeDisplay {
+            position: absolute;
+            top: 44px;
+            right: 20px;
+            font-size: 11px;
+            color: #888;
+        }
+        .glitch {
+            animation: glitch 0.3s;
+        }
+        @keyframes glitch {
+            0%, 100% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(2px, -2px); }
+            60% { transform: translate(-2px, -2px); }
+            80% { transform: translate(2px, 2px); }
+        }
+        .vignette {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            box-shadow: inset 0 0 150px rgba(0,0,0,0.7);
+            pointer-events: none;
+            z-index: 5;
+        }
+    </style>
+</head>
+<body>
+    <div id="titleScreen">
+        <div class="titleMain">MIST OF MANJOLAI</div>
+        <div class="titleSub">THE MOUNTAIN REMEMBERS EVERYONE WHO DISAPPEARS</div>
+        <button class="startBtn" onclick="startGame()">BEGIN</button>
+        <div style="margin-top:40px;font-size:11px;color:#444;">Tirunelveli District, Tamil Nadu</div>
+    </div>
+
+    <canvas id="gameCanvas" width="960" height="640"></canvas>
+    <div class="vignette"></div>
+
+    <div id="ui">
+        <div>WASD/Arrows: Move | E: Camera | P: Phone | R: Radio | M: Map | Click: Interact</div>
+    </div>
+
+    <div id="healthBar"><div class="barFill healthFill" id="healthFill" style="width:100%"></div></div>
+    <div id="sanityBar"><div class="barFill sanityFill" id="sanityFill" style="width:100%"></div></div>
+    <div id="timeDisplay">Day 1 — 6:10 PM</div>
+
+    <div id="dialogueBox">
+        <div class="speaker" id="speakerName"></div>
+        <div id="dialogueText"></div>
+        <div class="choiceButtons" id="choiceButtons"></div>
+    </div>
+
+    <div id="notification"></div>
+
+    <div id="phone">
+        <div id="phoneScreen">
+            <div class="phoneStatus">
+                <div class="signal-bars" id="signalBars">
+                    <div class="signal-bar on"></div>
+                    <div class="signal-bar on"></div>
+                    <div class="signal-bar on"></div>
+                    <div class="signal-bar"></div>
+                </div>
+                <span id="phoneTime">6:10 PM</span>
+                <div class="battery">
+                    <span id="batteryText">87%</span>
+                    <div class="battery-level"><div class="battery-fill" style="width:87%"></div></div>
+                </div>
+            </div>
+            <div class="phoneApps" id="phoneHome">
+                <div class="appIcon" onclick="openApp('camera')"><div class="icon">📷</div>Camera</div>
+                <div class="appIcon" onclick="openApp('messages')"><div class="icon">💬</div>Messages</div>
+                <div class="appIcon" onclick="openApp('evidence')"><div class="icon">📋</div>Evidence</div>
+                <div class="appIcon" onclick="openApp('gallery')"><div class="icon">🖼️</div>Gallery</div>
+                <div class="appIcon" onclick="openApp('radio')"><div class="icon">📻</div>Radio</div>
+                <div class="appIcon" onclick="openApp('notes')"><div class="icon">📝</div>Notes</div>
+                <div class="appIcon" onclick="openApp('map')"><div class="icon">🗺️</div>Map</div>
+                <div class="appIcon" onclick="openApp('recorder')"><div class="icon">🎙️</div>Recorder</div>
+                <div class="appIcon" onclick="closePhone()"><div class="icon">✕</div>Close</div>
+            </div>
+            <div class="appScreen" id="app-camera">
+                <div style="text-align:center;padding:40px;color:#666;">Use E key in-game to take photos</div>
+                <div id="galleryPreview" style="display:flex;flex-wrap:wrap;gap:8px;padding:8px;"></div>
+            </div>
+            <div class="appScreen" id="app-messages">
+                <div style="font-size:12px;padding:8px;" id="messagesList">
+                    <div style="padding:8px;background:#1a1a1a;border-radius:6px;margin-bottom:8px;">
+                        <div style="color:#c4a35a;font-size:10px;">KAVIN — 3 days ago</div>
+                        <div style="margin-top:4px;">Arul... if this reaches you... [STATIC] Don't believe what they tell you about the road. [STATIC] I found something near... [CUT]</div>
+                    </div>
+                </div>
+            </div>
+            <div class="appScreen" id="app-evidence">
+                <div style="font-size:11px;margin-bottom:8px;color:#c4a35a;">EVIDENCE BOARD</div>
+                <div id="evidenceBoard"></div>
+            </div>
+            <div class="appScreen" id="app-gallery">
+                <div style="font-size:11px;margin-bottom:8px;color:#c4a35a;">PHOTO GALLERY</div>
+                <div id="photoGallery" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+            </div>
+            <div class="appScreen" id="app-radio">
+                <div style="text-align:center;padding:40px;">
+                    <div class="radioFreq" id="phoneRadioFreq">98.0 FM</div>
+                    <div style="margin-top:20px;color:#666;font-size:11px;">Static...</div>
+                </div>
+            </div>
+            <div class="appScreen" id="app-notes">
+                <div style="font-size:12px;padding:8px;color:#aaa;" id="notesList">
+                    <div style="margin-bottom:12px;padding:8px;background:#1a1a1a;border-radius:6px;">
+                        <div style="color:#c4a35a;font-size:10px;">PERSONAL NOTE</div>
+                        <div>Kavin's last message had strange metadata. Photo timestamp said "Tomorrow, 03:17 AM" — but he sent it 3 days ago. The woman whispering at the end... "Avan thirumbi vandhuttan." He has returned.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="appScreen" id="app-map">
+                <div style="font-size:11px;margin-bottom:8px;color:#c4a35a;">GPS MAP</div>
+                <svg width="100%" height="200" viewBox="0 0 300 200">
+                    <rect class="mapArea discovered" x="10" y="140" width="60" height="40" rx="4"/>
+                    <rect class="mapArea discovered" x="80" y="120" width="50" height="50" rx="4"/>
+                    <rect class="mapArea discovered" x="140" y="100" width="50" height="50" rx="4"/>
+                    <rect class="mapArea current" x="200" y="80" width="50" height="50" rx="4"/>
+                    <rect class="mapArea" x="260" y="60" width="40" height="40" rx="4"/>
+                    <text class="mapLabel" x="40" y="165">Tirunelveli</text>
+                    <text class="mapLabel" x="105" y="150">Ambasamudram</text>
+                    <text class="mapLabel" x="165" y="130">Manimuthar</text>
+                    <text class="mapLabel" x="225" y="110" fill="#c4a35a">Manjolai</text>
+                    <text class="mapLabel" x="280" y="85" fill="#444">Road 7</text>
+                </svg>
+            </div>
+            <div class="appScreen" id="app-recorder">
+                <div style="text-align:center;padding:40px;">
+                    <div style="width:60px;height:60px;border:2px solid #c4a35a;border-radius:50%;margin:0 auto;display:flex;align-items:center;justify-content:center;font-size:24px;">⏺</div>
+                    <div style="margin-top:20px;color:#666;">No recordings yet</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="cameraOverlay">
+        <div class="cameraFrame">
+            <div class="cameraCorner tl"></div>
+            <div class="cameraCorner tr"></div>
+            <div class="cameraCorner bl"></div>
+            <div class="cameraCorner br"></div>
+        </div>
+        <div class="cameraUI">
+            <div style="color:#fff;font-size:12px;margin-bottom:8px;">📷 CAMERA MODE — Click to capture</div>
+            <div class="shutterBtn" onclick="takePhoto()"></div>
+        </div>
+        <div style="position:absolute;top:20px;right:20px;color:#fff;font-size:12px;">
+            <div>ISO 800</div>
+            <div>f/2.8</div>
+            <div id="camTime">18:10:00</div>
+        </div>
+    </div>
+
+    <div id="radioOverlay">
+        <div style="font-size:18px;color:#c4a35a;margin-bottom:10px;">📻 PORTABLE RADIO</div>
+        <div class="radioDial">
+            <div class="radioNeedle" id="radioNeedle"></div>
+        </div>
+        <div class="radioFreq" id="radioFreq">98.0</div>
+        <div style="margin-top:20px;color:#666;font-size:12px;">Use ← → to tune | Press R to close</div>
+        <div id="radioSignal" style="margin-top:10px;color:#444;font-size:11px;">No signal detected</div>
+    </div>
+
+    <div id="mapOverlay">
+        <div style="font-size:18px;color:#c4a35a;margin-bottom:20px;">🗺️ REGION MAP</div>
+        <svg width="100%" height="400" viewBox="0 0 800 400">
+            <rect fill="#0d1b0d" width="800" height="400"/>
+            <!-- Terrain -->
+            <polygon fill="#1a2a15" points="0,200 200,180 400,160 600,140 800,120 800,400 0,400"/>
+            <polygon fill="#152515" points="0,250 300,220 500,200 700,180 800,170 800,400 0,400"/>
+            <!-- Roads -->
+            <line stroke="#444" stroke-width="2" x1="100" y1="300" x2="300" y2="260"/>
+            <line stroke="#444" stroke-width="2" x1="300" y1="260" x2="500" y2="220"/>
+            <line stroke="#c4a35a" stroke-width="1" stroke-dasharray="5,5" x1="500" y1="220" x2="700" y2="180"/>
+            <!-- Locations -->
+            <circle cx="100" cy="300" r="8" fill="#c4a35a"/>
+            <text x="100" y="325" text-anchor="middle" fill="#888" font-size="12">Tirunelveli</text>
+            <circle cx="300" cy="260" r="6" fill="#666"/>
+            <text x="300" y="285" text-anchor="middle" fill="#888" font-size="12">Ambasamudram</text>
+            <circle cx="500" cy="220" r="6" fill="#666"/>
+            <text x="500" y="245" text-anchor="middle" fill="#888" font-size="12">Manimuthar</text>
+            <circle cx="650" cy="195" r="6" fill="#c4a35a" id="mapPlayer"/>
+            <text x="650" y="220" text-anchor="middle" fill="#c4a35a" font-size="12">You are here</text>
+            <circle cx="700" cy="180" r="4" fill="#444"/>
+            <text x="700" y="165" text-anchor="middle" fill="#444" font-size="11">Manjolai</text>
+            <circle cx="750" cy="150" r="3" fill="#222"/>
+            <text x="750" y="140" text-anchor="middle" fill="#333" font-size="10">Road 7</text>
+            <!-- Mystery marker -->
+            <circle cx="750" cy="150" r="12" fill="none" stroke="#333" stroke-width="1" opacity="0.5">
+                <animate attributeName="r" values="12;16;12" dur="3s" repeatCount="indefinite"/>
+                <animate attributeName="opacity" values="0.5;0;0.5" dur="3s" repeatCount="indefinite"/>
+            </circle>
+        </svg>
+        <button class="choiceBtn" onclick="closeMap()" style="margin-top:20px;">Close Map</button>
+    </div>
+
+    <div id="endingScreen">
+        <div class="endingTitle" id="endingTitle"></div>
+        <div class="endingText" id="endingText"></div>
+        <button class="startBtn" onclick="location.reload()" style="margin-top:40px;">PLAY AGAIN</button>
+    </div>
+
+    <script>
+        // ============ GAME ENGINE ============
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Game state
+        const game = {
+            started: false,
+            chapter: 1,
+            location: 'tirunelveli',
+            time: { day: 1, hour: 18, minute: 10 },
+            player: { x: 480, y: 500, speed: 2.5 },
+            camera: { x: 0, y: 0 },
+            health: 100,
+            sanity: 100,
+            battery: 87,
+            signal: 3,
+            evidence: [],
+            photos: [],
+            notes: [],
+            messages: [],
+            flags: {},
+            npcs: [],
+            objects: [],
+            particles: [],
+            weather: 'clear',
+            fogDensity: 0,
+            bellCount: 0,
+            radioFreq: 98.0,
+            kavinTrust: 50,
+            meenaTrust: 30,
+            devanTrust: 40,
+            senthilTrust: 20,
+            theory: 'none',
+            inDialogue: false,
+            cameraMode: false,
+            phoneOpen: false,
+            radioOpen: false,
+            mapOpen: false,
+            endingsFound: [],
+            ngPlus: false
+        };
+
+        // Input
+        const keys = {};
+        const mouse = { x: 0, y: 0, clicked: false };
+
+        // Locations data
+        const locations = {
+            tirunelveli: {
+                name: 'Tirunelveli',
+                color: '#2d1810',
+                ground: '#3a2518',
+                buildings: [
+                    {x: 200, y: 300, w: 120, h: 80, type: 'teashop', name: 'Tea Shop'},
+                    {x: 400, y: 250, w: 100, h: 100, type: 'house', name: 'Arul\'s House'},
+                    {x: 600, y: 320, w: 140, h: 90, type: 'shop', name: 'Electronics Shop'},
+                    {x: 150, y: 450, w: 200, h: 60, type: 'road', name: 'Bus Stand'},
+                    {x: 700, y: 200, w: 80, h: 60, type: 'temple', name: 'Temple'}
+                ],
+                npcs: [
+                    {name: 'Tea Master', x: 260, y: 340, dialogue: 'tea_master', color: '#8B4513'},
+                    {name: 'Elderly Customer', x: 230, y: 360, dialogue: 'elder', color: '#696969'},
+                    {name: 'Bus Driver', x: 200, y: 480, dialogue: 'driver', color: '#2F4F4F'}
+                ],
+                objects: [
+                    {x: 420, y: 300, type: 'computer', name: 'Laptop', found: false},
+                    {x: 650, y: 360, type: 'radio', name: 'Old Radio', found: false}
+                ],
+                exit: {x: 900, y: 320, to: 'ambasamudram', label: '→ Ambasamudram'}
+            },
+            ambasamudram: {
+                name: 'Ambasamudram',
+                color: '#1a2a15',
+                ground: '#243a1e',
+                buildings: [
+                    {x: 300, y: 280, w: 100, h: 70, type: 'house', name: 'Village House'},
+                    {x: 500, y: 320, w: 80, h: 60, type: 'shop', name: 'Provisions'},
+                    {x: 200, y: 400, w: 150, h: 50, type: 'road', name: 'Mountain Road'}
+                ],
+                npcs: [
+                    {name: 'Villager', x: 350, y: 320, dialogue: 'villager', color: '#556B2F'},
+                    {name: 'Old Woman', x: 540, y: 350, dialogue: 'oldwoman', color: '#8B7355'}
+                ],
+                objects: [
+                    {x: 250, y: 420, type: 'sign', name: 'Warning Sign', found: false}
+                ],
+                exit: {x: 900, y: 300, to: 'manimuthar', label: '→ Manimuthar'},
+                back: {x: 50, y: 300, to: 'tirunelveli'}
+            },
+            manimuthar: {
+                name: 'Manimuthar',
+                color: '#0d1f0d',
+                ground: '#152815',
+                buildings: [
+                    {x: 400, y: 300, w: 60, h: 40, type: 'shelter', name: 'Forest Shelter'},
+                    {x: 300, y: 400, w: 100, h: 30, type: 'road', name: 'Dam Road'}
+                ],
+                npcs: [
+                    {name: 'Forest Guard', x: 430, y: 330, dialogue: 'guard', color: '#228B22'}
+                ],
+                objects: [
+                    {x: 350, y: 420, type: 'motorcycle', name: 'Kavin\'s Bike', found: false},
+                    {x: 370, y: 400, type: 'helmet', name: 'Helmet', found: false},
+                    {x: 380, y: 380, type: 'polaroid', name: 'Strange Photo', found: false}
+                ],
+                exit: {x: 900, y: 280, to: 'manjolai', label: '→ Manjolai'},
+                back: {x: 50, y: 350, to: 'ambasamudram'}
+            },
+            manjolai: {
+                name: 'Manjolai',
+                color: '#0a1510',
+                ground: '#0f1f15',
+                buildings: [
+                    {x: 300, y: 250, w: 80, h: 50, type: 'teashop', name: 'Mountain Tea Shop'},
+                    {x: 500, y: 300, w: 100, h: 60, type: 'abandoned', name: 'Old Office'},
+                    {x: 700, y: 200, w: 60, h: 40, type: 'shelter', name: 'Bus Shelter'},
+                    {x: 200, y: 400, w: 400, h: 80, type: 'tea', name: 'Tea Estate'}
+                ],
+                npcs: [
+                    {name: 'Meena', x: 340, y: 280, dialogue: 'meena', color: '#8B6914'},
+                    {name: 'Dr. Devan', x: 550, y: 330, dialogue: 'devan', color: '#4682B4'},
+                    {name: 'Senthil', x: 730, y: 230, dialogue: 'senthil', color: '#2E8B57'}
+                ],
+                objects: [
+                    {x: 520, y: 330, type: 'map', name: 'Old Map', found: false},
+                    {x: 720, y: 220, type: 'paper', name: 'Torn Note', found: false}
+                ],
+                exit: {x: 900, y: 250, to: 'kakachi', label: '→ Deeper'},
+                back: {x: 50, y: 350, to: 'manimuthar'}
+            },
+            kakachi: {
+                name: 'Kakachi Forest',
+                color: '#050f0a',
+                ground: '#0a1a0f',
+                buildings: [
+                    {x: 400, y: 300, w: 50, h: 30, type: 'trap', name: 'Camera Trap'}
+                ],
+                npcs: [],
+                objects: [
+                    {x: 420, y: 315, type: 'camera', name: 'Kavin\'s Camera', found: false},
+                    {x: 450, y: 350, type: 'photos', name: 'SD Card', found: false}
+                ],
+                exit: {x: 900, y: 250, to: 'nalumukku', label: '→ Nalumukku'},
+                back: {x: 50, y: 350, to: 'manjolai'}
+            },
+            nalumukku: {
+                name: 'Nalumukku',
+                color: '#040a08',
+                ground: '#080f0d',
+                buildings: [
+                    {x: 350, y: 280, w: 120, h: 80, type: 'abandoned', name: 'Abandoned Building'}
+                ],
+                npcs: [
+                    {name: 'Shadow Figure', x: 400, y: 320, dialogue: 'shadow', color: '#333'}
+                ],
+                objects: [
+                    {x: 380, y: 310, type: 'map', name: 'Road 7 Map', found: false},
+                    {x: 420, y: 330, type: 'document', name: 'Research File', found: false}
+                ],
+                exit: {x: 900, y: 250, to: 'oothu', label: '→ Oothu'},
+                back: {x: 50, y: 350, to: 'kakachi'}
+            },
+            oothu: {
+                name: 'Oothu',
+                color: '#030806',
+                ground: '#050a08',
+                buildings: [
+                    {x: 300, y: 300, w: 80, h: 50, type: 'ruin', name: 'Ruined House'}
+                ],
+                npcs: [],
+                objects: [
+                    {x: 340, y: 325, type: 'radio', name: 'Signal Device', found: false}
+                ],
+                exit: {x: 900, y: 250, to: 'kuthiravetti', label: '→ Kuthiravetti'},
+                back: {x: 50, y: 350, to: 'nalumukku'}
+            },
+            kuthiravetti: {
+                name: 'Kuthiravetti',
+                color: '#020504',
+                ground: '#030805',
+                buildings: [
+                    {x: 400, y: 280, w: 60, h: 40, type: 'viewpoint', name: 'Viewpoint'}
+                ],
+                npcs: [],
+                objects: [
+                    {x: 430, y: 300, type: 'camera', name: 'Damaged Camera', found: false}
+                ],
+                exit: {x: 900, y: 250, to: 'upperkodayar', label: '→ Upper Kodayar'},
+                back: {x: 50, y: 350, to: 'oothu'}
+            },
+            upperkodayar: {
+                name: 'Upper Kodayar',
+                color: '#010302',
+                ground: '#020503',
+                buildings: [
+                    {x: 350, y: 250, w: 150, h: 100, type: 'facility', name: 'Research Station'}
+                ],
+                npcs: [
+                    {name: 'Kavin?', x: 420, y: 300, dialogue: 'kavin_final', color: '#666'}
+                ],
+                objects: [
+                    {x: 400, y: 280, type: 'file', name: 'SUBJECT 17', found: false},
+                    {x: 450, y: 300, type: 'tape', name: 'Audio Tape', found: false}
+                ],
+                exit: {x: 500, y: 200, to: 'road7', label: '→ ROAD 7'},
+                back: {x: 50, y: 350, to: 'kuthiravetti'}
+            },
+            road7: {
+                name: 'ROAD 7',
+                color: '#000000',
+                ground: '#050505',
+                buildings: [],
+                npcs: [
+                    {name: 'Kavin A', x: 300, y: 300, dialogue: 'kavin_a', color: '#888'},
+                    {name: 'Kavin B', x: 500, y: 300, dialogue: 'kavin_b', color: '#999'},
+                    {name: 'Kavin C', x: 700, y: 300, dialogue: 'kavin_c', color: '#aaa'}
+                ],
+                objects: [
+                    {x: 480, y: 320, type: 'chamber', name: 'The Chamber', found: false}
+                ],
+                exit: null,
+                back: null
+            }
+        };
+
+        // Dialogue database
+        const dialogues = {
+            tea_master: {
+                speaker: 'Tea Master',
+                text: 'Dei, you look troubled. Same tea as always? Kavin was here three days ago. Said he was going to Manjolai for some wildlife shots. Haven\'t seen him since.',
+                choices: [
+                    {text: 'Did he say anything strange?', next: 'tea_master_2'},
+                    {text: 'I need to find him', next: 'tea_master_3'}
+                ]
+            },
+            tea_master_2: {
+                speaker: 'Tea Master',
+                text: 'He kept looking at his phone. Said something about "the road that shouldn\'t exist." I told him, da, mountains have roads that even Google doesn\'t know.',
+                choices: [{text: 'Thanks', next: null}]
+            },
+            tea_master_3: {
+                speaker: 'Tea Master',
+                text: 'Manjolai is beautiful but dangerous after dark. The mist comes suddenly there. My grandfather used to say the mountain eats people who stay too long.',
+                choices: [{text: 'I\'ll be careful', next: null}]
+            },
+            elder: {
+                speaker: 'Elderly Customer',
+                text: 'People think mountains become silent at night. They don\'t. You just start hearing different things. I worked in Manjolai tea estates forty years ago. We stopped going to certain areas. No reason given. Just... stopped.',
+                choices: [
+                    {text: 'What areas?', next: 'elder_2'},
+                    {text: 'Did people disappear?', next: 'elder_3'}
+                ]
+            },
+            elder_2: {
+                speaker: 'Elderly Customer',
+                text: 'Beyond Oothu. The old workers called it "Thirumba Varaatha Paathai." The Path That Does Not Return. Road 7, the young ones called it. But there are only six roads in Manjolai.',
+                choices: [{text: '[Add to Evidence]', next: null, action: () => addEvidence('road7_legend', 'ROAD 7 LEGEND', 'Elderly tea worker mentioned a seventh road that does not exist on any map. Workers call it "Thirumba Varaatha Paathai" — The Path That Does Not Return.')}]
+            },
+            elder_3: {
+                speaker: 'Elderly Customer',
+                text: 'Three in my time. Just gone. No bodies, no explanations. The company said they ran away. But their slippers were still by the bed. Their tea was still warm. You don\'t run away barefoot.',
+                choices: [{text: '[Add to Evidence]', next: null, action: () => addEvidence('disappearances', 'HISTORICAL DISAPPEARANCES', 'Three workers disappeared from Manjolai tea estates decades ago. No bodies found. Personal belongings left behind.')}]
+            },
+            driver: {
+                speaker: 'Bus Driver',
+                text: 'Ambasamudram bus leaves in one hour. Last one to Manimuthar is 4 PM. After that, no service. You planning to go to Manjolai? Take warm clothes, saar. It gets cold suddenly.',
+                choices: [
+                    {text: 'Has anyone else gone recently?', next: 'driver_2'}
+                ]
+            },
+            driver_2: {
+                speaker: 'Bus Driver',
+                text: 'One boy, camera bag, three days ago. He asked about Road 7. I told him there is no Road 7. Only Roads 1 through 6. He showed me his phone — some map with a seventh line. I told him, that\'s a logging trail from British time. Closed for fifty years.',
+                choices: [{text: '[Add to Evidence]', next: null, action: () => addEvidence('kavin_inquiry', 'KAVIN\'S INQUIRY', 'Kavin asked bus driver about Road 7. Driver insists only 6 roads exist. Kavin had a map showing a seventh.')}]
+            },
+            villager: {
+                speaker: 'Villager',
+                text: 'You\'re going to Manjolai? My cousin works there. Says strange things happen in the tea estates. Radios pick up voices. Old songs that don\'t exist. Sometimes... people hear their own name.',
+                choices: [{text: 'What causes it?', next: 'villager_2'}]
+            },
+            villager_2: {
+                speaker: 'Villager',
+                text: 'They say it\'s the wind in the mountains. I say wind doesn\'t know your name. My cousin quit last month. Said he saw himself working in the fields. Standing right next to himself. Both turned and looked at him.',
+                choices: [{text: '[Add to Evidence]', next: null, action: () => addEvidence('echo_sighting', 'ECHO SIGHTING', 'Villager\'s cousin claims to have seen a duplicate of himself in Manjolai tea estates. Both versions made eye contact.')}]
+            },
+            oldwoman: {
+                speaker: 'Old Woman',
+                text: 'Nee anga pogatha ma. Don\'t go there. The mountain remembers everyone. Even those who haven\'t arrived yet.',
+                choices: [
+                    {text: 'What do you mean?', next: 'oldwoman_2'},
+                    {text: 'Have we met?', next: 'oldwoman_3'}
+                ]
+            },
+            oldwoman_2: {
+                speaker: 'Old Woman',
+                text: 'I see things. The mountain shows me. I saw you there, in the mist. You were looking for someone. But you were also... lost. Two of you. One older. One younger. Both searching.',
+                choices: [{text: '[Add to Evidence]', next: null, action: () => { addEvidence('prophecy', 'PROPHECY', 'Old woman in Ambasamudram claims to have seen two versions of Arul in Manjolai — one older, one younger.'); game.sanity -= 5; updateStats(); }}]
+            },
+            oldwoman_3: {
+                speaker: 'Old Woman',
+                text: 'You came here before. I remember your face.',
+                choices: [
+                    {text: 'I\'ve never been here', next: 'oldwoman_4'}
+                ]
+            },
+            oldwoman_4: {
+                speaker: 'Old Woman',
+                text: 'That\'s what you said last time.',
+                choices: [{text: '[Sanity -10]', next: null, action: () => { game.sanity -= 10; updateStats(); showNotification('The words echo in your mind...'); }}]
+            },
+            guard: {
+                speaker: 'Forest Guard',
+                text: 'This area is restricted after 6 PM. I found a motorcycle here yesterday. Key still in ignition. Helmet nearby. No rider. No blood. Just... gone. We searched the reservoir. Nothing.',
+                choices: [
+                    {text: 'It\'s my friend\'s bike', next: 'guard_2'},
+                    {text: 'Any other signs?', next: 'guard_3'}
+                ]
+            },
+            guard_2: {
+                speaker: 'Forest Guard',
+                text: 'I\'m sorry. File a report in Tirunelveli. But honestly? We\'ve had seventeen disappearances in this region in five years. Officially, they\'re all "missing persons." Unofficially? We stopped finding bodies after the third one.',
+                choices: [{text: '[Add to Evidence]', next: null, action: () => addEvidence('guard_testimony', 'GUARD TESTIMONY', 'Forest guard reveals 17 disappearances in 5 years. Officially "missing persons." No bodies found after first three.')}]
+            },
+            guard_3: {
+                speaker: 'Forest Guard',
+                text: 'The helmet had scratch marks inside. Like someone tried to get out while wearing it. And the bike\'s odometer... it showed 200 kilometers more than when it was last serviced. But the fuel tank was full.',
+                choices: [{text: '[Add to Evidence]', next: null, action: () => addEvidence('impossible_odometer', 'IMPOSSIBLE ODOMETER', 'Kavin\'s motorcycle odometer shows 200km more than possible. Fuel tank full. Helmet has scratch marks inside.')}]
+            },
+            meena: {
+                speaker: 'Meena (68, Former Tea Worker)',
+                text: 'You\'re looking for that photographer boy? Kavin? I saw him. He asked about Road 7. Thirumba Varaatha Paathai. I told him what I tell everyone: the road appears when the mountain is hungry.',
+                choices: [
+                    {text: 'When does it appear?', next: 'meena_2'},
+                    {text: 'What happened to him?', next: 'meena_3'}
+                ]
+            },
+            meena_2: {
+                speaker: 'Meena',
+                text: 'Heavy mist. Third bell. When the rain and wind make the mountain sing. That\'s when the door opens. That\'s when you can walk where you shouldn\'t. But you might not walk back the same way.',
+                choices: [{text: 'The third bell?', next: 'meena_bell'}]
+            },
+            meena_bell: {
+                speaker: 'Meena',
+                text: 'You\'ll hear it. Everyone does. First bell — nothing. Second bell — your electronics go strange. Third bell... the world goes strange. Time moves differently. You might meet yourself coming back.',
+                choices: [{text: '[Add to Evidence]', next: null, action: () => { addEvidence('third_bell', 'THE THIRD BELL', 'Meena describes three bells: 1st - nothing, 2nd - electronics fail, 3rd - reality shifts. "You might meet yourself coming back."'); game.meenaTrust += 15; }}]
+            },
+            meena_3: {
+                speaker: 'Meena',
+                text: 'He went toward Kakachi. Set up camera traps. The animals stopped appearing in his photos after the second day. Instead... people. Workers who disappeared thirty years ago. Walking through the tea rows.',
+                choices: [{text: '[Add to Evidence]', next: null, action: () => addEvidence('kavin_cameras', 'KAVIN\'S CAMERA TRAPS', 'Meena says Kavin\'s camera traps stopped showing animals and started showing disappeared workers from 30 years ago.')}]
+            },
+            devan: {
+                speaker: 'Dr. Devan (Geologist)',
+                text: 'I\'m studying infrasound phenomena in the Western Ghats. Low frequency vibrations from geological formations. Perfectly natural. Can cause anxiety, hallucinations, even shared delusions in groups.',
+                choices: [
+                    {text: 'Have you been to the research station?', next: 'devan_2'},
+                    {text: 'What about the disappearances?', next: 'devan_3'}
+                ]
+            },
+            devan_2: {
+                speaker: 'Dr. Devan',
+                text: 'Research station? You mean the old meteorological post? Abandoned in the 80s. I visited once. Strange acoustics. Felt like someone was standing right behind me. Turned around — nothing. Standard infrasound effect on human perception.',
+                choices: [{text: 'You seem young for a doctor', next: 'devan_age'}]
+            },
+            devan_age: {
+                speaker: 'Dr. Devan',
+                text: '...I\'m 34. Good genes, I suppose. Why do you ask?',
+                choices: [
+                    {text: 'No reason', next: null, action: () => { addEvidence('devan_photo', 'DR. DEVAN PHOTO', 'Found photo showing Dr. Devan at research facility in 1978. He looks exactly the same age. Claims to be 34.'); game.devanTrust -= 20; }}
+                ]
+            },
+            devan_3: {
+                speaker: 'Dr. Devan',
+                text: 'People get lost in mountains. Panic. Hypothermia. The mind plays tricks. I don\'t believe in supernatural roads or time portals. I believe in science. But... I also believe some science is classified.',
+                choices: [{text: 'Classified?', next: 'devan_classified'}]
+            },
+            devan_classified: {
+                speaker: 'Dr. Devan',
+                text: 'The Echo. That\'s what they called it. A geological anomaly producing ELF waves — extremely low frequency. Studied in the 70s. Then classified. The tunnel was sealed. But tunnels can be reopened.',
+                choices: [{text: '[Add to Evidence]', next: null, action: () => addEvidence('the_echo', 'THE ECHO', 'Dr. Devan reveals classified research on "The Echo" — geological anomaly producing ELF waves. Tunnel sealed in 70s. Research classified.')}]
+            },
+            senthil: {
+                speaker: 'Forest Officer Senthil',
+                text: 'You\'re trespassing in a restricted zone. I should fine you. But... you\'re looking for Kavin, aren\'t you? I found his permit. Expired. He went beyond the authorized area. Into Kakachi. Then Nalumukku.',
+                choices: [
+                    {text: 'Can you help me find him?', next: 'senthil_2'},
+                    {text: 'What\'s beyond Nalumukku?', next: 'senthil_3'}
+                ]
+            },
+            senthil_2: {
+                speaker: 'Senthil',
+                text: 'Officially? No. Unofficially... I\'ve been finding equipment up there. Modern sensors. Someone is monitoring The Echo again. Illegal operation. If your friend found them... he\'s in serious danger. Or worse.',
+                choices: [{text: 'Who\'s monitoring it?', next: 'senthil_illegal'}]
+            },
+            senthil_illegal: {
+                speaker: 'Senthil',
+                text: 'I don\'t know. But they have resources. Military-grade equipment. And they know the mountain better than anyone. I\'ve seen their vehicles. No plates. Black windows. They come at 3:17 AM. Every time.',
+                choices: [{text: '[Add to Evidence]', next: null, action: () => addEvidence('mystery_group', 'MYSTERY GROUP', 'Senthil reports illegal monitoring of The Echo with military equipment. Vehicles arrive at 3:17 AM. No plates, black windows.')}]
+            },
+            senthil_3: {
+                speaker: 'Senthil',
+                text: 'Road 7. If it exists. I\'ve walked every official trail. But GPS goes strange beyond Nalumukku. Compass spins. And sometimes... sometimes I find footprints that aren\'t mine. Going both directions. Same boots. Same size.',
+                choices: [{text: '[Add to Evidence]', next: null, action: () => addEvidence('senthil_footprints', 'IMPOSSIBLE FOOTPRINTS', 'Senthil found his own footprints going both directions on same path. Same boots, same size. GPS and compass fail.')}]
+            },
+            kavin_final: {
+                speaker: 'Kavin?',
+                text: 'Arul? Is that really you? I\'ve been here so long. Or maybe no time at all. The Echo... it doesn\'t just make sounds. It makes... overlaps. Different times, same place. I saw you here. Three days ago. But you just arrived.',
+                choices: [
+                    {text: 'How do I get you out?', next: 'kavin_rescue'},
+                    {text: 'Are you the real Kavin?', next: 'kavin_real'}
+                ]
+            },
+            kavin_rescue: {
+                speaker: 'Kavin?',
+                text: 'Road 7. It\'s open now. The storm... it amplifies everything. But Arul — there are three of me here. Each from a different... overlap. Each remembers different things. You have to choose. But the others won\'t let go easily.',
+                choices: [{text: 'I\'ll find all of you', next: 'road7_enter'}]
+            },
+            kavin_real: {
+                speaker: 'Kavin?',
+                text: 'I don\'t know anymore. I remember sending you that message. But I also remember receiving it. From you. In the future. The Echo works both ways. Cause and effect... they\'re not separate here.',
+                choices: [{text: '[Sanity -15]', next: null, action: () => { game.sanity -= 15; updateStats(); addEvidence('temporal_paradox', 'TEMPORAL PARADOX', 'Kavin claims to have received his own distress message from Arul in the future. Cause and effect may be reversed.'); }}]
+            },
+            kavin_a: {
+                speaker: 'Kavin (Version A)',
+                text: 'I\'m the original! Arul, remember when we climbed Agasthyarkoodam? You sprained your ankle. I carried your pack for six hours. Only the real Kavin would know that.',
+                choices: [
+                    {text: 'That did happen', next: 'kavin_a_2'},
+                    {text: 'I never told anyone that', next: 'kavin_a_secret'}
+                ]
+            },
+            kavin_a_2: {
+                speaker: 'Kavin A',
+                text: 'Choose me. I can go home. We can finish that documentary. The one about the mountain frogs. You promised we\'d screen it at the Tirunelveli film festival.',
+                choices: [{text: '[Choose Kavin A]', next: null, action: () => triggerEnding('return')}]
+            },
+            kavin_a_secret: {
+                speaker: 'Kavin A',
+                text: '...You told me. In another overlap. I remember everything, Arul. Every conversation we haven\'t had yet. Every argument. Every reconciliation. I know you better than you know yourself.',
+                choices: [{text: '[Sanity -10]', next: null, action: () => { game.sanity -= 10; updateStats(); }}
+                ]
+            },
+            kavin_b: {
+                speaker: 'Kavin (Version B)',
+                text: 'Don\'t listen to him. I\'m the one who sent the message. The photo with future timestamp. I knew you\'d come. I calculated it. The Echo responds to belief. To obsession. You believed I was here. So I am.',
+                choices: [
+                    {text: 'You sent the message?', next: 'kavin_b_2'}
+                ]
+            },
+            kavin_b_2: {
+                speaker: 'Kavin B',
+                text: 'I had to. To create the loop. To make sure you\'d come. The Echo needs observers. Without someone outside, the overlap collapses. I trapped myself to save myself. Paradox, yes. But it worked.',
+                choices: [{text: '[Choose Kavin B]', next: null, action: () => triggerEnding('echo')}]
+            },
+            kavin_c: {
+                speaker: 'Kavin (Version C)',
+                text: 'Neither of them is real. I\'m the Kavin who never left. Who never sent any message. Who\'s still walking in the tea estates, taking photos, waiting for the mist to clear. I never experienced any of this. I just... waited.',
+                choices: [
+                    {text: 'You never experienced the Echo?', next: 'kavin_c_2'}
+                ]
+            },
+            kavin_c_2: {
+                speaker: 'Kavin C',
+                text: 'I experienced it. I just didn\'t let it change me. I kept walking. Taking photos. Every day the same. The mountain shows you what you expect. I expected nothing. So nothing happened. Boring is survival.',
+                choices: [{text: '[Choose Kavin C]', next: null, action: () => triggerEnding('road7')}]
+            },
+            shadow: {
+                speaker: '???',
+                text: '...',
+                choices: [{text: 'Hello?', next: 'shadow_2'}]
+            },
+            shadow_2: {
+                speaker: '???',
+                text: 'You came here before. You will come here again. The mountain is not a place. It is a... pattern. A repeating shape. You are part of it now.',
+                choices: [{text: '[Run]', next: null, action: () => { game.sanity -= 15; updateStats(); showNotification('The figure is gone. Was it ever there?'); }}
+                ]
+            }
+        };
+
+        // Initialize
+        function init() {
+            canvas.addEventListener('mousemove', e => {
+                const rect = canvas.getBoundingClientRect();
+                mouse.x = e.clientX - rect.left;
+                mouse.y = e.clientY - rect.top;
+            });
+            canvas.addEventListener('click', handleClick);
+            window.addEventListener('keydown', e => {
+                keys[e.key.toLowerCase()] = true;
+                handleKey(e.key.toLowerCase());
+            });
+            window.addEventListener('keyup', e => keys[e.key.toLowerCase()] = false);
+            
+            // Start loop
+            requestAnimationFrame(gameLoop);
+        }
+
+        function startGame() {
+            document.getElementById('titleScreen').classList.add('fade');
+            game.started = true;
+            game.time.hour = 18;
+            game.time.minute = 10;
+            showNotification('Chapter 1: Tirunelveli — 6:10 PM');
+            setTimeout(() => {
+                showDialogue('opening');
+            }, 2000);
+        }
+
+        function showDialogue(key) {
+            if (key === 'opening') {
+                document.getElementById('speakerName').textContent = 'WHATSAPP VOICE MESSAGE — KAVIN';
+                document.getElementById('dialogueText').innerHTML = 
+                    '<span class="tamil">"Arul... if this reaches you..."</span><br><br>' +
+                    '[HEAVY STATIC]<br><br>' +
+                    '<span style="color:#888;">"Don\'t believe what they tell you about the road."</span><br><br>' +
+                    '[STATIC INTENSIFIES]<br><br>' +
+                    '<span style="color:#888;">"I found something near..."</span><br><br>' +
+                    '[AUDIO CUTS]<br><br>' +
+                    '<span class="tamil" style="color:#a66;">[Whisper] "Avan thirumbi vandhuttan." — "He has returned."</span><br><br>' +
+                    '<span style="color:#c4a35a;font-size:11px;">📎 ATTACHMENT: mountain_road_future.jpg<br>Metadata: Tomorrow, 03:17 AM</span>';
+                document.getElementById('choiceButtons').innerHTML = 
+                    '<button class="choiceBtn" onclick="closeDialogue()">[Examine Photo]</button>';
+                document.getElementById('dialogueBox').style.display = 'block';
+                game.inDialogue = true;
+                return;
+            }
+            
+            const d = dialogues[key];
+            if (!d) { closeDialogue(); return; }
+            
+            document.getElementById('speakerName').textContent = d.speaker;
+            document.getElementById('dialogueText').innerHTML = d.text;
+            
+            const choicesDiv = document.getElementById('choiceButtons');
+            choicesDiv.innerHTML = '';
+            if (d.choices) {
+                d.choices.forEach(c => {
+                    const btn = document.createElement('button');
+                    btn.className = 'choiceBtn';
+                    btn.textContent = c.text;
+                    btn.onclick = () => {
+                        if (c.action) c.action();
+                        if (c.next) showDialogue(c.next);
+                        else closeDialogue();
+                    };
+                    choicesDiv.appendChild(btn);
+                });
+            }
+            document.getElementById('dialogueBox').style.display = 'block';
+            game.inDialogue = true;
+        }
+
+        function closeDialogue() {
+            document.getElementById('dialogueBox').style.display = 'none';
+            game.inDialogue = false;
+        }
+
+        function handleKey(key) {
+            if (!game.started) return;
+            if (game.inDialogue) {
+                if (key === 'escape') closeDialogue();
+                return;
+            }
+            
+            switch(key) {
+                case 'p':
+                    togglePhone();
+                    break;
+                case 'e':
+                    if (!game.phoneOpen && !game.radioOpen && !game.mapOpen) toggleCamera();
+                    break;
+                case 'r':
+                    if (!game.phoneOpen && !game.cameraMode && !game.mapOpen) toggleRadio();
+                    break;
+                case 'm':
+                    if (!game.phoneOpen && !game.cameraMode && !game.radioOpen) toggleMap();
+                    break;
+                case 'escape':
+                    closePhone();
+                    closeCamera();
+                    closeRadio();
+                    closeMap();
+                    break;
+            }
+            
+            // Radio tuning
+            if (game.radioOpen) {
+                if (key === 'arrowleft') { game.radioFreq = Math.max(88, game.radioFreq - 0.1); updateRadio(); }
+                if (key === 'arrowright') { game.radioFreq = Math.min(108, game.radioFreq + 0.1); updateRadio(); }
+            }
+        }
+
+        function togglePhone() {
+            game.phoneOpen = !game.phoneOpen;
+            document.getElementById('phone').classList.toggle('open', game.phoneOpen);
+            if (game.phoneOpen) updatePhone();
+        }
+
+        function closePhone() {
+            game.phoneOpen = false;
+            document.getElementById('phone').classList.remove('open');
+        }
+
+        function openApp(app) {
+            document.querySelectorAll('.appScreen').forEach(s => s.classList.remove('active'));
+            document.getElementById('app-' + app)?.classList.add('active');
+        }
+
+        function updatePhone() {
+            // Update signal based on location
+            const loc = locations[game.location];
+            if (game.location === 'tirunelveli') game.signal = 4;
+            else if (game.location === 'ambasamudram') game.signal = 3;
+            else if (game.location === 'manimuthar') game.signal = 2;
+            else if (game.location === 'manjolai') game.signal = 1;
+            else game.signal = 0;
+            
+            const bars = document.querySelectorAll('.signal-bar');
+            bars.forEach((b, i) => b.classList.toggle('on', i < game.signal));
+            
+            // Update time
+            const h = game.time.hour;
+            const m = game.time.minute.toString().padStart(2, '0');
+            const ampm = h >= 12 ? 'PM' : 'AM';
+            const h12 = h % 12 || 12;
+            document.getElementById('phoneTime').textContent = `${h12}:${m} ${ampm}`;
+            document.getElementById('batteryText').textContent = game.battery + '%';
+            
+            // Update evidence
+            updateEvidenceBoard();
+        }
+
+        function updateEvidenceBoard() {
+            const board = document.getElementById('evidenceBoard');
+            if (!board) return;
+            board.innerHTML = '';
+            game.evidence.forEach(e => {
+                const div = document.createElement('div');
+                div.className = 'evidenceItem found';
+                div.innerHTML = `<div style="color:#c4a35a;font-size:10px;">${e.category}</div><div>${e.title}</div>`;
+                board.appendChild(div);
+            });
+            if (game.evidence.length === 0) {
+                board.innerHTML = '<div style="color:#666;font-size:11px;">No evidence collected yet.</div>';
+            }
+        }
+
+        function addEvidence(id, title, desc) {
+            if (game.evidence.find(e => e.id === id)) return;
+            game.evidence.push({id, title, desc, category: 'CLUE', connected: false});
+            showNotification(`Evidence Added: ${title}`);
+            updateEvidenceBoard();
+            
+            // Check for connections
+            checkEvidenceConnections();
+        }
+
+        function checkEvidenceConnections() {
+            const ids = game.evidence.map(e => e.id);
+            
+            if (ids.includes('road7_legend') && ids.includes('kavin_inquiry')) {
+                if (!game.flags.theory_road7) {
+                    game.flags.theory_road7 = true;
+                    showNotification('THEORY UNLOCKED: Road 7 exists as an anomalous path that appears under specific conditions.');
+                    addNote('THEORY: ROAD 7', 'Evidence suggests Road 7 is real but non-physical. Appears during specific atmospheric conditions. Connected to disappearances.');
+                }
+            }
+            
+            if (ids.includes('the_echo') && ids.includes('echo_sighting')) {
+                if (!game.flags.theory_echo) {
+                    game.flags.theory_echo = true;
+                    showNotification('THEORY UNLOCKED: The Echo creates perceptual overlaps between different times.');
+                    addNote('THEORY: THE ECHO', 'Geological ELF anomaly causes temporal-perceptual overlaps. Multiple versions of same person/place can coexist.');
+                }
+            }
+            
+            if (ids.includes('devan_photo') && ids.includes('temporal_paradox')) {
+                if (!game.flags.theory_time) {
+                    game.flags.theory_time = true;
+                    showNotification('THEORY UNLOCKED: Time in Manjolai may not be linear.');
+                    addNote('THEORY: NON-LINEAR TIME', 'Dr. Devan appears unchanged across decades. Kavin experienced reversed causality. Time may be locally non-linear.');
+                }
+            }
+        }
+
+        function addNote(title, text) {
+            game.notes.push({title, text, time: Date.now()});
+            const list = document.getElementById('notesList');
+            if (list) {
+                const div = document.createElement('div');
+                div.style.cssText = 'margin-bottom:12px;padding:8px;background:#1a1a1a;border-radius:6px;';
+                div.innerHTML = `<div style="color:#c4a35a;font-size:10px;">${title}</div><div>${text}</div>`;
+                list.appendChild(div);
+            }
+        }
+
+        function toggleCamera() {
+            game.cameraMode = !game.cameraMode;
+            document.getElementById('cameraOverlay').classList.toggle('active', game.cameraMode);
+            if (game.cameraMode) {
+                document.getElementById('camTime').textContent = 
+                    `${game.time.hour.toString().padStart(2,'0')}:${game.time.minute.toString().padStart(2,'0')}:00`;
+            }
+        }
+
+        function closeCamera() {
+            game.cameraMode = false;
+            document.getElementById('cameraOverlay').classList.remove('active');
+        }
+
+        function takePhoto() {
+            // Simulate photo capture with anomaly detection
+            const hasAnomaly = game.sanity < 70 || game.location === 'road7' || game.fogDensity > 0.7;
+            const photo = {
+                id: Date.now(),
+                location: game.location,
+                time: {...game.time},
+                hasAnomaly,
+                anomalyDesc: hasAnomaly ? generateAnomaly() : null
+            };
+            game.photos.push(photo);
+            showNotification(hasAnomaly ? '📷 Photo captured: ANOMALY DETECTED' : '📷 Photo captured');
+            
+            // Camera flash effect
+            const flash = document.createElement('div');
+            flash.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:#fff;opacity:0.8;z-index:100;pointer-events:none;';
+            document.body.appendChild(flash);
+            setTimeout(() => flash.remove(), 100);
+            
+            updateGallery();
+        }
+
+        function generateAnomaly() {
+            const anomalies = [
+                'Figure visible in mist that was not present',
+                'Duplicate of player visible in background',
+                'Building appears that does not exist',
+                'Timestamp shows different date',
+                'Kavin visible in frame though not present',
+                'Road 7 visible in corner of image'
+            ];
+            return anomalies[Math.floor(Math.random() * anomalies.length)];
+        }
+
+        function updateGallery() {
+            const gallery = document.getElementById('photoGallery');
+            const preview = document.getElementById('galleryPreview');
+            if (!gallery) return;
+            
+            gallery.innerHTML = '';
+            game.photos.forEach(p => {
+                const div = document.createElement('div');
+                div.style.cssText = `width:80px;height:60px;background:${p.hasAnomaly ? '#3a1a1a' : '#1a1a1a'};border:1px solid ${p.hasAnomaly ? '#a44' : '#333'};border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#666;`;
+                div.innerHTML = p.hasAnomaly ? '⚠️' : '📷';
+                div.title = `${p.location} — ${p.anomalyDesc || 'Normal'}`;
+                gallery.appendChild(div);
+            });
+        }
+
+        function toggleRadio() {
+            game.radioOpen = !game.radioOpen;
+            document.getElementById('radioOverlay').classList

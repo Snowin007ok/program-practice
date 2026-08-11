@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trinisha Bakery Navbar</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    nav {
+      background-color: #7b3f00;
+      padding: 16px 30px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    a {
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+    }
+
+    .brand {
+      font-size: 22px;
+      font-weight: bold;
+      margin-right: auto;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .cta {
+      background-color: white;
+      color: #7b3f00;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-weight: bold;
+    }
+
+    .cta:hover {
+      background-color: #f4d7b5;
+    }
+
+    .hamburger {
+      display: none;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 28px;
+      cursor: pointer;
+    }
+
+    @media (max-width: 600px) {
+      nav {
+        flex-wrap: wrap;
+      }
+
+      .hamburger {
+        display: block;
+      }
+
+      .nav-links {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+        margin-top: 16px;
+      }
+
+      .nav-links.show {
+        display: flex;
+      }
+
+      .brand {
+        margin-right: auto;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <a href="/" class="brand">Ucl Bakery</a>
+
+    <button class="hamburger" id="hamburgerBtn" onclick="toggleMenu()">☰</button>
+
+    <div class="nav-links" id="navLinks">
+      <a href="/menu">Menu</a>
+      <a href="https://maps.app.goo.gl/uQ8o3grnUYztHUL48">Locations</a>
+      <a href="/customise">Customise</a>
+      <a href="https://bellschool1992.com/index.php" class="cta">Order Now</a>
+    </div>
+  </nav>
+
+  <script>
+    function toggleMenu() {
+      const navLinks = document.getElementById("navLinks");
+      const hamburgerBtn = document.getElementById("hamburgerBtn");
+
+      navLinks.classList.toggle("show");
+
+      if (navLinks.classList.contains("show")) {
+        hamburgerBtn.textContent = "×";
+      } else {
+        hamburgerBtn.textContent = "☰";
+      }
+    }
+  </script>
+
+</body>
+</html>
