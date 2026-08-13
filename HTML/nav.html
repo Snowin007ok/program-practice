@@ -57,6 +57,26 @@ body{
   align-items:center;
 }
 
+/* ============================================================
+   THE TWO HIDDEN CHECKBOXES  ("the checkbox trick")
+   This page has no JavaScript, so the open/closed state has to
+   be stored somewhere CSS can read. A checkbox is that place:
+   clicking a <label> ticks its checkbox, and CSS reacts with
+   :checked. That is what opens the mobile menu and the mobile
+   dropdown.
+
+   The checkboxes are invisible but NOT display:none, so the
+   keyboard and screen readers can still reach them.
+   ============================================================ */
+.nav-check,
+.menu-check{
+  position:absolute;
+  width:1px;
+  height:1px;
+  opacity:0;
+  margin:0;
+}
+
 /* --- brand (logo image + bakery name) --- */
 .brand{
   color:white;
@@ -103,17 +123,13 @@ body{
   position:relative;      /* needed for the ::after underline */
 }
 
-/* the Menu button is a <button>, so reset the browser defaults
-   to make it look exactly like the other links */
+/* the Menu label is styled to look exactly like the other links */
 .menu-toggle{
-  background:none;
-  border:none;
-  font-family:inherit;
   cursor:pointer;
-  padding:0;
   display:flex;
   align-items:center;
   gap:6px;
+  user-select:none;       /* stop the text highlighting on tap */
 }
 
 /* ============================================================
@@ -136,19 +152,21 @@ body{
 
 .nav-links a:hover::after,
 .menu-toggle:hover::after,
-.menu-item.open .menu-toggle::after{
+.menu-item:hover .menu-toggle::after,
+.menu-item:focus-within .menu-toggle::after{
   width:100%;
 }
 
 /* ============================================================
    KEYBOARD FOCUS
-   :focus-visible only shows the ring for keyboard users, not
-   on mouse clicks. Every focusable thing gets one.
+   :focus-visible shows the ring for keyboard users only.
+   A <label> cannot take focus itself, so it borrows the ring
+   from its checkbox with :focus-visible + label.
    ============================================================ */
 .brand:focus-visible,
 .nav-links a:focus-visible,
-.menu-toggle:focus-visible,
-.hamburger:focus-visible{
+.nav-check:focus-visible ~ .hamburger,
+.menu-check:focus-visible + .menu-toggle{
   outline:3px solid #fff;
   outline-offset:4px;
   border-radius:4px;
@@ -168,7 +186,8 @@ body{
   transition:transform var(--speed) ease;
 }
 
-.menu-item.open .arrow{
+.menu-item:hover .arrow,
+.menu-item:focus-within .arrow{
   transform:rotate(180deg);
 }
 
@@ -235,12 +254,13 @@ body{
   overflow-y:auto;
 }
 
-/* OPEN STATE
-   JavaScript adds .open to the <li>. Doing it in JS rather than
-   with a CSS :hover rule is what keeps aria-expanded honest:
-   there is one source of truth for "is the menu open?", and the
-   class and the attribute are always set together. */
-.menu-item.open .mega-menu{
+/* ON DESKTOP: hovering the whole .menu-item reveals the panel.
+   Because .menu-item wraps BOTH the label and the panel, the
+   pointer can travel down into the dropdown without the hover
+   ever breaking. :focus-within does the same job for someone
+   tabbing through with the keyboard. */
+.menu-item:hover .mega-menu,
+.menu-item:focus-within .mega-menu{
   opacity:1;
   visibility:visible;
   transform:translateY(0);
@@ -296,14 +316,19 @@ body{
   padding-left:16px;      /* the link nudges right on hover */
 }
 
-/* --- hamburger button (hidden on desktop) --- */
+/* --- hamburger label (hidden on desktop) --- */
 .hamburger{
   display:none;
-  background:none;
-  border:none;
   color:white;
   font-size:30px;
+  line-height:1;
   cursor:pointer;
+  user-select:none;
+}
+
+/* only one of the two icons is shown at a time */
+.icon-close{
+  display:none;
 }
 
 /* --- the picture under the navbar --- */
@@ -326,7 +351,11 @@ body{
    RESPONSIVE MEDIA QUERY
    Everything below only applies on screens 700px or narrower
    (phones and small tablets). The links stack vertically and
-   the hamburger button appears.
+   the hamburger appears.
+
+   The :checked rules live INSIDE this media query on purpose,
+   so a stray click on desktop can never leave the phone layout
+   stuck open.
    ============================================================ */
 @media(max-width:700px){
 
@@ -352,8 +381,16 @@ body{
 
 .hamburger{
   display:block;
-  line-height:1;
   padding:0 4px;
+}
+
+/* tick the checkbox -> swap the icon from ☰ to × */
+.nav-check:checked ~ .hamburger .icon-open{
+  display:none;
+}
+
+.nav-check:checked ~ .hamburger .icon-close{
+  display:block;
 }
 
 /* The open menu is capped to the height of the screen and
@@ -372,7 +409,7 @@ body{
   -webkit-overflow-scrolling:touch;
 }
 
-.nav-links.active{
+.nav-check:checked ~ .nav-links{
   max-height:calc(100vh - 90px);
   overflow-y:auto;
   margin-top:12px;
@@ -415,22 +452,44 @@ body{
    part of the stacked list and slides open when tapped. */
 .mega-menu{
   position:static;        /* flows inline instead of floating */
-  opacity:1;
-  visibility:visible;
   transform:none;
   background:transparent;
   border:none;
   box-shadow:none;
   padding:0;
 
+  opacity:1;              /* a phone has no hover, so no fade */
+  visibility:visible;
   max-height:0;           /* closed by default */
   overflow:hidden;
   transition:max-height .3s ease;
 }
 
-.menu-item.open .mega-menu{
+/* Hover must NOT open the panel here. On a touchscreen a tap
+   leaves a lingering "hover" behind, which would make the panel
+   stick open and ignore the toggle. The checkbox is the only
+   thing allowed to open it on mobile. */
+.menu-item:hover .mega-menu,
+.menu-item:focus-within .mega-menu{
+  transform:none;
+  max-height:0;
+}
+
+.menu-check:checked ~ .mega-menu,
+.menu-item:hover .menu-check:checked ~ .mega-menu,
+.menu-item:focus-within .menu-check:checked ~ .mega-menu{
   max-height:1200px;      /* taller than the list can ever be */
   padding-bottom:10px;
+}
+
+/* the arrow follows the checkbox instead of hover */
+.menu-item:hover .arrow,
+.menu-item:focus-within .arrow{
+  transform:none;
+}
+
+.menu-check:checked ~ .menu-toggle .arrow{
+  transform:rotate(180deg);
 }
 
 .mega-inner{
@@ -484,45 +543,45 @@ body{
 <!-- ==========================================================
      NAVBAR
      <nav> wraps the whole thing, the links are a <ul> of <li>,
-     and Menu is a <button> because it performs an action
-     (opening a panel) rather than going to a new page.
+     and the two toggles are checkbox + label pairs - that is
+     how a menu opens and closes with no JavaScript at all.
      ========================================================== -->
-<nav class="navbar" id="navbar" aria-label="Main navigation">
+<nav class="navbar" aria-label="Main navigation">
 
 <div class="container">
 
-<a href="index.html" class="brand">
-<img src="images/cake.png" alt="" class="brand-logo"
-onerror="this.onerror=null;this.src='images/cake.svg';">
+<!-- this checkbox holds the "is the mobile menu open?" state.
+     It is first in the markup so the ~ selector below it can
+     reach the hamburger and the link list. -->
+<input type="checkbox" id="navCheck" class="nav-check"
+aria-label="Open navigation menu">
+
+<a href="" class="brand">
+<img src="images/cake.png" alt="" class="brand-logo">
 Ucl Bakery
 </a>
 
-<!-- hamburger: only visible on mobile -->
-<button
-class="hamburger"
-id="hamburgerBtn"
-aria-label="Open navigation menu"
-aria-expanded="false"
-aria-controls="navLinks">
-☰
-</button>
+<!-- clicking this label ticks the checkbox above -->
+<label for="navCheck" class="hamburger">
+<span class="icon-open">☰</span>
+<span class="icon-close">×</span>
+</label>
 
 <ul class="nav-links" id="navLinks">
 
   <!-- MENU - opens the mega dropdown.
        The panel lives INSIDE this <li>, so the pointer never
        leaves the .menu-item while moving down into it. -->
-  <li class="menu-item" id="menuItem">
-    <button
-    class="menu-toggle"
-    id="menuToggle"
-    aria-expanded="false"
-    aria-controls="megaMenu">
+  <li class="menu-item">
+    <input type="checkbox" id="menuCheck" class="menu-check"
+    aria-label="Open the Menu categories">
+
+    <label for="menuCheck" class="menu-toggle">
       Menu <span class="arrow" aria-hidden="true">▾</span>
-    </button>
+    </label>
 
     <!-- the mega dropdown: 3 columns -->
-    <div class="mega-menu" id="megaMenu">
+    <div class="mega-menu">
       <div class="mega-inner">
 
         <div class="mega-column">
@@ -575,161 +634,6 @@ aria-controls="navLinks">
 <main class="hero">
 <img src="images/messi.jpg" alt="Lionel Messi kissing the World Cup trophy" class="hero-img">
 </main>
-
-<script>
-/* ==========================================================
-   THE ELEMENTS WE CONTROL
-   ========================================================== */
-const navbar       = document.getElementById("navbar");
-const hamburgerBtn = document.getElementById("hamburgerBtn");
-const navLinks     = document.getElementById("navLinks");
-const menuItem     = document.getElementById("menuItem");
-const menuToggle   = document.getElementById("menuToggle");
-
-/* matchMedia asks the browser the same question our CSS asks:
-   "are we on a small screen?" Using it here keeps the CSS and
-   the JS in agreement about where mobile starts. */
-const isMobile = window.matchMedia("(max-width:700px)");
-
-
-/* ==========================================================
-   ONE FUNCTION CONTROLS THE MEGA MENU
-   Every way of opening or closing the dropdown - hover, focus,
-   tap, Escape, clicking outside - calls this one function.
-   Because the class and aria-expanded are always set together
-   here, they can never drift out of sync.
-   ========================================================== */
-function setMenu(open){
-  menuItem.classList.toggle("open", open);
-  menuToggle.setAttribute("aria-expanded", open);
-}
-
-function menuIsOpen(){
-  return menuItem.classList.contains("open");
-}
-
-
-/* ==========================================================
-   DESKTOP: OPEN ON HOVER
-   The listeners are on .menu-item, which contains BOTH the
-   button and the panel, so moving the pointer from "Menu" down
-   into the dropdown never counts as leaving.
-
-   closeTimer adds a short grace period on the way out. If the
-   pointer clips a corner for a moment, the menu waits instead
-   of snapping shut, and re-entering cancels the timer.
-   ========================================================== */
-let closeTimer;
-
-menuItem.addEventListener("mouseenter", () => {
-  if (isMobile.matches) return;      // phones have no hover
-  clearTimeout(closeTimer);
-  setMenu(true);
-});
-
-menuItem.addEventListener("mouseleave", () => {
-  if (isMobile.matches) return;
-  clearTimeout(closeTimer);
-  closeTimer = setTimeout(() => setMenu(false), 150);
-});
-
-
-/* ==========================================================
-   DESKTOP: OPEN ON KEYBOARD FOCUS
-   focusin fires when focus lands on the button or any link
-   inside the panel, so tabbing through works like hovering.
-   focusout fires when focus leaves; relatedTarget is where it
-   went, so we only close if it went somewhere outside.
-   ========================================================== */
-menuItem.addEventListener("focusin", () => {
-  if (isMobile.matches) return;
-  clearTimeout(closeTimer);
-  setMenu(true);
-});
-
-menuItem.addEventListener("focusout", (event) => {
-  if (isMobile.matches) return;
-  if (!menuItem.contains(event.relatedTarget)) setMenu(false);
-});
-
-
-/* ==========================================================
-   TAP / CLICK THE MENU BUTTON
-   This is how the dropdown opens on mobile, and it also lets
-   desktop users click instead of hover if they prefer.
-   ========================================================== */
-menuToggle.addEventListener("click", () => {
-  clearTimeout(closeTimer);
-  setMenu(!menuIsOpen());
-});
-
-
-/* ==========================================================
-   THE HAMBURGER (mobile only)
-   Toggles a class on the link list; the sliding animation
-   itself lives in the CSS.
-   ========================================================== */
-hamburgerBtn.addEventListener("click", () => {
-  const isOpen = navLinks.classList.toggle("active");
-
-  hamburgerBtn.setAttribute("aria-expanded", isOpen);
-  hamburgerBtn.setAttribute("aria-label",
-    isOpen ? "Close navigation menu" : "Open navigation menu");
-  hamburgerBtn.textContent = isOpen ? "×" : "☰";
-
-  // closing the whole menu should close the dropdown inside it
-  if (!isOpen) setMenu(false);
-});
-
-function closeHamburger(){
-  if (!navLinks.classList.contains("active")) return;
-  navLinks.classList.remove("active");
-  hamburgerBtn.setAttribute("aria-expanded", "false");
-  hamburgerBtn.setAttribute("aria-label", "Open navigation menu");
-  hamburgerBtn.textContent = "☰";
-}
-
-
-/* ==========================================================
-   ESCAPE CLOSES THE MENU
-   Escape first closes the dropdown and puts focus back on the
-   Menu button, so a keyboard user is not left stranded. A
-   second press closes the mobile menu.
-   ========================================================== */
-document.addEventListener("keydown", (event) => {
-  if (event.key !== "Escape") return;
-
-  if (menuIsOpen()){
-    setMenu(false);
-    menuToggle.focus();
-  } else {
-    closeHamburger();
-  }
-});
-
-
-/* ==========================================================
-   CLICKING OUTSIDE CLOSES THE MENU
-   The click event bubbles up to the document. If the thing
-   that was clicked is not inside the navbar, close everything.
-   ========================================================== */
-document.addEventListener("click", (event) => {
-  if (navbar.contains(event.target)) return;
-  setMenu(false);
-  closeHamburger();
-});
-
-
-/* ==========================================================
-   SWITCHING BETWEEN MOBILE AND DESKTOP
-   If the window is resized across the 700px line, reset both
-   menus so nothing is left stuck open in the other layout.
-   ========================================================== */
-isMobile.addEventListener("change", () => {
-  setMenu(false);
-  closeHamburger();
-});
-</script>
 
 </body>
 </html>
