@@ -45,8 +45,17 @@ body{
   border-bottom:4px dotted var(--pink-pale);
   box-shadow:0 4px 14px rgba(248,98,143,.25);
 
-  /* the mega menu is positioned against the navbar */
-  position:relative;
+  /* STICKY NAVBAR
+     position:sticky makes the bar scroll along with the page
+     until it reaches top:0, then it stays pinned there while
+     the rest of the page keeps scrolling underneath.
+
+     It also does the job position:relative was doing before -
+     the mega menu is positioned against this bar - and the high
+     z-index keeps the bar above the hero image. */
+  position:sticky;
+  top:0;
+  z-index:1000;
 }
 
 .container{
