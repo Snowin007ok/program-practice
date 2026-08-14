@@ -153,7 +153,8 @@ body{
 .nav-links a:hover::after,
 .menu-toggle:hover::after,
 .menu-item:hover .menu-toggle::after,
-.menu-item:focus-within .menu-toggle::after{
+.menu-check:focus-visible ~ .menu-toggle::after,
+.menu-item:has(.mega-menu:focus-within) .menu-toggle::after{
   width:100%;
 }
 
@@ -187,7 +188,8 @@ body{
 }
 
 .menu-item:hover .arrow,
-.menu-item:focus-within .arrow{
+.menu-check:focus-visible ~ .menu-toggle .arrow,
+.menu-item:has(.mega-menu:focus-within) .arrow{
   transform:rotate(180deg);
 }
 
@@ -257,10 +259,18 @@ body{
 /* ON DESKTOP: hovering the whole .menu-item reveals the panel.
    Because .menu-item wraps BOTH the label and the panel, the
    pointer can travel down into the dropdown without the hover
-   ever breaking. :focus-within does the same job for someone
-   tabbing through with the keyboard. */
+   ever breaking.
+
+   The keyboard gets its own two rules instead of a plain
+   :focus-within on .menu-item. That is deliberate: clicking the
+   Menu label also focuses its hidden checkbox, so :focus-within
+   would latch the panel open and it could never be closed
+   again. :focus-visible only matches KEYBOARD focus, so a mouse
+   click no longer latches anything, and .mega-menu:focus-within
+   keeps the panel open while tabbing through the links inside. */
 .menu-item:hover .mega-menu,
-.menu-item:focus-within .mega-menu{
+.menu-check:focus-visible ~ .mega-menu,
+.mega-menu:focus-within{
   opacity:1;
   visibility:visible;
   transform:translateY(0);
@@ -470,21 +480,22 @@ body{
    stick open and ignore the toggle. The checkbox is the only
    thing allowed to open it on mobile. */
 .menu-item:hover .mega-menu,
-.menu-item:focus-within .mega-menu{
+.menu-check:focus-visible ~ .mega-menu,
+.mega-menu:focus-within{
   transform:none;
   max-height:0;
 }
 
-.menu-check:checked ~ .mega-menu,
-.menu-item:hover .menu-check:checked ~ .mega-menu,
-.menu-item:focus-within .menu-check:checked ~ .mega-menu{
+/* this comes last, so it beats the rules above */
+.menu-check:checked ~ .mega-menu{
   max-height:1200px;      /* taller than the list can ever be */
   padding-bottom:10px;
 }
 
 /* the arrow follows the checkbox instead of hover */
 .menu-item:hover .arrow,
-.menu-item:focus-within .arrow{
+.menu-check:focus-visible ~ .menu-toggle .arrow,
+.menu-item:has(.mega-menu:focus-within) .arrow{
   transform:none;
 }
 
