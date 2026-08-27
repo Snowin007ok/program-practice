@@ -12,11 +12,23 @@
    can change the whole look by editing just these values.
    ============================================================ */
 :root{
-  --pink:#f8628f;
-  --pink-light:#ff8fb1;
+  /* Darker pinks keep white navbar text above WCAG's 4.5:1
+     contrast target while preserving the original bakery look. */
+  --pink:#ad1457;
+  --pink-light:#c2185b;
   --pink-pale:#ffe0ea;
-  --pink-dark:#d43f6b;
+  --pink-dark:#8a0e3b;
+  --hero-accent:#ff9fbd;
   --page-bg:#fff5f8;
+
+  /* height of the fixed navbar, so the hero knows how much room
+     to leave at the top. Changed for phones further down. */
+  --nav-h:88px;
+
+  /* the gradient direction lives in a variable so it can be
+     flipped on mobile (and for right-to-left languages)
+     without rewriting the whole background */
+  --gradient-dir:to top;
 
   /* one speed for everything, so the menu never feels sluggish */
   --speed:.22s;
@@ -26,10 +38,32 @@
   box-sizing:border-box;
 }
 
+/* ============================================================
+   NO IMAGE MAY BE WIDER THAN THE SCREEN
+   A photo keeps its natural size unless you tell it otherwise,
+   and this one is 2560px wide. On a 375px phone that makes the
+   whole PAGE 2560px wide, so it scrolls sideways - and a fixed
+   navbar is glued to the screen, not to the page, so scrolling
+   right leaves it behind and it looks like it disappeared.
+
+   max-width is the safety net: even if a width rule is removed,
+   an image can still never grow past its container. height:auto
+   keeps the photo from being squashed while it shrinks.
+   ============================================================ */
+img{
+  max-width:100%;
+  height:auto;
+}
+
 body{
   margin:0;
   font-family:"Segoe UI",Arial,sans-serif;
   background:var(--page-bg);
+
+  /* No padding-top here on purpose. The navbar is fixed, so the
+     hero photo is free to run underneath it and fill the top of
+     the screen; the hero adds padding of its own (--nav-h) so
+     the TEXT never hides behind the bar. */
 }
 
 /* ============================================================
@@ -45,16 +79,23 @@ body{
   border-bottom:4px dotted var(--pink-pale);
   box-shadow:0 4px 14px rgba(248,98,143,.25);
 
-  /* STICKY NAVBAR
-     position:sticky makes the bar scroll along with the page
-     until it reaches top:0, then it stays pinned there while
-     the rest of the page keeps scrolling underneath.
+  /* FIXED NAVBAR
+     position:fixed glues the bar to the top of the WINDOW, so
+     it stays put no matter how far the page scrolls - it is not
+     affected by the page's own scrolling at all.
 
-     It also does the job position:relative was doing before -
-     the mega menu is positioned against this bar - and the high
-     z-index keeps the bar above the hero image. */
-  position:sticky;
+     left/right:0 stretch it across the window, since a fixed
+     element no longer takes its width from the page. It also
+     does the job position:relative was doing before (the mega
+     menu is positioned against this bar), and the high z-index
+     keeps it above the hero image.
+
+     Remember: the hero pads itself by --nav-h so its text is
+     not covered by this bar. */
+  position:fixed;
   top:0;
+  left:0;
+  right:0;
   z-index:1000;
 }
 
@@ -161,9 +202,7 @@ body{
 
 .nav-links a:hover::after,
 .menu-toggle:hover::after,
-.menu-item:hover .menu-toggle::after,
-.menu-check:focus-visible ~ .menu-toggle::after,
-.menu-item:has(.mega-menu:focus-within) .menu-toggle::after{
+.menu-check:checked ~ .menu-toggle::after{   /* stays underlined while open */
   width:100%;
 }
 
@@ -175,6 +214,8 @@ body{
    ============================================================ */
 .brand:focus-visible,
 .nav-links a:focus-visible,
+.hamburger:focus-visible,
+.menu-toggle:focus-visible,
 .nav-check:focus-visible ~ .hamburger,
 .menu-check:focus-visible + .menu-toggle{
   outline:3px solid #fff;
@@ -196,9 +237,7 @@ body{
   transition:transform var(--speed) ease;
 }
 
-.menu-item:hover .arrow,
-.menu-check:focus-visible ~ .menu-toggle .arrow,
-.menu-item:has(.mega-menu:focus-within) .arrow{
+.menu-check:checked ~ .menu-toggle .arrow{
   transform:rotate(180deg);
 }
 
@@ -265,24 +304,60 @@ body{
   overflow-y:auto;
 }
 
-/* ON DESKTOP: hovering the whole .menu-item reveals the panel.
-   Because .menu-item wraps BOTH the label and the panel, the
-   pointer can travel down into the dropdown without the hover
-   ever breaking.
-
-   The keyboard gets its own two rules instead of a plain
-   :focus-within on .menu-item. That is deliberate: clicking the
-   Menu label also focuses its hidden checkbox, so :focus-within
-   would latch the panel open and it could never be closed
-   again. :focus-visible only matches KEYBOARD focus, so a mouse
-   click no longer latches anything, and .mega-menu:focus-within
-   keeps the panel open while tabbing through the links inside. */
-.menu-item:hover .mega-menu,
-.menu-check:focus-visible ~ .mega-menu,
-.mega-menu:focus-within{
+/* ONE WAY TO OPEN: CLICK
+   Clicking Menu ticks the hidden checkbox and the panel opens.
+   Nothing else opens it - no hover - which is what lets a second
+   click close it again. (With a hover rule here, that second
+   click would close the panel and the pointer still sitting on
+   Menu would immediately re-open it.) */
+.menu-check:checked ~ .mega-menu{
   opacity:1;
   visibility:visible;
   transform:translateY(0);
+}
+
+/* CLOSE #3: TABBING TO ANOTHER NAV ITEM
+   If keyboard focus lands on Locations, Customise, Order Now or
+   the logo, the panel shuts. :has() is what makes this possible
+   - it lets a parent react to what is happening inside it, so
+   .nav-links can notice that some li OTHER than the menu holds
+   focus. It is written to be more specific than the opener
+   above, which is how it wins and forces the panel shut.
+
+   Only :focus-visible is used here, never :hover. Hover cannot
+   untick the checkbox, so a hover-close would last only as long
+   as the pointer sat there and the panel would pop back open
+   the moment it moved away - which looks broken. */
+.nav-links:has(> li:not(.menu-item) a:focus-visible) .mega-menu,
+.navbar:has(.brand:focus-visible) .mega-menu{
+  opacity:0;
+  visibility:hidden;
+  transform:translateY(-8px);
+}
+
+/* Clicking anywhere on the PAGE closes a pinned menu. This is
+   an invisible sheet that only exists while the menu is open;
+   because it is a <label> for the same checkbox, clicking it
+   unticks the box. It sits behind the navbar, so the nav links
+   themselves stay clickable. */
+.menu-backdrop{
+  display:none;
+  position:fixed;
+  inset:0;                /* top/right/bottom/left all 0 */
+  z-index:0;
+}
+
+/* the sheet lives outside the menu item (otherwise hovering it
+   would count as hovering the menu and hold it open), so :has
+   is used to reach it instead of a sibling selector */
+.navbar:has(.menu-check:checked) .menu-backdrop{
+  display:block;
+}
+
+/* keep the bar itself above that invisible sheet */
+.container{
+  position:relative;
+  z-index:1;
 }
 
 /* the 3 columns */
@@ -350,20 +425,177 @@ body{
   display:none;
 }
 
-/* --- the picture under the navbar --- */
+/* ============================================================
+   HERO SECTION
+   Three things sit on top of each other: the photo, a fading
+   gradient, and the text. The old way to stack them was
+   position:absolute. Instead, the hero is a grid and all three
+   are put in the SAME cell with grid-area:1/-1 - they stack,
+   but they all still take part in the layout, so the hero
+   grows with its content instead of being a fixed box.
+
+   Painting order follows the CSS order: photo at the back,
+   gradient over it, text on top.
+   ============================================================ */
 .hero{
-  max-width:1200px;
-  width:90%;
-  margin:30px auto;
+  display:grid;
+  grid-template:minmax(0,1fr) / minmax(0,1fr);
+
+  /* The fixed navbar plus the hero now fill exactly one viewport.
+     100vh supports older browsers; 100svh behaves better on phones. */
+  margin-top:var(--nav-h);
+  height:calc(100vh - var(--nav-h));
+  height:calc(100svh - var(--nav-h));
+  overflow:hidden;
 }
 
-.hero-img{
+/* the three layers share one grid cell */
+.hero__image,
+.hero__wrapper,
+.hero::after{
+  grid-area:1 / 1;
+  min-width:0;
+  min-height:0;
+}
+
+.hero__image{
   display:block;
   width:100%;
-  height:auto;
-  border-radius:14px;
-  border:5px solid #fff;
-  box-shadow:0 6px 20px rgba(248,98,143,.3);
+  height:100%;
+  object-fit:cover;             /* fill the area without squashing */
+  background:var(--pink-pale);  /* colour shown while the photo loads */
+}
+
+/* THE FADING GRADIENT
+   A plain two-stop gradient has a hard edge that the eye picks
+   up. The extra stops here "ease" the fade so it dissolves
+   smoothly into the photo. */
+.hero::after{
+  content:"";
+  background:linear-gradient(
+    var(--gradient-dir),
+    hsl(340 50% 14% / .92) 0%,
+    hsl(340 50% 14% / .88) 18%,
+    hsl(340 50% 14% / .76) 34%,
+    hsl(340 50% 14% / .56) 50%,
+    hsl(340 50% 14% / .32) 66%,
+    hsl(340 50% 14% / .11) 83%,
+    hsl(340 50% 14% / 0) 100%
+  ) no-repeat;
+}
+
+.hero__wrapper{
+  max-width:1200px;
+  width:90%;
+  margin:0 auto;
+
+  display:grid;
+  place-content:center start;
+  z-index:1;                /* keep the text above the gradient */
+
+  /* The padding lives HERE and not on .hero. Padding on the grid
+     container would push every layer inward, insetting the photo
+     and leaving a strip of page background around it. On the
+     wrapper it only holds the text away from the edges - and
+     away from the fixed navbar. */
+  padding-top:1.5rem;
+  padding-bottom:1.5rem;
+}
+
+/* 65ch does two jobs: it keeps the line length comfortable to
+   read, and it keeps the text inside the dark part of the
+   gradient, where it stays legible. */
+.hero__content{
+  max-width:65ch;
+  color:#fff;
+}
+
+.hero__kicker{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin:0 0 .75rem;
+  font-size:.8rem;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+}
+
+.hero__kicker::before{
+  content:"";
+  width:34px;
+  height:3px;
+  border-radius:2px;
+  background:var(--hero-accent);
+}
+
+/* clamp() sets a minimum, a preferred and a maximum size in one
+   line, so the type scales smoothly between phone and desktop
+   - again with no media query. */
+.hero__headline{
+  margin:0 0 .6rem;
+  font-size:clamp(1.6rem,6vw,2.75rem);
+  line-height:1.15;
+  text-wrap:balance;
+}
+
+.hero__text{
+  margin:0 0 1.5rem;
+  font-size:clamp(1rem,5vw,1.2rem);
+  line-height:1.55;
+}
+
+.hero__cta{
+  display:inline-flex;
+  align-items:center;
+  gap:.5rem;
+  padding:12px 22px;
+  background:#fff;
+  color:var(--pink-dark);
+  font-weight:bold;
+  text-decoration:none;
+  border-radius:999px;
+  box-shadow:0 3px 10px rgba(0,0,0,.2);
+  transition:background var(--speed) ease,
+             transform var(--speed) ease;
+}
+
+.hero__cta span{
+  transition:transform var(--speed) ease;
+}
+
+.hero__cta:hover{
+  background:var(--pink-pale);
+  transform:translateY(-2px);
+}
+
+.hero__cta:hover span{
+  transform:translateX(5px);
+}
+
+.hero__cta:focus-visible{
+  outline:3px solid var(--hero-accent);
+  outline-offset:6px;
+}
+
+/* ON WIDER SCREENS
+   The gradient turns to face right (a side fade next to the
+   photo) and the text moves to the middle of the hero. */
+@media(min-width:701px){
+
+:root{
+  --gradient-dir:to right;
+}
+
+/* in Arabic or Hebrew the page runs the other way, so the
+   fade has to start from the right instead */
+html[dir="rtl"]{
+  --gradient-dir:to left;
+}
+
+.hero__wrapper{
+  place-content:center start;
+}
+
 }
 
 /* ============================================================
@@ -377,6 +609,12 @@ body{
    stuck open.
    ============================================================ */
 @media(max-width:700px){
+
+/* the bar is shorter on a phone, so the hero needs to leave
+   less room: 12px + 12px padding + the 42px logo + 4px border */
+:root{
+  --nav-h:70px;
+}
 
 .navbar{
   padding:12px 16px;
@@ -484,32 +722,13 @@ body{
   transition:max-height .3s ease;
 }
 
-/* Hover must NOT open the panel here. On a touchscreen a tap
-   leaves a lingering "hover" behind, which would make the panel
-   stick open and ignore the toggle. The checkbox is the only
-   thing allowed to open it on mobile. */
-.menu-item:hover .mega-menu,
-.menu-check:focus-visible ~ .mega-menu,
-.mega-menu:focus-within{
-  transform:none;
-  max-height:0;
-}
-
-/* this comes last, so it beats the rules above */
+/* The checkbox drives the panel on every screen size, so the
+   only thing to change here is HOW it opens: the floating panel
+   fades in on desktop, this stacked one slides down. */
 .menu-check:checked ~ .mega-menu{
+  transform:none;
   max-height:1200px;      /* taller than the list can ever be */
   padding-bottom:10px;
-}
-
-/* the arrow follows the checkbox instead of hover */
-.menu-item:hover .arrow,
-.menu-check:focus-visible ~ .menu-toggle .arrow,
-.menu-item:has(.mega-menu:focus-within) .arrow{
-  transform:none;
-}
-
-.menu-check:checked ~ .menu-toggle .arrow{
-  transform:rotate(180deg);
 }
 
 .mega-inner{
@@ -536,12 +755,6 @@ body{
 
 .mega-column a:focus-visible{
   outline-color:#fff;
-}
-
-.hero{
-  width:100%;
-  margin:16px 0;
-  padding:0 16px;
 }
 
 }
@@ -574,7 +787,7 @@ body{
      It is first in the markup so the ~ selector below it can
      reach the hamburger and the link list. -->
 <input type="checkbox" id="navCheck" class="nav-check"
-aria-label="Open navigation menu">
+aria-hidden="true" tabindex="-1">
 
 <a href="" class="brand">
 <img src="images/cake.png" alt="" class="brand-logo">
@@ -582,7 +795,8 @@ Ucl Bakery
 </a>
 
 <!-- clicking this label ticks the checkbox above -->
-<label for="navCheck" class="hamburger">
+<label for="navCheck" class="hamburger" role="button" tabindex="0"
+aria-controls="navLinks" aria-expanded="false" aria-label="Open navigation menu">
 <span class="icon-open">☰</span>
 <span class="icon-close">×</span>
 </label>
@@ -594,14 +808,15 @@ Ucl Bakery
        leaves the .menu-item while moving down into it. -->
   <li class="menu-item">
     <input type="checkbox" id="menuCheck" class="menu-check"
-    aria-label="Open the Menu categories">
+    aria-hidden="true" tabindex="-1">
 
-    <label for="menuCheck" class="menu-toggle">
+    <label for="menuCheck" class="menu-toggle" role="button" tabindex="0"
+    aria-controls="megaMenu" aria-expanded="false">
       Menu <span class="arrow" aria-hidden="true">▾</span>
     </label>
 
     <!-- the mega dropdown: 3 columns -->
-    <div class="mega-menu">
+    <div class="mega-menu" id="megaMenu">
       <div class="mega-inner">
 
         <div class="mega-column">
@@ -649,11 +864,90 @@ Ucl Bakery
 
 </div>
 
+<!-- invisible full-screen sheet. It only appears while the menu
+     is pinned open, and clicking it unticks the same checkbox,
+     which is how clicking anywhere on the page closes the menu. -->
+<label for="menuCheck" class="menu-backdrop" aria-hidden="true"></label>
+
 </nav>
 
-<main class="hero">
-<img src="images/messi.jpg" alt="Lionel Messi kissing the World Cup trophy" class="hero-img">
+<!-- ==========================================================
+     HERO
+     It sits INSIDE <main> because it carries the <h1>, the
+     page's main heading - that is the dominant content of the
+     page, which is exactly what <main> is for. A hero that was
+     only a decorative banner would belong outside it.
+
+     The photo has alt="" because it is decoration behind the
+     text: the heading already says what this section is about,
+     so a screen reader should skip the image rather than read
+     a description of it twice.
+     ========================================================== -->
+<main>
+
+<section class="hero">
+
+<img class="hero__image"
+src=" images/hero-cake.jpg"
+alt="" fetchpriority="high" decoding="async">
+
+<div class="hero__wrapper">
+<div class="hero__content">
+
+<p class="hero__kicker">Fresh from the oven</p>
+
+<h1 class="hero__headline">Cakes worth the occasion</h1>
+
+<p class="hero__text">Every cake is baked the morning you collect it - real butter,
+real cream, no shortcuts. Tell us what you are celebrating and we will build it
+around you.</p>
+
+<a class="hero__cta" href="/menu">Explore the menu <span aria-hidden="true">&rarr;</span></a>
+
+</div>
+</div>
+
+</section>
+
 </main>
+
+<script>
+/* Keep the CSS checkbox menus, while exposing accurate button state
+   and keyboard behaviour to assistive technology. */
+const menuControls = [
+  {
+    checkbox: document.getElementById("navCheck"),
+    control: document.querySelector(".hamburger"),
+    openLabel: "Close navigation menu",
+    closedLabel: "Open navigation menu"
+  },
+  {
+    checkbox: document.getElementById("menuCheck"),
+    control: document.querySelector(".menu-toggle")
+  }
+];
+
+menuControls.forEach(({ checkbox, control, openLabel, closedLabel }) => {
+  const updateState = () => {
+    control.setAttribute("aria-expanded", String(checkbox.checked));
+
+    if (openLabel && closedLabel) {
+      control.setAttribute("aria-label", checkbox.checked ? openLabel : closedLabel);
+    }
+  };
+
+  control.addEventListener("keydown", event => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      checkbox.checked = !checkbox.checked;
+      checkbox.dispatchEvent(new Event("change"));
+    }
+  });
+
+  checkbox.addEventListener("change", updateState);
+  updateState();
+});
+</script>
 
 </body>
 </html>
