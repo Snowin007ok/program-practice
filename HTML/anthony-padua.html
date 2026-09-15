@@ -768,6 +768,22 @@ input:focus,select:focus,textarea:focus{
    clear of the sticky site header */
 #wf_splash{top:90px!important;}
 
+/* A field the browser has judged invalid AFTER the visitor has
+   interacted with it. :user-invalid is used rather than :invalid so
+   an empty form does not greet people in red before they start. */
+#zohoFormSlot .zcwf_col_fld input:user-invalid,
+#zohoFormSlot .zcwf_col_fld select:user-invalid,
+#zohoFormSlot .zcwf_col_fld textarea:user-invalid{
+  border-color:var(--danger)!important;
+  background:var(--danger-bg)!important;
+}
+
+#zohoFormSlot .zcwf_col_fld input:user-invalid:focus,
+#zohoFormSlot .zcwf_col_fld select:user-invalid:focus,
+#zohoFormSlot .zcwf_col_fld textarea:user-invalid:focus{
+  box-shadow:0 0 0 4px #fbd9d6!important;
+}
+
 /* one field per row, label above input - this is what makes the
    form usable on a narrow screen, where Zoho's default puts the
    label in a floated column beside the input */
@@ -2050,6 +2066,60 @@ input:focus,select:focus,textarea:focus{
 		</form>
 	</div>
 
+      <!-- ############################################################
+           MANDATORY-FIELD ENFORCEMENT  (site code, not Zoho's)
+           Zoho only checks its mandatory fields after you press
+           Submit, and reports problems one at a time through
+           alert() pop-ups. This turns on the browser's own
+           validation as well, so the form will not submit at all
+           while a required field is empty, and the offending field
+           is highlighted where it sits.
+
+           It reads WHICH fields are mandatory from the red asterisk
+           Zoho itself prints, rather than from a hard-coded list -
+           so when you change the mandatory fields in Zoho and paste
+           the new code in, this keeps working with no edits.
+
+           Zoho's markup, field names, hidden inputs and validation
+           script are untouched. This only adds the standard
+           "required" attribute to fields Zoho has already marked.
+           ############################################################ -->
+      <script>
+      (function(){
+        const slot = document.getElementById("zohoFormSlot");
+        const form = slot && slot.querySelector("form");
+        if (!form) return;
+
+        slot.querySelectorAll(".zcwf_row").forEach(row => {
+          const label = row.querySelector(".zcwf_col_lab");
+          if (!label || !label.querySelector("span[style*='color:red']")) return;
+
+          const field = row.querySelector(
+            ".zcwf_col_fld input:not([type=hidden]):not([type=submit]):not([type=reset])," +
+            ".zcwf_col_fld select,.zcwf_col_fld textarea"
+          );
+          if (!field || field.type === "checkbox") return;  // Zoho handles checkboxes
+
+          field.required = true;
+
+          /* A dropdown still showing "-None-" is empty in meaning but
+             not to the browser, because that option carries a value.
+             Blanking the value on a REQUIRED dropdown lets the browser
+             block it too. Nothing reaches Zoho differently: the field
+             cannot be submitted on "-None-" either way. */
+          if (field.tagName === "SELECT") {
+            const none = field.querySelector("option[value='-None-']");
+            if (none) none.value = "";
+          }
+        });
+
+        /* better keyboards on phones - changes nothing that is sent */
+        const email = form.querySelector("[ftype=email]");
+        if (email){ email.inputMode = "email"; email.autocapitalize = "off"; }
+        const mobile = form.querySelector("#Mobile");
+        if (mobile) mobile.inputMode = "tel";
+      })();
+      </script>
 
     </div>
   </div>
