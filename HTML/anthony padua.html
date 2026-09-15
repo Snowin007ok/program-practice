@@ -1,0 +1,1948 @@
+<!DOCTYPE html>
+<html lang="en-IN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- ============================================================
+     SEO
+     TODO: replace the domain in canonical/og:url with your own.
+     ============================================================ -->
+<title>Anthony Poultry Smart Service | Smart Upgrades for Poultry Farms in India</title>
+<meta name="description" content="Anthony Poultry Smart Service upgrades traditional broiler, layer and breeder farms with smart climate control, automated feeding, water management and 24x7 monitoring. Request a free farm assessment.">
+<meta name="keywords" content="poultry farm automation India, smart poultry farm, broiler climate control, automated feeding system, poultry farm monitoring">
+<link rel="canonical" href="https://example.com/anthony-poultry-smart-service">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Anthony Poultry Smart Service | Smart Upgrades for Poultry Farms">
+<meta property="og:description" content="Turn a traditional poultry farm into a smarter, easier-to-manage operation. Free farm assessment for broiler, layer and breeder farms across India.">
+<meta property="og:url" content="https://example.com/anthony-poultry-smart-service">
+<meta property="og:locale" content="en_IN">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0B2545">
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230B2545'/><path d='M50 22 78 40v38H22V40z' fill='none' stroke='%2322A75F' stroke-width='8' stroke-linejoin='round'/><circle cx='50' cy='58' r='9' fill='%23F5B301'/></svg>">
+
+<style>
+/* ============================================================
+   1. DESIGN TOKENS
+   Every colour, space and type size in the page comes from here.
+   Change a value once and it updates everywhere.
+   ============================================================ */
+:root{
+  /* brand palette: deep blue, field green, warm yellow, white */
+  --navy:#0B2545;
+  --navy-800:#12325c;
+  --navy-600:#1d4a80;
+  --navy-050:#eef3fa;
+
+  --green:#157F4B;
+  --green-600:#0f6b3e;
+  --green-400:#22a75f;
+  --green-050:#e9f5ee;
+
+  --yellow:#F5B301;
+  --yellow-300:#ffcf4d;
+  --yellow-050:#fff6dc;
+
+  /* neutrals carry a slight green bias so they sit with the brand */
+  --ink:#0d1a13;
+  --body:#41524a;
+  --muted:#697a71;
+  --line:#dde6e0;
+  --bg:#ffffff;
+  --bg-soft:#f5f9f6;
+
+  --danger:#b3261e;
+  --danger-bg:#fdecea;
+
+  /* type scale - clamp() means no media queries for font size */
+  --step--1:clamp(.82rem,.8rem + .1vw,.88rem);
+  --step-0:clamp(1rem,.97rem + .15vw,1.06rem);
+  --step-1:clamp(1.15rem,1.08rem + .35vw,1.35rem);
+  --step-2:clamp(1.4rem,1.25rem + .7vw,1.85rem);
+  --step-3:clamp(1.75rem,1.45rem + 1.4vw,2.6rem);
+  --step-4:clamp(2.1rem,1.6rem + 2.4vw,3.6rem);
+
+  --radius:16px;
+  --radius-sm:10px;
+  --shadow:0 1px 2px rgba(11,37,69,.05),0 8px 24px rgba(11,37,69,.07);
+  --shadow-lg:0 20px 50px rgba(11,37,69,.14);
+
+  --header-h:70px;
+  --wrap:1180px;
+  --speed:.2s;
+}
+
+/* ============================================================
+   2. BASE
+   ============================================================ */
+*,*::before,*::after{box-sizing:border-box;}
+
+html{
+  -webkit-text-size-adjust:100%;
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--body);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  font-size:var(--step-0);
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+
+h1,h2,h3,h4{
+  margin:0;
+  color:var(--ink);
+  line-height:1.18;
+  letter-spacing:-.015em;
+  text-wrap:balance;
+  font-weight:800;
+}
+
+h1{font-size:var(--step-4);}
+h2{font-size:var(--step-3);}
+h3{font-size:var(--step-1);}
+
+p{margin:0;}
+img,svg{max-width:100%;}
+ul{margin:0;padding:0;list-style:none;}
+
+a{color:var(--green-600);}
+
+:focus-visible{
+  outline:3px solid var(--yellow);
+  outline-offset:3px;
+  border-radius:4px;
+}
+
+/* a keyboard user's first Tab lands here, to jump the nav */
+.skip{
+  position:absolute;
+  left:12px;
+  top:-100px;
+  z-index:1200;
+  background:var(--navy);
+  color:#fff;
+  padding:12px 18px;
+  border-radius:0 0 10px 10px;
+  text-decoration:none;
+  transition:top var(--speed) ease;
+}
+.skip:focus{top:0;}
+
+/* ============================================================
+   3. REUSABLE COMPONENTS
+   These few classes build every section on the page: change
+   .card here and all 17 cards on the site change together.
+   ============================================================ */
+.wrap{
+  width:min(100% - 2.5rem,var(--wrap));
+  margin-inline:auto;
+}
+
+.section{
+  padding-block:clamp(3.5rem,2rem + 6vw,6.5rem);
+  scroll-margin-top:calc(var(--header-h) + 10px);
+}
+
+.section--soft{background:var(--bg-soft);}
+
+.section--navy{
+  background:var(--navy);
+  color:#c7d6e8;
+}
+.section--navy h2,.section--navy h3{color:#fff;}
+
+.section-head{
+  max-width:62ch;
+  margin-bottom:clamp(2rem,1rem + 3vw,3.25rem);
+}
+
+/* small uppercase label above a heading */
+.eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:14px;
+  font-size:var(--step--1);
+  font-weight:700;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--green-600);
+}
+.eyebrow::before{
+  content:"";
+  width:26px;
+  height:3px;
+  border-radius:2px;
+  background:var(--yellow);
+}
+.section--navy .eyebrow{color:var(--yellow-300);}
+
+.lede{
+  margin-top:1rem;
+  font-size:var(--step-1);
+  color:var(--body);
+}
+.section--navy .lede{color:#c7d6e8;}
+
+/* auto-fit grid: the cards decide how many fit per row */
+.grid{
+  display:grid;
+  gap:1.25rem;
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,270px),1fr));
+}
+
+.card{
+  display:flex;
+  flex-direction:column;
+  gap:.7rem;
+  padding:1.6rem;
+  background:var(--bg);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  transition:transform var(--speed) ease,box-shadow var(--speed) ease,border-color var(--speed) ease;
+}
+.card:hover{
+  transform:translateY(-3px);
+  border-color:var(--green-400);
+  box-shadow:var(--shadow-lg);
+}
+.card p{color:var(--body);}
+
+/* the round icon tile at the top of each card */
+.icon{
+  display:grid;
+  place-items:center;
+  width:46px;
+  height:46px;
+  border-radius:12px;
+  background:var(--green-050);
+  color:var(--green-600);
+  flex:none;
+}
+.icon svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;}
+.icon--yellow{background:var(--yellow-050);color:#9a6f00;}
+.icon--navy{background:var(--navy-050);color:var(--navy-600);}
+
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:.55rem;
+  padding:.95rem 1.6rem;
+  border:2px solid transparent;
+  border-radius:999px;
+  font:inherit;
+  font-weight:700;
+  text-decoration:none;
+  cursor:pointer;
+  transition:transform var(--speed) ease,background var(--speed) ease,color var(--speed) ease,border-color var(--speed) ease;
+}
+.btn:hover{transform:translateY(-2px);}
+.btn:active{transform:translateY(0);}
+
+.btn--primary{background:var(--yellow);color:#33270a;}
+.btn--primary:hover{background:var(--yellow-300);}
+
+.btn--ghost{border-color:rgba(255,255,255,.55);color:#fff;}
+.btn--ghost:hover{background:rgba(255,255,255,.12);border-color:#fff;}
+
+.btn--green{background:var(--green);color:#fff;}
+.btn--green:hover{background:var(--green-600);}
+
+.btn--sm{padding:.65rem 1.15rem;font-size:var(--step--1);}
+.btn[disabled]{opacity:.6;cursor:not-allowed;transform:none;}
+
+/* ============================================================
+   4. HEADER
+   ============================================================ */
+.header{
+  position:sticky;
+  top:0;
+  z-index:1000;
+  background:rgba(255,255,255,.92);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+}
+
+.header__inner{
+  display:flex;
+  align-items:center;
+  gap:1rem;
+  min-height:var(--header-h);
+}
+
+.logo{
+  display:flex;
+  align-items:center;
+  gap:.65rem;
+  margin-right:auto;
+  text-decoration:none;
+  color:var(--navy);
+}
+.logo__mark{
+  display:grid;
+  place-items:center;
+  width:38px;
+  height:38px;
+  border-radius:11px;
+  background:var(--navy);
+  flex:none;
+}
+.logo__mark svg{width:21px;height:21px;stroke:var(--green-400);fill:none;stroke-width:2.2;stroke-linejoin:round;stroke-linecap:round;}
+.logo__name{font-weight:800;line-height:1.1;letter-spacing:-.02em;}
+.logo__sub{
+  display:block;
+  font-size:.7rem;
+  font-weight:600;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--green-600);
+}
+
+.nav{display:flex;align-items:center;gap:1.5rem;}
+.nav a{
+  color:var(--navy);
+  text-decoration:none;
+  font-weight:600;
+  font-size:var(--step--1);
+  padding-block:.4rem;
+  border-bottom:2px solid transparent;
+}
+.nav a:hover{border-bottom-color:var(--green-400);}
+
+.burger{
+  display:none;
+  width:44px;
+  height:44px;
+  padding:0;
+  background:none;
+  border:1px solid var(--line);
+  border-radius:10px;
+  cursor:pointer;
+  color:var(--navy);
+}
+.burger svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;}
+.burger .ico-close{display:none;}
+.burger[aria-expanded="true"] .ico-open{display:none;}
+.burger[aria-expanded="true"] .ico-close{display:block;}
+
+@media(max-width:860px){
+  .burger{display:grid;place-items:center;}
+  .nav{
+    position:absolute;
+    left:0;
+    right:0;
+    top:100%;
+    flex-direction:column;
+    align-items:stretch;
+    gap:0;
+    padding:.5rem 1.25rem 1.25rem;
+    background:#fff;
+    border-bottom:1px solid var(--line);
+    box-shadow:var(--shadow-lg);
+    max-height:calc(100vh - var(--header-h));
+    overflow-y:auto;
+  }
+  .nav[hidden]{display:none;}
+  .nav a{padding:.85rem .25rem;border-bottom:1px solid var(--line);}
+  .nav .btn{margin-top:.85rem;}
+}
+
+/* ============================================================
+   5. HERO
+   ============================================================ */
+.hero{
+  position:relative;
+  background:
+    radial-gradient(900px 420px at 88% -8%,rgba(34,167,95,.42),transparent 62%),
+    radial-gradient(700px 360px at 6% 108%,rgba(245,179,1,.18),transparent 60%),
+    linear-gradient(160deg,var(--navy) 0%,#0a1c36 100%);
+  color:#d5e2f0;
+  overflow:hidden;
+}
+
+.hero__grid{
+  display:grid;
+  gap:clamp(2.5rem,1rem + 5vw,4rem);
+  align-items:center;
+  padding-block:clamp(3rem,1.5rem + 7vw,6rem);
+}
+@media(min-width:900px){
+  .hero__grid{grid-template-columns:1.05fr .95fr;}
+}
+
+.hero h1{color:#fff;}
+.hero__copy p{margin-top:1.25rem;font-size:var(--step-1);color:#c2d3e6;max-width:56ch;}
+
+.hero__actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.85rem;
+  margin-top:2rem;
+}
+
+.hero__trust{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.6rem 1.5rem;
+  margin-top:2.25rem;
+  padding-top:1.5rem;
+  border-top:1px solid rgba(255,255,255,.16);
+  font-size:var(--step--1);
+  color:#a9c0d8;
+}
+.hero__trust li{display:flex;align-items:center;gap:.5rem;}
+.hero__trust svg{width:17px;height:17px;stroke:var(--green-400);fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;flex:none;}
+
+/* --- the dashboard mock-up beside the headline ---
+   Built from HTML and CSS rather than a screenshot, so it stays
+   sharp on every screen and costs no extra download.
+   TODO: swap for a real photo of one of your installations once
+   you have one - see the commented <img> in the markup below. */
+.panel{
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:20px;
+  padding:1.25rem;
+  backdrop-filter:blur(6px);
+  box-shadow:var(--shadow-lg);
+}
+.panel__top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:1rem;
+  padding-bottom:1rem;
+  margin-bottom:1rem;
+  border-bottom:1px solid rgba(255,255,255,.14);
+}
+.panel__title{color:#fff;font-weight:700;font-size:var(--step--1);letter-spacing:.02em;}
+.pill{
+  display:inline-flex;
+  align-items:center;
+  gap:.45rem;
+  padding:.3rem .7rem;
+  border-radius:999px;
+  background:rgba(34,167,95,.18);
+  color:#7ee2ab;
+  font-size:.72rem;
+  font-weight:700;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+.dot{width:7px;height:7px;border-radius:50%;background:#22a75f;}
+@media(prefers-reduced-motion:no-preference){
+  .dot{animation:pulse 2.2s ease-in-out infinite;}
+}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.35;}}
+
+.tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:.7rem;}
+.tile{
+  padding:.85rem .9rem;
+  border-radius:12px;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.1);
+}
+.tile__label{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:#9fb6cd;}
+.tile__value{
+  display:block;
+  margin-top:.15rem;
+  color:#fff;
+  font-size:1.35rem;
+  font-weight:800;
+  font-variant-numeric:tabular-nums;
+}
+.tile__value span{font-size:.8rem;font-weight:600;color:#9fb6cd;}
+.tile--alert{background:rgba(245,179,1,.14);border-color:rgba(245,179,1,.35);}
+.tile--alert .tile__value{color:var(--yellow-300);}
+
+.spark{margin-top:1rem;}
+.spark svg{display:block;width:100%;height:56px;}
+
+/* ============================================================
+   6. SECTION-SPECIFIC BITS
+   ============================================================ */
+/* problems: a red-ish accent to read as "pain", not "feature" */
+.card--problem .icon{background:#fdeeec;color:#a8342a;}
+
+/* process: the numbers are real sequence information here */
+.steps{
+  display:grid;
+  gap:1.25rem;
+  counter-reset:step;
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));
+}
+.step{
+  position:relative;
+  padding:1.7rem 1.5rem 1.5rem;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:var(--radius);
+}
+.step::before{
+  counter-increment:step;
+  content:"0" counter(step);
+  display:block;
+  margin-bottom:.6rem;
+  font-size:.85rem;
+  font-weight:800;
+  letter-spacing:.14em;
+  color:var(--yellow);
+}
+.step h3{font-size:var(--step-0);margin-bottom:.35rem;}
+.step p{font-size:var(--step--1);color:#b8cadd;}
+
+.benefit{
+  display:flex;
+  gap:1rem;
+  padding:1.35rem;
+  background:var(--bg);
+  border:1px solid var(--line);
+  border-left:4px solid var(--green-400);
+  border-radius:var(--radius-sm);
+}
+.benefit h3{font-size:var(--step-0);margin-bottom:.3rem;}
+.benefit p{font-size:var(--step--1);}
+
+.about__grid{
+  display:grid;
+  gap:clamp(2rem,1rem + 4vw,3.5rem);
+  align-items:start;
+}
+@media(min-width:900px){.about__grid{grid-template-columns:1.1fr .9fr;}}
+
+.facts{
+  display:grid;
+  gap:1rem;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  margin-top:2rem;
+}
+.fact{
+  padding:1.2rem;
+  background:var(--green-050);
+  border-radius:var(--radius-sm);
+}
+.fact b{display:block;color:var(--navy);font-size:var(--step-2);line-height:1.1;}
+.fact span{font-size:var(--step--1);color:var(--body);}
+
+.checklist{display:grid;gap:.85rem;margin-top:1.5rem;}
+.checklist li{display:flex;gap:.7rem;align-items:flex-start;}
+.checklist svg{
+  width:22px;height:22px;flex:none;margin-top:2px;
+  stroke:var(--green);fill:none;stroke-width:2.3;stroke-linecap:round;stroke-linejoin:round;
+}
+
+/* ============================================================
+   7. LEAD FORM
+   ============================================================ */
+.form-card{
+  background:var(--bg);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow-lg);
+  padding:clamp(1.5rem,1rem + 2vw,2.75rem);
+}
+
+fieldset{
+  margin:0 0 2rem;
+  padding:0;
+  border:0;
+}
+fieldset:last-of-type{margin-bottom:1.25rem;}
+
+legend{
+  padding:0;
+  margin-bottom:1.1rem;
+  font-weight:800;
+  font-size:var(--step-1);
+  color:var(--ink);
+}
+legend + .hint{margin-top:-.75rem;margin-bottom:1.1rem;}
+
+.fields{
+  display:grid;
+  gap:1.1rem;
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));
+}
+
+.field{display:flex;flex-direction:column;gap:.4rem;}
+.field--full{grid-column:1/-1;}
+
+label,.label{
+  font-weight:600;
+  font-size:var(--step--1);
+  color:var(--ink);
+}
+.req{color:var(--danger);font-weight:700;}
+.opt{color:var(--muted);font-weight:500;}
+
+input,select,textarea{
+  width:100%;
+  padding:.8rem .9rem;
+  font:inherit;
+  font-size:var(--step-0);
+  color:var(--ink);
+  background:var(--bg);
+  border:1.5px solid var(--line);
+  border-radius:var(--radius-sm);
+  transition:border-color var(--speed) ease,box-shadow var(--speed) ease;
+}
+textarea{min-height:120px;resize:vertical;}
+
+select{
+  appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2341524a' stroke-width='2.2' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right .8rem center;
+  background-size:18px;
+  padding-right:2.5rem;
+}
+
+input:hover,select:hover,textarea:hover{border-color:#c2d2c8;}
+input:focus,select:focus,textarea:focus{
+  outline:none;
+  border-color:var(--green);
+  box-shadow:0 0 0 4px var(--green-050);
+}
+
+/* invalid state is announced by aria-invalid, and shown by this */
+[aria-invalid="true"]{
+  border-color:var(--danger);
+  background:var(--danger-bg);
+}
+[aria-invalid="true"]:focus{box-shadow:0 0 0 4px #fbd9d6;}
+
+.error{
+  display:none;
+  gap:.35rem;
+  align-items:flex-start;
+  font-size:var(--step--1);
+  font-weight:600;
+  color:var(--danger);
+}
+.error:not(:empty){display:flex;}
+
+.hint{font-size:var(--step--1);color:var(--muted);}
+
+.radios{display:flex;flex-wrap:wrap;gap:.6rem;}
+.radio{
+  display:inline-flex;
+  align-items:center;
+  gap:.5rem;
+  padding:.6rem 1rem;
+  border:1.5px solid var(--line);
+  border-radius:999px;
+  cursor:pointer;
+  font-size:var(--step--1);
+  font-weight:600;
+  transition:border-color var(--speed) ease,background var(--speed) ease;
+}
+.radio input{width:auto;padding:0;accent-color:var(--green);}
+.radio:hover{border-color:var(--green-400);}
+.radio:has(input:checked){background:var(--green-050);border-color:var(--green);}
+
+.consent{
+  display:flex;
+  gap:.8rem;
+  align-items:flex-start;
+  padding:1.1rem;
+  background:var(--bg-soft);
+  border:1.5px solid var(--line);
+  border-radius:var(--radius-sm);
+}
+.consent input{width:20px;height:20px;flex:none;margin-top:2px;padding:0;accent-color:var(--green);}
+.consent label{font-weight:500;color:var(--body);}
+
+/* honeypot: a real person never sees or fills this */
+.hp{
+  position:absolute;
+  left:-9999px;
+  width:1px;
+  height:1px;
+  overflow:hidden;
+}
+
+.form-foot{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:1rem;
+  margin-top:1.5rem;
+  padding-top:1.5rem;
+  border-top:1px solid var(--line);
+}
+.form-foot .btn{flex:1 1 260px;}
+
+/* form-level status messages */
+.status{margin-bottom:1.5rem;}
+.status:empty{display:none;}
+.alert{
+  display:flex;
+  gap:.8rem;
+  align-items:flex-start;
+  padding:1rem 1.15rem;
+  border-radius:var(--radius-sm);
+  font-weight:600;
+}
+.alert svg{width:22px;height:22px;flex:none;margin-top:1px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;}
+.alert--error{background:var(--danger-bg);color:#8c1d16;border:1px solid #f3c2bd;}
+.alert--info{background:var(--navy-050);color:var(--navy-800);border:1px solid #cddcee;}
+
+/* the success panel that replaces the form */
+.success{
+  display:grid;
+  place-items:center;
+  gap:1rem;
+  padding:clamp(2rem,1rem + 4vw,3.5rem) 1.5rem;
+  text-align:center;
+}
+.success__mark{
+  display:grid;
+  place-items:center;
+  width:72px;
+  height:72px;
+  border-radius:50%;
+  background:var(--green-050);
+}
+.success__mark svg{width:38px;height:38px;stroke:var(--green);fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;}
+.success p{max-width:46ch;}
+
+/* ============================================================
+   8. CONTACT + FOOTER
+   ============================================================ */
+.contact-card{
+  display:flex;
+  gap:1rem;
+  padding:1.4rem;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:var(--radius);
+}
+.contact-card h3{font-size:var(--step-0);margin-bottom:.25rem;}
+.contact-card a{color:#fff;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.35);}
+.contact-card a:hover{border-bottom-color:var(--yellow);}
+.contact-card .icon{background:rgba(255,255,255,.1);color:var(--yellow-300);}
+
+.footer{
+  background:#08182d;
+  color:#93a9c2;
+  padding-block:3rem 2rem;
+  font-size:var(--step--1);
+}
+.footer__grid{
+  display:grid;
+  gap:2rem;
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));
+  padding-bottom:2rem;
+  border-bottom:1px solid rgba(255,255,255,.12);
+}
+.footer h4{
+  margin-bottom:.9rem;
+  color:#fff;
+  font-size:var(--step--1);
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+.footer a{color:#93a9c2;text-decoration:none;}
+.footer a:hover{color:#fff;text-decoration:underline;}
+.footer li{margin-bottom:.5rem;}
+
+.socials{display:flex;gap:.6rem;}
+.socials a{
+  display:grid;
+  place-items:center;
+  width:40px;
+  height:40px;
+  border-radius:10px;
+  background:rgba(255,255,255,.08);
+}
+.socials a:hover{background:var(--green);}
+.socials svg{width:19px;height:19px;stroke:#fff;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;}
+
+.footer__bottom{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:space-between;
+  gap:1rem;
+  padding-top:1.5rem;
+}
+
+/* ============================================================
+   9. MOTION PREFERENCES
+   ============================================================ */
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto;}
+  *{animation-duration:.01ms!important;transition-duration:.01ms!important;}
+}
+</style>
+</head>
+
+<body>
+
+<a class="skip" href="#main">Skip to main content</a>
+
+<!-- ============================================================
+     HEADER
+     TODO: the phone number in the header CTA is a placeholder.
+     ============================================================ -->
+<header class="header">
+  <div class="wrap header__inner">
+
+    <a class="logo" href="#top">
+      <span class="logo__mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M3 10.5 12 4l9 6.5V20H3z"/><path d="M9 20v-5h6v5"/></svg>
+      </span>
+      <span class="logo__name">
+        Anthony Poultry
+        <span class="logo__sub">Smart Service</span>
+      </span>
+    </a>
+
+    <button class="burger" id="burger" aria-expanded="false" aria-controls="nav" aria-label="Open menu">
+      <svg class="ico-open" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      <svg class="ico-close" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+
+    <nav class="nav" id="nav" aria-label="Main" hidden>
+      <a href="#problems">Problems</a>
+      <a href="#services">Services</a>
+      <a href="#process">How it works</a>
+      <a href="#benefits">Benefits</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+      <a class="btn btn--green btn--sm" href="#enquiry">Free Farm Assessment</a>
+    </nav>
+
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ============================================================
+     1. HERO
+     ============================================================ -->
+<section class="hero" id="top">
+  <div class="wrap hero__grid">
+
+    <div class="hero__copy">
+      <p class="eyebrow">Smart farming for Indian poultry</p>
+
+      <h1>Upgrade Your Poultry Farm. Improve Control, Efficiency and Growth.</h1>
+
+      <p>Anthony Poultry Smart Service converts traditional sheds into smarter,
+      easier-to-manage operations. We fit climate control, automated feeding and
+      water systems, and round-the-clock monitoring onto the farm you already
+      have &mdash; so you spend less time reacting to problems and more time
+      running the business.</p>
+
+      <div class="hero__actions">
+        <a class="btn btn--primary" href="#enquiry">
+          Request a Free Farm Assessment
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a class="btn btn--ghost" href="#services">Explore Smart Solutions</a>
+      </div>
+
+      <ul class="hero__trust">
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Broiler, layer &amp; breeder farms</li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Works with existing sheds</li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Installation &amp; after-sales support</li>
+      </ul>
+    </div>
+
+    <!-- TODO (optional): replace this mock dashboard with a real
+         photograph of one of your installations, e.g.
+         <img src="images/farm-install.jpg" alt="Automated feeding line installed in a broiler shed" width="640" height="520" loading="eager">
+         Keep the file under ~250KB so the page stays fast. -->
+    <div class="panel" role="img" aria-label="Example of the farm monitoring dashboard: shed 2 at 31.4 degrees Celsius, 62 percent humidity, feed line running, and a water-flow alert.">
+      <div class="panel__top">
+        <span class="panel__title">Shed 02 &middot; Live</span>
+        <span class="pill"><span class="dot"></span> Online</span>
+      </div>
+
+      <div class="tiles">
+        <div class="tile">
+          <span class="tile__label">Temperature</span>
+          <b class="tile__value">31.4<span>&deg;C</span></b>
+        </div>
+        <div class="tile">
+          <span class="tile__label">Humidity</span>
+          <b class="tile__value">62<span>%</span></b>
+        </div>
+        <div class="tile">
+          <span class="tile__label">Feed line</span>
+          <b class="tile__value">Running</b>
+        </div>
+        <div class="tile tile--alert">
+          <span class="tile__label">Water flow</span>
+          <b class="tile__value">Check</b>
+        </div>
+      </div>
+
+      <div class="spark" aria-hidden="true">
+        <svg viewBox="0 0 300 56" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="sparkFill" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#22a75f" stop-opacity=".45"/>
+              <stop offset="100%" stop-color="#22a75f" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <path d="M0 40 40 34 80 37 120 24 160 28 200 16 240 21 300 12 300 56 0 56z" fill="url(#sparkFill)"/>
+          <path d="M0 40 40 34 80 37 120 24 160 28 200 16 240 21 300 12" fill="none" stroke="#22a75f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="300" cy="12" r="4" fill="#f5b301"/>
+        </svg>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     2. PROBLEMS WE SOLVE
+     ============================================================ -->
+<section class="section" id="problems">
+  <div class="wrap">
+
+    <div class="section-head">
+      <p class="eyebrow">Problems we solve</p>
+      <h2>The daily issues that quietly cost a farm money</h2>
+      <p class="lede">Most traditional sheds are run on experience and constant
+      attention. That works &mdash; until something slips at 2am. These are the
+      six problems farm owners raise with us most often.</p>
+    </div>
+
+    <ul class="grid">
+
+      <li class="card card--problem">
+        <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 14.8V5a2 2 0 1 0-4 0v9.8a4 4 0 1 0 4 0z"/><path d="M12 9v6"/></svg></span>
+        <h3>Temperature swings</h3>
+        <p>Day-to-night shifts and seasonal heat stress affect bird comfort, feed intake and flock uniformity before anyone notices on the floor.</p>
+      </li>
+
+      <li class="card card--problem">
+        <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 6h18l-1.5 12.5a2 2 0 0 1-2 1.5h-11a2 2 0 0 1-2-1.5z"/><path d="M9 10v6M15 10v6"/></svg></span>
+        <h3>High feed wastage</h3>
+        <p>Manual feeding means spillage, uneven distribution and stock that is hard to account for &mdash; on your single largest running cost.</p>
+      </li>
+
+      <li class="card card--problem">
+        <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3s6 6.4 6 10.2A6 6 0 0 1 6 13.2C6 9.4 12 3 12 3z"/></svg></span>
+        <h3>Inconsistent water supply</h3>
+        <p>Blocked nipples, pressure drops and dry lines can run unnoticed for hours, with a direct effect on intake and bird health.</p>
+      </li>
+
+      <li class="card card--problem">
+        <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="9" cy="7" r="3.2"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M17 11h5M19.5 8.5v5"/></svg></span>
+        <h3>Dependence on labour</h3>
+        <p>Routine tasks tie the farm to staff availability. Skilled hands are scarce, and a missed round becomes a production issue.</p>
+      </li>
+
+      <li class="card card--problem">
+        <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></span>
+        <h3>Problems found too late</h3>
+        <p>A fan that stopped in the night or a feed line that jammed is usually discovered on the next round &mdash; hours after it mattered.</p>
+      </li>
+
+      <li class="card card--problem">
+        <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2 12s3.5-6.5 10-6.5S22 12 22 12s-3.5 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.6"/><path d="M3 3l18 18"/></svg></span>
+        <h3>Little farm visibility</h3>
+        <p>Without records, comparing sheds, batches or sites is guesswork &mdash; so it is hard to prove what actually improved.</p>
+      </li>
+
+    </ul>
+  </div>
+</section>
+
+<!-- ============================================================
+     3. SERVICES
+     ============================================================ -->
+<section class="section section--soft" id="services">
+  <div class="wrap">
+
+    <div class="section-head">
+      <p class="eyebrow">Our services</p>
+      <h2>Smart systems, fitted to the farm you already run</h2>
+      <p class="lede">Take one system or the full package. Everything is
+      specified after we have walked your sheds, so it suits your bird type,
+      capacity and budget.</p>
+    </div>
+
+    <ul class="grid">
+
+      <li class="card">
+        <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.4"/><path d="M12 3v6M12 15v6M3 12h6M15 12h6M5.6 5.6l4.3 4.3M14.1 14.1l4.3 4.3M18.4 5.6l-4.3 4.3M9.9 14.1l-4.3 4.3"/></svg></span>
+        <h3>Smart climate &amp; ventilation</h3>
+        <p>Sensor-driven fans, foggers and curtains that hold your target
+        temperature and humidity band automatically, and log every change.</p>
+      </li>
+
+      <li class="card">
+        <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 7h16v3a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4z"/><path d="M8 14v6M16 14v6M7 7 9 3h6l2 4"/></svg></span>
+        <h3>Automated feeding systems</h3>
+        <p>Scheduled, measured feed delivery across the shed &mdash; less
+        spillage, even access for every bird, and a record of what went out.</p>
+      </li>
+
+      <li class="card">
+        <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3s5.5 6 5.5 9.5a5.5 5.5 0 0 1-11 0C6.5 9 12 3 12 3z"/><path d="M9.5 13a2.5 2.5 0 0 0 2.5 2.5"/></svg></span>
+        <h3>Automated water management</h3>
+        <p>Regulated pressure, flow tracking and leak or blockage alerts, so
+        drinking lines stay consistent through the whole cycle.</p>
+      </li>
+
+      <li class="card">
+        <span class="icon icon--navy" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4M7 12l2.5-3 2.5 3 2-4 3 5"/></svg></span>
+        <h3>Farm monitoring &amp; alerts</h3>
+        <p>One dashboard for every shed, with alerts to your phone the moment a
+        reading moves outside the range you set.</p>
+      </li>
+
+      <li class="card">
+        <span class="icon icon--yellow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 4l9 6.5V20H3z"/><path d="M9 20v-5h6v5"/><path d="m18 3 1 2 2 1-2 1-1 2-1-2-2-1 2-1z"/></svg></span>
+        <h3>Complete smart-farm upgrade</h3>
+        <p>Climate, feed, water and monitoring commissioned together as one
+        system, phased shed by shed so production never stops.</p>
+      </li>
+
+      <li class="card">
+        <span class="icon icon--yellow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 3h6l.6 2.4 2.2-1 2.1 3.7-1.8 1.6a6 6 0 0 1 0 2.6l1.8 1.6-2.1 3.7-2.2-1L15 21H9l-.6-2.4-2.2 1-2.1-3.7 1.8-1.6a6 6 0 0 1 0-2.6L4.1 8.1l2.1-3.7 2.2 1z"/><circle cx="12" cy="12" r="2.6"/></svg></span>
+        <h3>Assessment, install &amp; support</h3>
+        <p>A free on-farm assessment, a written proposal, professional
+        installation, operator training and ongoing service.</p>
+      </li>
+
+    </ul>
+
+    <p style="margin-top:2.25rem;">
+      <a class="btn btn--green" href="#enquiry">Ask us which systems suit your farm</a>
+    </p>
+  </div>
+</section>
+
+<!-- ============================================================
+     4. HOW IT WORKS
+     The numbers are kept because this genuinely is a sequence.
+     ============================================================ -->
+<section class="section section--navy" id="process">
+  <div class="wrap">
+
+    <div class="section-head">
+      <p class="eyebrow">How it works</p>
+      <h2>Six clear steps, from first call to after-sales support</h2>
+      <p class="lede">No obligation at any stage. Most farms go from enquiry to
+      a written proposal within two weeks.</p>
+    </div>
+
+    <ol class="steps">
+      <li class="step">
+        <h3>Enquiry</h3>
+        <p>You send your farm details through the form below or call us directly.</p>
+      </li>
+      <li class="step">
+        <h3>Qualification call</h3>
+        <p>A short call to understand your birds, sheds, capacity and priorities.</p>
+      </li>
+      <li class="step">
+        <h3>Farm assessment</h3>
+        <p>We visit the site, inspect the sheds and record what you already have. Free of charge.</p>
+      </li>
+      <li class="step">
+        <h3>Solution proposal</h3>
+        <p>A written scope with system options, phasing and clear costs &mdash; no hidden extras.</p>
+      </li>
+      <li class="step">
+        <h3>Installation</h3>
+        <p>Scheduled around your batch cycle, commissioned and tested, with your team trained on it.</p>
+      </li>
+      <li class="step">
+        <h3>Support</h3>
+        <p>Service visits, spares and help on call, so the system keeps earning its place.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============================================================
+     5. BENEFITS
+     Deliberately written as capability statements. No yield,
+     profit or FCR promises - those depend on the farm.
+     ============================================================ -->
+<section class="section" id="benefits">
+  <div class="wrap">
+
+    <div class="section-head">
+      <p class="eyebrow">Benefits</p>
+      <h2>What changes once the systems are running</h2>
+      <p class="lede">Results depend on your farm, flock and management. What we
+      can commit to is better control and better information &mdash; here is what
+      that looks like day to day.</p>
+    </div>
+
+    <ul class="grid">
+      <li class="benefit">
+        <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 14.8V5a2 2 0 1 0-4 0v9.8a4 4 0 1 0 4 0z"/></svg></span>
+        <div><h3>Tighter environmental control</h3><p>Conditions are held to a set band automatically, day and night, instead of being corrected by hand after they drift.</p></div>
+      </li>
+      <li class="benefit">
+        <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 6h18l-1.5 12.5a2 2 0 0 1-2 1.5h-11a2 2 0 0 1-2-1.5z"/><path d="M8 3h8"/></svg></span>
+        <div><h3>Less feed and water wastage</h3><p>Measured delivery and leak detection cut the spillage and losses that are hard to see in a manual routine.</p></div>
+      </li>
+      <li class="benefit">
+        <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 12h4l3 7 4-14 3 7h4"/></svg></span>
+        <div><h3>More consistent operations</h3><p>Every shed follows the same schedule and settings, so results are repeatable across batches and staff.</p></div>
+      </li>
+      <li class="benefit">
+        <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="2.5" width="16" height="19" rx="3"/><path d="M10 6h4"/><circle cx="12" cy="14" r="3"/></svg></span>
+        <div><h3>Real-time monitoring and alerts</h3><p>You see live readings from anywhere and get told about a problem while there is still time to act on it.</p></div>
+      </li>
+      <li class="benefit">
+        <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="9" cy="7" r="3.2"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M17.5 20a5.5 5.5 0 0 0-3-4.9"/></svg></span>
+        <div><h3>Lower manual workload</h3><p>Routine rounds are handled by the system, freeing your team for stockmanship and the jobs that need judgement.</p></div>
+      </li>
+      <li class="benefit">
+        <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 20V9M10 20V4M16 20v-8M22 20h-20"/></svg></span>
+        <div><h3>Scalable farm management</h3><p>Add sheds or sites onto the same dashboard, and compare them on the same figures.</p></div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================================================
+     6. ABOUT
+     TODO: replace the three figures below with your real numbers,
+     or delete the .facts block if you would rather not publish them.
+     ============================================================ -->
+<section class="section section--soft" id="about">
+  <div class="wrap about__grid">
+
+    <div>
+      <p class="eyebrow">About us</p>
+      <h2>A practical technology partner for poultry farmers</h2>
+
+      <p class="lede">Anthony Poultry Smart Service exists for one reason: most
+      Indian poultry farms do not need to be rebuilt, they need to be upgraded.</p>
+
+      <p style="margin-top:1rem;">We work on farms that are already running &mdash;
+      existing sheds, existing staff, existing routines &mdash; and add the systems
+      that take the guesswork out of climate, feed and water. Our team comes from
+      both poultry production and control engineering, so the recommendation you
+      get is the one that fits your shed, not the biggest package on our list.</p>
+
+      <p style="margin-top:1rem;">We install, we train your people, and we stay
+      reachable afterwards. If a system is not right for your farm, we will tell
+      you that at the assessment stage.</p>
+
+      <div class="facts">
+        <div class="fact"><b>Broiler<br>Layer &amp; Breeder</b><span>Farm types we work with</span></div>
+        <div class="fact"><b>Pan-India</b><span>Service and installation reach</span></div>
+        <div class="fact"><b>Free</b><span>On-farm assessment and quote</span></div>
+      </div>
+    </div>
+
+    <div class="card" style="padding:1.9rem;">
+      <h3>How we work</h3>
+      <ul class="checklist">
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span><b>Assessment first.</b> We never quote before we have seen the sheds.</span></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span><b>Phased upgrades.</b> Start with one shed or one system and grow from there.</span></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span><b>Plain pricing.</b> A written scope, itemised, before anything is ordered.</span></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span><b>Training included.</b> Your staff run the system confidently before we leave.</span></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span><b>Support that answers.</b> Spares, service visits and a real person on the phone.</span></li>
+      </ul>
+
+      <p style="margin-top:1.75rem;">
+        <a class="btn btn--green" href="#enquiry" style="width:100%;">Book my free assessment</a>
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     7. LEAD ENQUIRY FORM
+     ============================================================ -->
+<section class="section" id="enquiry">
+  <div class="wrap" style="max-width:920px;">
+
+    <div class="section-head" style="text-align:center;margin-inline:auto;">
+      <p class="eyebrow" style="justify-content:center;">Free farm assessment</p>
+      <h2>Tell us about your farm</h2>
+      <p class="lede">Fill this in and our team will call you to arrange a visit.
+      There is no charge and no obligation. Fields marked
+      <span class="req" aria-hidden="true">*</span> are required.</p>
+    </div>
+
+    <div class="form-card">
+
+      <!-- status messages are announced to screen readers as they appear -->
+      <div class="status" id="formStatus" role="status" aria-live="polite"></div>
+
+      <form id="leadForm" novalidate>
+
+        <!-- ===== Hidden values written to the CRM with every lead =====
+             These satisfy the "Lead Source = Website",
+             "Lead Status = Not Contacted" and lead-assignment rules.
+             They are ordinary hidden inputs, NOT secrets. Nothing
+             sensitive (API key, token, client secret) belongs here.  -->
+        <input type="hidden" name="Lead_Source" value="Website">
+        <input type="hidden" name="Lead_Status" value="Not Contacted">
+        <input type="hidden" name="Lead_Owner_Role" value="Farm Solutions Executive">
+        <input type="hidden" name="Page_URL" id="pageUrl" value="">
+        <input type="hidden" name="Submitted_At" id="submittedAt" value="">
+
+        <!-- honeypot: hidden from people, irresistible to bots -->
+        <div class="hp" aria-hidden="true">
+          <label for="website">Do not fill this in</label>
+          <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+        </div>
+
+        <fieldset>
+          <legend>Your details</legend>
+          <div class="fields">
+
+            <div class="field">
+              <label for="firstName">First name <span class="req">*</span></label>
+              <input type="text" id="firstName" name="First_Name" autocomplete="given-name" required aria-describedby="firstName-error">
+              <p class="error" id="firstName-error"></p>
+            </div>
+
+            <div class="field">
+              <label for="lastName">Last name <span class="req">*</span></label>
+              <input type="text" id="lastName" name="Last_Name" autocomplete="family-name" required aria-describedby="lastName-error">
+              <p class="error" id="lastName-error"></p>
+            </div>
+
+            <div class="field field--full">
+              <label for="company">Farm or company name <span class="req">*</span></label>
+              <input type="text" id="company" name="Company" autocomplete="organization" required aria-describedby="company-error">
+              <p class="error" id="company-error"></p>
+            </div>
+
+            <div class="field">
+              <label for="phone">Phone number <span class="req">*</span></label>
+              <input type="tel" id="phone" name="Phone" autocomplete="tel" inputmode="tel" placeholder="98765 43210" required aria-describedby="phone-hint phone-error">
+              <p class="hint" id="phone-hint">10-digit mobile, or add +91 / your country code.</p>
+              <p class="error" id="phone-error"></p>
+            </div>
+
+            <div class="field">
+              <label for="email">Email <span class="opt">(optional)</span></label>
+              <input type="email" id="email" name="Email" autocomplete="email" aria-describedby="email-error">
+              <p class="error" id="email-error"></p>
+            </div>
+
+            <div class="field">
+              <label for="city">City <span class="req">*</span></label>
+              <input type="text" id="city" name="City" autocomplete="address-level2" required aria-describedby="city-error">
+              <p class="error" id="city-error"></p>
+            </div>
+
+            <div class="field">
+              <label for="state">State <span class="req">*</span></label>
+              <select id="state" name="State" required aria-describedby="state-error">
+                <option value="">Select your state</option>
+                <option>Andhra Pradesh</option><option>Assam</option><option>Bihar</option>
+                <option>Chhattisgarh</option><option>Delhi</option><option>Goa</option>
+                <option>Gujarat</option><option>Haryana</option><option>Himachal Pradesh</option>
+                <option>Jharkhand</option><option>Karnataka</option><option>Kerala</option>
+                <option>Madhya Pradesh</option><option>Maharashtra</option><option>Manipur</option>
+                <option>Meghalaya</option><option>Odisha</option><option>Punjab</option>
+                <option>Rajasthan</option><option>Tamil Nadu</option><option>Telangana</option>
+                <option>Tripura</option><option>Uttar Pradesh</option><option>Uttarakhand</option>
+                <option>West Bengal</option><option>Other</option>
+              </select>
+              <p class="error" id="state-error"></p>
+            </div>
+
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>About your farm</legend>
+          <div class="fields">
+
+            <div class="field">
+              <label for="birdType">Bird type</label>
+              <select id="birdType" name="Bird_Type">
+                <option value="">Select</option>
+                <option>Broiler</option>
+                <option>Layer</option>
+                <option>Breeder</option>
+                <option>Other</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="farmType">Current farm type</label>
+              <select id="farmType" name="Current_Farm_Type">
+                <option value="">Select</option>
+                <option>Traditional</option>
+                <option>Semi-Automated</option>
+                <option>Automated</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="capacity">Farm capacity <span class="opt">(number of birds)</span></label>
+              <input type="number" id="capacity" name="Farm_Capacity" min="0" step="100" inputmode="numeric" placeholder="e.g. 20000">
+            </div>
+
+            <div class="field">
+              <label for="sheds">Number of sheds</label>
+              <input type="number" id="sheds" name="Number_of_Sheds" min="0" step="1" inputmode="numeric" placeholder="e.g. 4">
+            </div>
+
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>What you need</legend>
+          <div class="fields">
+
+            <div class="field">
+              <label for="interest">Upgrade interest</label>
+              <select id="interest" name="Upgrade_Interest">
+                <option value="">Select</option>
+                <option>Climate Control</option>
+                <option>Feeding Automation</option>
+                <option>Water Management</option>
+                <option>Farm Monitoring</option>
+                <option>Complete Upgrade</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="timeline">Expected timeline</label>
+              <select id="timeline" name="Expected_Timeline">
+                <option value="">Select</option>
+                <option>Immediately</option>
+                <option>1-3 Months</option>
+                <option>3-6 Months</option>
+                <option>Just Exploring</option>
+              </select>
+            </div>
+
+            <div class="field field--full">
+              <span class="label" id="assessLabel">Would you like a free farm assessment visit?</span>
+              <div class="radios" role="radiogroup" aria-labelledby="assessLabel">
+                <label class="radio"><input type="radio" name="Farm_Assessment_Required" value="Yes" checked> Yes</label>
+                <label class="radio"><input type="radio" name="Farm_Assessment_Required" value="No"> No</label>
+              </div>
+            </div>
+
+            <div class="field field--full">
+              <label for="message">Message <span class="opt">(optional)</span></label>
+              <textarea id="message" name="Description" placeholder="Anything that helps us prepare - shed sizes, current equipment, problems you are facing."></textarea>
+            </div>
+
+          </div>
+        </fieldset>
+
+        <!-- ===== Spam check =====
+             A simple arithmetic question. It works without any third-party
+             script and is readable by screen readers.
+             TODO (recommended for a live site): swap this for Cloudflare
+             Turnstile or Google reCAPTCHA v3 and verify the token on your
+             server. See the notes at the bottom of this file. -->
+        <div class="field field--full" style="margin-bottom:1.25rem;">
+          <label for="captcha">Quick check: what is <span id="captchaQuestion">3 + 4</span>? <span class="req">*</span></label>
+          <input type="text" id="captcha" inputmode="numeric" autocomplete="off" required aria-describedby="captcha-hint captcha-error" style="max-width:220px;">
+          <p class="hint" id="captcha-hint">This confirms you are not an automated script.</p>
+          <p class="error" id="captcha-error"></p>
+        </div>
+
+        <div class="consent">
+          <input type="checkbox" id="consent" name="Consent_to_Contact" value="Yes" required aria-describedby="consent-error">
+          <div>
+            <label for="consent">I agree to be contacted by Anthony Poultry Smart Service about this
+            enquiry by phone, WhatsApp or email. <span class="req">*</span></label>
+            <p class="error" id="consent-error"></p>
+          </div>
+        </div>
+
+        <div class="form-foot">
+          <button class="btn btn--primary" type="submit" id="submitBtn">
+            Request my free farm assessment
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+          <p class="hint" style="flex:1 1 200px;">We use your details only to respond to this
+          enquiry. See our <a href="#privacy">privacy policy</a>.</p>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     8. CONTACT
+     TODO: every value in this section is a placeholder.
+     ============================================================ -->
+<section class="section section--navy" id="contact">
+  <div class="wrap">
+
+    <div class="section-head">
+      <p class="eyebrow">Contact</p>
+      <h2>Talk to us directly</h2>
+      <p class="lede">Prefer a call? Our farm solutions team is available Monday
+      to Saturday, 9am to 7pm IST.</p>
+    </div>
+
+    <ul class="grid">
+
+      <li class="contact-card">
+        <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg></span>
+        <div>
+          <h3>Phone</h3>
+          <p><a href="tel:+910000000000">+91 00000 00000</a></p>
+          <p style="font-size:var(--step--1);">TODO: add your real number</p>
+        </div>
+      </li>
+
+      <li class="contact-card">
+        <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="2.5" y="4.5" width="19" height="15" rx="2.5"/><path d="m3 7 9 6 9-6"/></svg></span>
+        <div>
+          <h3>Email</h3>
+          <p><a href="mailto:hello@example.com">hello@example.com</a></p>
+          <p style="font-size:var(--step--1);">TODO: add your real address</p>
+        </div>
+      </li>
+
+      <li class="contact-card">
+        <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 22s7-6.1 7-12a7 7 0 1 0-14 0c0 5.9 7 12 7 12z"/><circle cx="12" cy="10" r="2.6"/></svg></span>
+        <div>
+          <h3>Office</h3>
+          <p>Street address, City, State, PIN</p>
+          <p style="font-size:var(--step--1);">TODO: add your office address</p>
+        </div>
+      </li>
+
+      <li class="contact-card">
+        <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="M2.5 12h19M12 2.5a15 15 0 0 1 0 19 15 15 0 0 1 0-19z"/></svg></span>
+        <div>
+          <h3>Service regions</h3>
+          <p>List the states or districts you cover</p>
+          <p style="font-size:var(--step--1);">TODO: add your service areas</p>
+        </div>
+      </li>
+
+    </ul>
+  </div>
+</section>
+
+</main>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="footer">
+  <div class="wrap">
+
+    <div class="footer__grid">
+
+      <div>
+        <a class="logo" href="#top" style="color:#fff;margin-bottom:1rem;">
+          <span class="logo__mark" style="background:rgba(255,255,255,.1);" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M3 10.5 12 4l9 6.5V20H3z"/><path d="M9 20v-5h6v5"/></svg>
+          </span>
+          <span class="logo__name" style="color:#fff;">Anthony Poultry<span class="logo__sub" style="color:var(--yellow-300);">Smart Service</span></span>
+        </a>
+        <p>Smart climate, feeding, water and monitoring systems for poultry farms across India.</p>
+      </div>
+
+      <div>
+        <h4>Services</h4>
+        <ul>
+          <li><a href="#services">Climate &amp; ventilation</a></li>
+          <li><a href="#services">Automated feeding</a></li>
+          <li><a href="#services">Water management</a></li>
+          <li><a href="#services">Farm monitoring</a></li>
+          <li><a href="#services">Complete upgrades</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#about">About us</a></li>
+          <li><a href="#process">How it works</a></li>
+          <li><a href="#benefits">Benefits</a></li>
+          <li><a href="#enquiry">Free assessment</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Legal</h4>
+        <ul>
+          <!-- TODO: point these at your real policy pages -->
+          <li><a href="#privacy" id="privacy">Privacy policy</a></li>
+          <li><a href="#terms">Terms of service</a></li>
+          <li><a href="#contact">Grievance contact</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Follow us</h4>
+        <!-- TODO: replace the # with your real profile links -->
+        <div class="socials">
+          <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M15 3h-2.5A4.5 4.5 0 0 0 8 7.5V10H5.5v4H8v7h4v-7h3l.5-4H12V7.5A.5.5 0 0 1 12.5 7H15z"/></svg></a>
+          <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".6" fill="currentColor"/></svg></a>
+          <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24"><rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="m10.5 9.5 5 2.5-5 2.5z"/></svg></a>
+          <a href="#" aria-label="WhatsApp"><svg viewBox="0 0 24 24"><path d="M3.5 20.5 5 16.4A8.4 8.4 0 1 1 8.2 19.6z"/><path d="M8.8 9.2c.3 2.6 2.6 4.9 5.2 5.2l1-1.4 2 .8-.3 1.6a6.6 6.6 0 0 1-8.9-8.9l1.6-.3.8 2z"/></svg></a>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer__bottom">
+      <p>&copy; <span id="year">2026</span> Anthony Poultry Smart Service. All rights reserved.</p>
+      <p>Made for poultry farmers in India.</p>
+    </div>
+
+  </div>
+</footer>
+
+<!-- ============================================================
+     STRUCTURED DATA (helps Google show the business correctly)
+     TODO: replace every placeholder value below.
+     ============================================================ -->
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"ProfessionalService",
+  "name":"Anthony Poultry Smart Service",
+  "description":"Smart technology upgrades for poultry farms: climate and ventilation control, automated feeding, water management and farm monitoring.",
+  "url":"https://example.com/",
+  "telephone":"+91-00000-00000",
+  "email":"hello@example.com",
+  "priceRange":"$$",
+  "address":{
+    "@type":"PostalAddress",
+    "streetAddress":"Street address",
+    "addressLocality":"City",
+    "addressRegion":"State",
+    "postalCode":"000000",
+    "addressCountry":"IN"
+  },
+  "areaServed":{"@type":"Country","name":"India"},
+  "openingHours":"Mo-Sa 09:00-19:00",
+  "hasOfferCatalog":{
+    "@type":"OfferCatalog",
+    "name":"Poultry farm smart services",
+    "itemListElement":[
+      {"@type":"Offer","itemOffered":{"@type":"Service","name":"Smart climate and ventilation systems"}},
+      {"@type":"Offer","itemOffered":{"@type":"Service","name":"Automated feeding systems"}},
+      {"@type":"Offer","itemOffered":{"@type":"Service","name":"Automated drinking-water management"}},
+      {"@type":"Offer","itemOffered":{"@type":"Service","name":"Poultry farm monitoring and alerts"}},
+      {"@type":"Offer","itemOffered":{"@type":"Service","name":"Complete smart-farm upgrade packages"}}
+    ]
+  }
+}
+</script>
+
+<script>
+/* ============================================================
+   CONFIGURATION  -  THIS IS THE ONLY BLOCK YOU MUST EDIT
+   ============================================================
+
+   HOW TO CONNECT THIS FORM TO ZOHO CRM
+   ------------------------------------
+   Pick ONE of the three options below.
+
+   OPTION A - Server-side API (recommended, most control)
+     Deploy the sample handler shipped next to this file
+     (zoho-lead-proxy.example.js) to Vercel, Netlify, Cloudflare
+     Workers or your own Node server. It holds the Zoho refresh
+     token as an environment variable, so the credentials never
+     reach the browser. Then set:
+         leadEndpoint: "https://your-api.example.com/api/lead"
+
+   OPTION B - Zoho CRM Web-to-Lead form
+     In Zoho CRM: Setup > Developer Space > Webforms > Leads.
+     Build the form, copy the generated <form> action URL and the
+     two hidden ids (xnQsjsdp and xmIwtLD), then set:
+         zohoWebToLead: {
+           action: "https://crm.zoho.in/crm/WebToLeadForm",
+           xnQsjsdp: "PASTE_VALUE",
+           xmIwtLD:  "PASTE_VALUE"
+         }
+     Field names in the markup above already use Zoho API names,
+     but Web-to-Lead expects display names - the mapping table
+     at the bottom of this file shows both.
+
+   OPTION C - Zoho Forms
+     Create a Zoho Form, connect it to the CRM Leads module in
+     its integration tab, and put its submit URL in leadEndpoint.
+
+   WHILE NOTHING IS CONFIGURED the form runs in demo mode: it
+   validates fully and shows the success message, but no data
+   leaves the page. That lets you test the design before the CRM
+   is ready. A warning is logged to the browser console.
+   ============================================================ */
+const CONFIG = {
+  /* TODO: your endpoint from Option A or C. Leave "" for demo mode. */
+  leadEndpoint: "",
+
+  /* TODO: fill these in only if you chose Option B. */
+  zohoWebToLead: {
+    action: "",
+    xnQsjsdp: "",
+    xmIwtLD: ""
+  },
+
+  /* Shown after a successful submission. */
+  successTitle: "Thank you. Your farm-assessment request has been received.",
+  successBody: "Our team will contact you shortly.",
+
+  /* A second submission with the same phone inside this many hours
+     is blocked in the browser. Real de-duplication must also be
+     switched on in Zoho (see the notes at the end of this file). */
+  duplicateWindowHours: 24
+};
+
+/* ============================================================
+   MOBILE NAVIGATION
+   ============================================================ */
+(function(){
+  const burger = document.getElementById("burger");
+  const nav = document.getElementById("nav");
+  const mobile = window.matchMedia("(max-width:860px)");
+
+  function setNav(open){
+    nav.hidden = !open;
+    burger.setAttribute("aria-expanded", String(open));
+    burger.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+  }
+
+  function sync(){ setNav(!mobile.matches); }
+  sync();
+  mobile.addEventListener("change", sync);
+
+  burger.addEventListener("click", () => setNav(nav.hidden));
+
+  /* tapping a link closes the menu again */
+  nav.addEventListener("click", e => {
+    if (e.target.closest("a") && mobile.matches) setNav(false);
+  });
+
+  /* Escape closes it, and focus goes back to the button */
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape" && mobile.matches && !nav.hidden){
+      setNav(false);
+      burger.focus();
+    }
+  });
+})();
+
+/* small housekeeping */
+document.getElementById("year").textContent = new Date().getFullYear();
+document.getElementById("pageUrl").value = location.href;
+
+/* ============================================================
+   SPAM CHECK
+   A random sum, regenerated on every page load.
+   ============================================================ */
+const captcha = { a:0, b:0 };
+(function newCaptcha(){
+  captcha.a = 2 + Math.floor(Math.random() * 7);
+  captcha.b = 1 + Math.floor(Math.random() * 6);
+  document.getElementById("captchaQuestion").textContent = captcha.a + " + " + captcha.b;
+})();
+
+/* bots submit instantly; people take longer than 4 seconds */
+const pageLoadedAt = Date.now();
+
+/* ============================================================
+   VALIDATION
+   Each rule returns an error message, or "" when the value is fine.
+   ============================================================ */
+const form = document.getElementById("leadForm");
+const statusBox = document.getElementById("formStatus");
+const submitBtn = document.getElementById("submitBtn");
+
+const RULES = {
+  firstName: v => !v.trim() ? "Please enter your first name."
+            : v.trim().length < 2 ? "That looks too short." : "",
+
+  lastName:  v => !v.trim() ? "Please enter your last name."
+            : v.trim().length < 2 ? "That looks too short." : "",
+
+  company:   v => !v.trim() ? "Please enter your farm or company name." : "",
+
+  phone: v => {
+    const digits = v.replace(/\D/g, "");
+    if (!digits) return "Please enter a phone number we can reach you on.";
+    if (digits.length === 10 && !/^[6-9]/.test(digits))
+      return "An Indian mobile number starts with 6, 7, 8 or 9.";
+    if (digits.length < 10 || digits.length > 13)
+      return "Please enter a valid phone number, including the country code if it is not Indian.";
+    return "";
+  },
+
+  /* optional, but must be a real address when it is filled in */
+  email: v => !v.trim() ? ""
+          : /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(v.trim()) ? ""
+          : "Please check this email address.",
+
+  city:  v => !v.trim() ? "Please enter your city or town." : "",
+  state: v => !v ? "Please select your state." : "",
+
+  captcha: v => {
+    const n = parseInt(v.trim(), 10);
+    if (isNaN(n)) return "Please answer the sum above.";
+    return n === captcha.a + captcha.b ? "" : "That answer is not correct - please try again.";
+  }
+};
+
+function showError(id, message){
+  const input = document.getElementById(id);
+  const slot = document.getElementById(id + "-error");
+  if (slot) slot.textContent = message;
+  if (input) input.setAttribute("aria-invalid", message ? "true" : "false");
+  return !message;
+}
+
+function validateField(id){
+  const input = document.getElementById(id);
+  return showError(id, RULES[id](input.value));
+}
+
+/* re-check a field once it has been visited, so the message
+   clears as soon as the person fixes it */
+Object.keys(RULES).forEach(id => {
+  const input = document.getElementById(id);
+  input.addEventListener("blur", () => validateField(id));
+  input.addEventListener("input", () => {
+    if (input.getAttribute("aria-invalid") === "true") validateField(id);
+  });
+});
+
+const consentBox = document.getElementById("consent");
+consentBox.addEventListener("change", () => {
+  showError("consent", consentBox.checked ? "" : "Please tick this box so we can contact you.");
+});
+
+function validateAll(){
+  let firstBad = null;
+
+  Object.keys(RULES).forEach(id => {
+    if (!validateField(id) && !firstBad) firstBad = document.getElementById(id);
+  });
+
+  if (!consentBox.checked){
+    showError("consent", "Please tick this box so we can contact you.");
+    if (!firstBad) firstBad = consentBox;
+  } else {
+    showError("consent", "");
+  }
+
+  if (firstBad){
+    firstBad.focus();
+    firstBad.scrollIntoView({ block:"center", behavior:"smooth" });
+  }
+  return !firstBad;
+}
+
+/* ============================================================
+   STATUS MESSAGES
+   ============================================================ */
+function setStatus(type, text){
+  if (!type){ statusBox.innerHTML = ""; return; }
+  const icon = type === "error"
+    ? '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M12 7.5v5M12 16.2v.3"/></svg>'
+    : '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v5.5M12 7.7v.3"/></svg>';
+  statusBox.innerHTML =
+    '<div class="alert alert--' + type + '">' + icon + '<span>' + text + '</span></div>';
+}
+
+function showSuccess(){
+  form.closest(".form-card").innerHTML =
+    '<div class="success">' +
+      '<span class="success__mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>' +
+      '<h3>' + CONFIG.successTitle + '</h3>' +
+      '<p>' + CONFIG.successBody + '</p>' +
+      '<p><a class="btn btn--green" href="#services">Explore smart solutions</a></p>' +
+    '</div>';
+  document.querySelector(".success").scrollIntoView({ block:"center", behavior:"smooth" });
+}
+
+/* ============================================================
+   DUPLICATE GUARD (browser side)
+   This stops the same person double-tapping submit or refilling
+   the form twice in a day. It cannot stop a determined duplicate
+   from another device - that check belongs in Zoho.
+   ============================================================ */
+function duplicateKey(){
+  return "apss_lead_" + document.getElementById("phone").value.replace(/\D/g, "");
+}
+
+function isDuplicate(){
+  try{
+    const last = localStorage.getItem(duplicateKey());
+    if (!last) return false;
+    const hours = (Date.now() - Number(last)) / 36e5;
+    return hours < CONFIG.duplicateWindowHours;
+  }catch(e){ return false; }
+}
+
+function rememberSubmission(){
+  try{ localStorage.setItem(duplicateKey(), String(Date.now())); }catch(e){}
+}
+
+/* ============================================================
+   SUBMIT
+   ============================================================ */
+form.addEventListener("submit", async function(event){
+  event.preventDefault();
+  setStatus(null);
+
+  /* 1. bot traps - fail silently so a bot learns nothing */
+  if (document.getElementById("website").value !== ""){ showSuccess(); return; }
+  if (Date.now() - pageLoadedAt < 4000){
+    setStatus("error", "That was very quick. Please take a moment and submit again.");
+    return;
+  }
+
+  /* 2. field validation */
+  if (!validateAll()){
+    setStatus("error", "Please correct the highlighted fields and try again.");
+    return;
+  }
+
+  /* 3. duplicate guard */
+  if (isDuplicate()){
+    setStatus("info", "We already have a recent request from this number. Our team will call you shortly - no need to send it again.");
+    return;
+  }
+
+  /* 4. collect the values */
+  document.getElementById("submittedAt").value = new Date().toISOString();
+  const data = Object.fromEntries(new FormData(form).entries());
+  delete data.website;            // never send the honeypot on
+
+  /* 5. send */
+  submitBtn.disabled = true;
+  const originalLabel = submitBtn.innerHTML;
+  submitBtn.textContent = "Sending your request...";
+
+  try{
+    if (CONFIG.leadEndpoint){
+      const response = await fetch(CONFIG.leadEndpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+      if (!response.ok) throw new Error("Server responded " + response.status);
+
+    } else if (CONFIG.zohoWebToLead.action){
+      /* Option B posts the form straight to Zoho, which needs a
+         normal form POST rather than fetch. */
+      postToZohoWebToLead(data);
+      return;
+
+    } else {
+      console.warn("[Anthony Poultry Smart Service] No CRM endpoint configured - running in demo mode. Set CONFIG.leadEndpoint to send leads to Zoho.");
+      await new Promise(r => setTimeout(r, 600));   // pretend to be a network
+    }
+
+    rememberSubmission();
+    showSuccess();
+
+  }catch(err){
+    console.error(err);
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = originalLabel;
+    setStatus("error",
+      "Sorry - we could not send your request just now. Please try again, " +
+      'or call us on <a href="tel:+910000000000" style="color:inherit;">+91 00000 00000</a>.');
+  }
+});
+
+/* Option B helper: builds a hidden Zoho Web-to-Lead form and posts it. */
+function postToZohoWebToLead(data){
+  const f = document.createElement("form");
+  f.method = "POST";
+  f.action = CONFIG.zohoWebToLead.action;
+  f.style.display = "none";
+
+  const fields = Object.assign({
+    xnQsjsdp: CONFIG.zohoWebToLead.xnQsjsdp,
+    xmIwtLD: CONFIG.zohoWebToLead.xmIwtLD,
+    actionType: "TGVhZHM=",               // base64 for "Leads"
+    returnURL: location.href.split("#")[0] + "?enquiry=thanks"
+  }, data);
+
+  Object.entries(fields).forEach(([name, value]) => {
+    const input = document.createElement("input");
+    input.type = "hidden";
+    input.name = name;
+    input.value = value;
+    f.appendChild(input);
+  });
+
+  document.body.appendChild(f);
+  rememberSubmission();
+  f.submit();
+}
+
+/* If Zoho sent the visitor back with ?enquiry=thanks, show the
+   success panel instead of an empty form. */
+if (new URLSearchParams(location.search).get("enquiry") === "thanks"){
+  showSuccess();
+}
+</script>
+
+<!-- ============================================================
+     ZOHO CRM FIELD MAPPING
+     Every input above already carries its Zoho API name in the
+     "name" attribute, so a server-side POST needs no translation.
+
+     FORM FIELD                 ZOHO LEADS FIELD          TYPE
+     -------------------------  ------------------------  --------------
+     First name                 First_Name                standard
+     Last name                  Last_Name                 standard (required)
+     Farm or company name       Company                   standard (required)
+     Email                      Email                     standard
+     Phone number               Phone                     standard
+     City                       City                      standard
+     State                      State                     standard
+     Bird type                  Bird_Type                 CUSTOM picklist
+     Current farm type          Current_Farm_Type         CUSTOM picklist
+     Farm capacity              Farm_Capacity             CUSTOM number
+     Number of sheds            Number_of_Sheds           CUSTOM number
+     Upgrade interest           Upgrade_Interest          CUSTOM picklist
+     Expected timeline          Expected_Timeline         CUSTOM picklist
+     Assessment required        Farm_Assessment_Required  CUSTOM picklist (Yes/No)
+     Message                    Description               standard
+     Consent checkbox           Consent_to_Contact        CUSTOM checkbox
+     (fixed)                    Lead_Source = "Website"   standard
+     (fixed)                    Lead_Status = "Not Contacted"  standard
+     Page URL                   Page_URL                  CUSTOM single line
+     Submitted at               Submitted_At              CUSTOM date/time
+
+     BEFORE GOING LIVE - checklist
+     1. Create the CUSTOM fields above in Zoho CRM
+        (Setup > Customization > Modules > Leads > Layout).
+     2. Set CONFIG.leadEndpoint (or the Web-to-Lead values).
+     3. Turn on duplicate checking in Zoho: make Phone or Email a
+        unique field on the Leads layout, and pass
+        duplicate_check_fields when using the API.
+     4. Create an assignment rule that routes Lead Source =
+        "Website" to your Farm Solutions Executive
+        (Setup > Automation > Assignment Rules).
+     5. Replace the arithmetic spam check with Cloudflare Turnstile
+        or reCAPTCHA and verify the token in your server handler.
+     6. Search this file for "TODO" and replace every placeholder:
+        phone, email, address, service regions, social links,
+        policy pages, canonical URL and the structured data block.
+     ============================================================ -->
+
+</body>
+</html>
