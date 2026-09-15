@@ -715,6 +715,150 @@ input:focus,select:focus,textarea:focus{
 .success p{max-width:46ch;}
 
 /* ============================================================
+   7b. ZOHO WEBFORM
+   Zoho generates its own markup, its own class names and a lot of
+   inline styles. Nothing here renames or removes any of that - it
+   only restyles what Zoho outputs, so the embedded form inherits
+   this site's look and stacks properly on a phone.
+
+   These rules do nothing until Zoho's code is pasted into
+   #zohoFormSlot. Inline styles can only be beaten by !important,
+   which is why it appears below.
+   ============================================================ */
+
+/* Zoho hard-codes max-width:600px and a white background */
+#zohoFormSlot #crmWebToEntityForm,
+#zohoFormSlot .crmWebToEntityForm{
+  max-width:none!important;
+  width:100%!important;
+  margin:0!important;
+  padding:0!important;
+  background:transparent!important;
+  color:var(--body)!important;
+  font-family:inherit!important;
+}
+
+/* Zoho prints its own form title. This page already has an <h2>
+   right above it, so the duplicate is hidden.
+   DELETE this rule if you would rather show Zoho's title. */
+#zohoFormSlot .zcwf_title{display:none!important;}
+
+/* one field per row, label above input - this is what makes the
+   form usable on a narrow screen, where Zoho's default puts the
+   label in a floated column beside the input */
+#zohoFormSlot .zcwf_row{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:stretch!important;
+  gap:.4rem!important;
+  width:100%!important;
+  margin:0 0 1.1rem!important;
+  float:none!important;
+}
+
+#zohoFormSlot .zcwf_col_lab,
+#zohoFormSlot .zcwf_col_fld{
+  width:100%!important;
+  margin:0!important;
+  padding:0!important;
+  float:none!important;
+}
+
+#zohoFormSlot .zcwf_col_lab label{
+  font-family:inherit!important;
+  font-size:var(--step--1)!important;
+  font-weight:600!important;
+  color:var(--ink)!important;
+}
+
+/* Zoho marks required fields with a red asterisk in a <span> */
+#zohoFormSlot .zcwf_col_lab span{color:var(--danger)!important;}
+
+#zohoFormSlot .zcwf_col_fld input[type="text"],
+#zohoFormSlot .zcwf_col_fld input[type="email"],
+#zohoFormSlot .zcwf_col_fld input[type="tel"],
+#zohoFormSlot .zcwf_col_fld input[type="number"],
+#zohoFormSlot .zcwf_col_fld input[type="date"],
+#zohoFormSlot .zcwf_col_fld select,
+#zohoFormSlot .zcwf_col_fld textarea{
+  width:100%!important;
+  max-width:none!important;
+  float:none!important;
+  padding:.8rem .9rem!important;
+  font:inherit!important;
+  font-size:var(--step-0)!important;
+  color:var(--ink)!important;
+  background:var(--bg)!important;
+  border:1.5px solid var(--line)!important;
+  border-radius:var(--radius-sm)!important;
+  box-shadow:none!important;
+  resize:vertical;
+}
+
+#zohoFormSlot .zcwf_col_fld input:focus,
+#zohoFormSlot .zcwf_col_fld select:focus,
+#zohoFormSlot .zcwf_col_fld textarea:focus{
+  outline:none!important;
+  border-color:var(--green)!important;
+  box-shadow:0 0 0 4px var(--green-050)!important;
+}
+
+/* checkbox and radio rows keep their controls beside the text */
+#zohoFormSlot .zcwf_col_fld input[type="checkbox"],
+#zohoFormSlot .zcwf_col_fld input[type="radio"]{
+  width:auto!important;
+  margin-right:.5rem!important;
+  accent-color:var(--green);
+}
+
+/* the little help bubble Zoho puts next to some fields */
+#zohoFormSlot .zcwf_col_help{
+  float:none!important;
+  margin-top:.3rem!important;
+  font-size:var(--step--1)!important;
+  color:var(--muted)!important;
+}
+
+/* Zoho's own error text */
+#zohoFormSlot .zcwf_col_fld_slt,
+#zohoFormSlot .wfrm_fld_dpNn{width:100%!important;}
+
+/* the submit button, restyled to match the site's primary button */
+#zohoFormSlot .zcwf_button,
+#zohoFormSlot #formsubmit{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:auto!important;
+  padding:.95rem 1.6rem!important;
+  font:inherit!important;
+  font-weight:700!important;
+  color:#33270a!important;
+  background:var(--yellow)!important;
+  border:2px solid transparent!important;
+  border-radius:999px!important;
+  cursor:pointer!important;
+  transition:background var(--speed) ease,transform var(--speed) ease;
+}
+
+#zohoFormSlot .zcwf_button:hover,
+#zohoFormSlot #formsubmit:hover{
+  background:var(--yellow-300)!important;
+  transform:translateY(-2px);
+}
+
+/* Zoho adds a Reset button next to Submit. It wipes a half-filled
+   form on a mis-tap, so it is hidden.
+   DELETE this rule if you want the Reset button back. */
+#zohoFormSlot input[type="reset"]{display:none!important;}
+
+@media(max-width:600px){
+  /* full-width tap target for the submit button on phones */
+  #zohoFormSlot .zcwf_button,
+  #zohoFormSlot #formsubmit{width:100%!important;}
+}
+
+/* ============================================================
    8. CONTACT + FOOTER
    ============================================================ */
 .contact-card{
@@ -1165,20 +1309,45 @@ input:focus,select:focus,textarea:focus{
 </section>
 
 <!-- ============================================================
-     7. LEAD ENQUIRY FORM
+     7. REQUEST A FREE FARM ASSESSMENT
      ============================================================ -->
 <section class="section" id="enquiry">
   <div class="wrap" style="max-width:920px;">
 
     <div class="section-head" style="text-align:center;margin-inline:auto;">
-      <p class="eyebrow" style="justify-content:center;">Free farm assessment</p>
-      <h2>Tell us about your farm</h2>
-      <p class="lede">Fill this in and our team will call you to arrange a visit.
-      There is no charge and no obligation. Fields marked
+      <p class="eyebrow" style="justify-content:center;">No cost, no obligation</p>
+      <h2>Request a Free Farm Assessment</h2>
+      <p class="lede">Send us your farm details and our team will call you to
+      arrange a visit. Fields marked
       <span class="req" aria-hidden="true">*</span> are required.</p>
     </div>
 
-    <div class="form-card">
+    <div class="form-card" id="zohoFormSlot">
+
+      <!-- ############################################################
+           ▼▼▼  PASTE THE ZOHO CRM WEBFORM CODE HERE  ▼▼▼
+
+           1. In Zoho CRM: Setup > Developer Space > Webforms > Leads,
+              build the form and choose "Embed" / "Source code".
+           2. Copy EVERYTHING Zoho gives you - the outer div
+              (id="crmWebToEntityForm"), the form element, every
+              hidden input (xnQsjsdp, xmIwtLD, actionType, returnURL),
+              and the script block holding its validation function.
+           3. Delete this whole block, from the ▼▼▼ line above down to
+              the ▲▲▲ line below - including the custom form between
+              them - and paste Zoho's code in its place.
+
+           DO NOT rename Zoho's fields, touch its hidden inputs, change
+           the form action, or edit its validation script. The
+           stylesheet already has a "ZOHO WEBFORM" block that makes
+           Zoho's default markup match this site and work on phones,
+           so the pasted form will look right with no edits.
+
+           Everything below until the ▲▲▲ marker is the temporary
+           custom form. It works today (see CONFIG at the bottom of
+           this file) and is only here so the page is never without a
+           working enquiry form while you generate the Zoho code.
+           ############################################################ -->
 
       <!-- status messages are announced to screen readers as they appear -->
       <div class="status" id="formStatus" role="status" aria-live="polite"></div>
@@ -1376,6 +1545,11 @@ input:focus,select:focus,textarea:focus{
         </div>
 
       </form>
+
+      <!-- ############################################################
+           ▲▲▲  END OF THE TEMPORARY FORM - PASTE ZOHO'S CODE ABOVE ▲▲▲
+           ############################################################ -->
+
     </div>
   </div>
 </section>
@@ -1566,7 +1740,7 @@ input:focus,select:focus,textarea:focus{
 
    OPTION B - Zoho CRM Web-to-Lead form
      In Zoho CRM: Setup > Developer Space > Webforms > Leads.
-     Build the form, copy the generated <form> action URL and the
+     Build the form, copy the generated form action URL and the
      two hidden ids (xnQsjsdp and xmIwtLD), then set:
          zohoWebToLead: {
            action: "https://crm.zoho.in/crm/WebToLeadForm",
