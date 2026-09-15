@@ -738,10 +738,35 @@ input:focus,select:focus,textarea:focus{
   font-family:inherit!important;
 }
 
-/* Zoho prints its own form title. This page already has an <h2>
-   right above it, so the duplicate is hidden.
-   DELETE this rule if you would rather show Zoho's title. */
+/* Zoho's own form title now reads "Request a Free Farm Assessment"
+   - but the section heading immediately above it says exactly the
+   same thing, so showing both would print the heading twice.
+   It is therefore hidden here rather than edited out of Zoho's
+   markup. DELETE THIS ONE RULE to make Zoho's title visible. */
 #zohoFormSlot .zcwf_title{display:none!important;}
+
+/* "Primary Upgrade Interest" is a multi-select. It needs the
+   native list box back - the arrow the other selects get would be
+   wrong on it - and enough height to show the options. */
+#zohoFormSlot .zcwf_col_fld select[multiple]{
+  appearance:auto!important;
+  background-image:none!important;
+  padding:.5rem!important;
+  min-height:150px!important;
+}
+
+/* Zoho renders an empty help div beside every field; with the
+   label now stacked above the input it would add a blank line. */
+#zohoFormSlot .zcwf_col_help:empty{display:none!important;}
+
+/* Zoho's rows carry a clearfix for its float layout. The layout
+   here is flex, so the clearfix would add a stray empty line. */
+#zohoFormSlot .zcwf_row::after,
+#zohoFormSlot .zcwf_col_fld::after{content:none!important;}
+
+/* the success message Zoho pops up after a submission - lift it
+   clear of the sticky site header */
+#wf_splash{top:90px!important;}
 
 /* one field per row, label above input - this is what makes the
    form usable on a narrow screen, where Zoho's default puts the
@@ -1325,230 +1350,630 @@ input:focus,select:focus,textarea:focus{
     <div class="form-card" id="zohoFormSlot">
 
       <!-- ############################################################
-           ▼▼▼  PASTE THE ZOHO CRM WEBFORM CODE HERE  ▼▼▼
+           ZOHO CRM WEBFORM  -  PASTED VERBATIM, DO NOT EDIT BELOW
+           Generated in Zoho CRM (Setup > Developer Space > Webforms).
+           Every hidden input (xnQsjsdp, xmIwtLD, actionType,
+           returnURL, zc_gad, the aG9uZXlwb3Q honeypot), the form id
+           and name, the dependency script, the analytics script and
+           the whole submit handler are exactly as Zoho generated
+           them. The only edit is the form title text, changed from
+           "test" to "Request a Free Farm Assessment".
 
-           1. In Zoho CRM: Setup > Developer Space > Webforms > Leads,
-              build the form and choose "Embed" / "Source code".
-           2. Copy EVERYTHING Zoho gives you - the outer div
-              (id="crmWebToEntityForm"), the form element, every
-              hidden input (xnQsjsdp, xmIwtLD, actionType, returnURL),
-              and the script block holding its validation function.
-           3. Delete this whole block, from the ▼▼▼ line above down to
-              the ▲▲▲ line below - including the custom form between
-              them - and paste Zoho's code in its place.
-
-           DO NOT rename Zoho's fields, touch its hidden inputs, change
-           the form action, or edit its validation script. The
-           stylesheet already has a "ZOHO WEBFORM" block that makes
-           Zoho's default markup match this site and work on phones,
-           so the pasted form will look right with no edits.
-
-           Everything below until the ▲▲▲ marker is the temporary
-           custom form. It works today (see CONFIG at the bottom of
-           this file) and is only here so the page is never without a
-           working enquiry form while you generate the Zoho code.
+           Everything visual is handled from the stylesheet instead,
+           in the block marked "7b. ZOHO WEBFORM" near the top of
+           this file - so Zoho's field names and code stay untouched.
            ############################################################ -->
+<!-- Note :
+   - You can modify the font style and form style to suit your website. 
+   - Code lines with comments Do not remove this code are required for the form to work properly, make sure that you do not remove these lines of code. 
+   - The Mandatory check script can modified as to suit your business needs. 
+   - It is important that you test the modified form before going live.-->
+<div id = 'crmWebToEntityForm' class = 'zcwf_lblLeft crmWebToEntityForm' style = 'background-color: white;color: black;max-width: 600px;'>
+	<meta name = 'viewport' content = 'width=device-width, initial-scale=1.0'>
+		<META HTTP-EQUIV = 'content-type' CONTENT = 'text/html;charset=UTF-8'>
+			<style>
+				.wf_customMessageBox{
+					font-family: Arial, Helvetica, sans-serif;
+					color:  #132C14;
+					background:   #F5FAF5;
+					box-shadow: 0 2px 6px 0 rgba(0,0,0,0.25);
+					max-width: 90%;
+					width: max-content;
+					word-break: break-word;
+					z-index: 11000;
+					border-radius: 6px;
+					border: 1px solid  #A9D3AB;
+					min-width: 100px;
+					padding: 10px 15px;
+					display: flex;
+					align-items: center;
+					position: fixed;
+					top: 20px;
+					left: 50%;
+					transform: translate(-50%, 0);
+				}
+				.wf_customCircle{
+					position: relative;
+					background-color:  #12AA67;
+					border-radius: 100%;
+					width: 20px;
+					height: 20px;
+					flex: none;
+					margin-right: 7px;
+				}
+				.wf_customCheckMark{
+					box-sizing: unset !important;
+					position: absolute;
+					transform: rotate(45deg)translate(-50%, -50%);
+					left: 6px;
+					top: 9px;
+					height: 8px;
+					width: 3px;
+					border-bottom: 2px solid  #fff;
+					border-right: 2px solid  #fff;
+				}
+				.wf_customClose{
+					box-sizing: border-box;
+					position: relative;
+					width: 18px;
+					height: 18px;
+				}
+				.wf_customClose::after,
+.wf_customClose::before{
+					content: '';
+					display: block;
+					box-sizing: border-box;
+					position: absolute;
+					width: 12px;
+					height: 1.5px;
+					background:  #616E88;
+					transform: rotate(45deg);
+					border-radius: 5px;
+					top: 8px;
+					left: 1px }
+				.wf_customClose::after{
+					transform: rotate(-45deg)}
+			</style>
+			<div class = 'wf_customMessageBox' id = 'wf_splash' style = 'display:none'>
+				<div class = 'wf_customCircle'>
+					<div class = 'wf_customCheckMark'>
+					</div>
+				</div>
+				<span id = 'wf_splash_info'>
+				</span>
+			</p>
+		</div>
+		<form id = 'webform1425305000000571077' name = WebToLeads1425305000000571077 accept-charset = 'UTF-8'>
+			<input type = 'text' style = 'display:none;' name = 'xnQsjsdp' value = '6db088d593706d43e4d2fac68ff5f5330159172f8128e68ac68e43ed74e670c4'>
+			</input>
+			<input type = 'hidden' name = 'zc_gad' id = 'zc_gad' value = ''>
+			</input>
+			<input type = 'text' style = 'display:none;' name = 'xmIwtLD' value = '66941dbfdb2fd90b3f429cc3e54379ff043788ac3137999b8ad2ce0029e63d79317a4c837f59044d467dab3ee6de6754'>
+			</input>
+			<input type = 'text' style = 'display:none;' name = 'actionType' value = 'TGVhZHM='>
+			</input>
+			<input type = 'text' style = 'display:none;' name = 'returnURL' value = 'null'>
+			</input>
+			<!-- Do not remove this code. -->
+			<style>
+				html,body{
+					margin: 0px;
+				}
+				.formsubmit.zcwf_button{
+					color: white !important;
+					background: transparent linear-gradient(0deg, #0279FF 0%, #00A3F3 100%);
+				}
+				#crmWebToEntityForm.zcwf_lblLeft{
+					width: 100%;
+					padding: 25px;
+					margin: 0 auto;
+					box-sizing: border-box;
+				}
+				#crmWebToEntityForm.zcwf_lblLeft *{
+					box-sizing: border-box;
+				}
+				#crmWebToEntityForm{
+					text-align: left;
+				}
+				#crmWebToEntityForm *{
+					direction: ltr;
+				}
+				.zcwf_lblLeft .zcwf_title{
+					word-wrap: break-word;
+					padding: 0px 6px 10px;
+					font-weight: bold }
+				.zcwf_lblLeft.cpT_primaryBtn:hover{
+					background: linear-gradient(#02acff 0,#006be4 100%)no-repeat padding-box !important;
+					box-shadow: 0 -2px 0 0  #0159b9 inset !important;
+					border: 0 !important;
+					color:  #fff !important;
+					outline: 0 !important;
+				}
+				.zcwf_lblLeft .zcwf_col_fld input[ type  = text], input[ type  = password], .zcwf_lblLeft .zcwf_col_fld textarea{
+					width: 60%;
+					border: 1px solid  #c0c6cc !important;
+					resize: vertical;
+					border-radius: 2px;
+					float: left;
+				}
+				.zcwf_lblLeft .zcwf_col_lab{
+					width: 30%;
+					word-break: break-word;
+					padding: 0px 6px 0px;
+					margin-right: 10px;
+					margin-top: 5px;
+					float: left;
+					min-height: 1px;
+				}
+				.zcwf_lblLeft .zcwf_col_fld{
+					float: left;
+					width: 68%;
+					padding: 0px 6px 0px;
+					position: relative;
+					margin-top: 5px;
+				}
+				.zcwf_lblLeft .zcwf_privacy{
+					padding: 6px;
+				}
+				.zcwf_lblLeft .wfrm_fld_dpNn{
+					display: none;
+				}
+				.dIB{
+					display: inline-block;
+				}
+				.zcwf_lblLeft .zcwf_col_fld_slt{
+					width: 60%;
+					border: 1px solid  #ccc;
+					background:  #fff;
+					border-radius: 4px;
+					font-size: 12px;
+					float: left;
+					resize: vertical;
+					padding: 2px 5px;
+				}
+				.zcwf_lblLeft .zcwf_row:after, .zcwf_lblLeft .zcwf_col_fld:after{
+					content: '';
+					display: table;
+					clear: both;
+				}
+				.zcwf_lblLeft .zcwf_col_help{
+					float: left;
+					margin-left: 7px;
+					font-size: 12px;
+					max-width: 35%;
+					word-break: break-word;
+				}
+				.zcwf_lblLeft .zcwf_help_icon{
+					cursor: pointer;
+					width: 16px;
+					height: 16px;
+					display: inline-block;
+					background:  #fff;
+					border: 1px solid  #c0c6cc;
+					color:  #c1c1c1;
+					text-align: center;
+					font-size: 11px;
+					line-height: 16px;
+					font-weight: bold;
+					border-radius: 50%;
+				}
+				.zcwf_lblLeft .zcwf_row{
+					margin: 15px 0px;
+				}
+				.zcwf_lblLeft .formsubmit{
+					margin-right: 5px;
+					cursor: pointer;
+					color:  #313949;
+					font-size: 12px;
+				}
+				.zcwf_lblLeft .zcwf_privacy_txt{
+					width: 90%;
+					color: rgb(0, 0, 0);
+					font-size: 12px;
+					font-family: Arial;
+					display: inline-block;
+					vertical-align: top;
+					color:  #313949;
+					padding-top: 2px;
+					margin-left: 6px;
+				}
+				.zcwf_lblLeft .zcwf_button{
+					font-size: 12px;
+					color:  #313949;
+					border: 1px solid  #c0c6cc;
+					padding: 3px 9px;
+					border-radius: 4px;
+					cursor: pointer;
+					max-width: 120px;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					white-space: nowrap;
+				}
+				.zcwf_lblLeft .zcwf_tooltip_over{
+					position: relative;
+				}
+				.zcwf_lblLeft .zcwf_tooltip_ctn{
+					position: absolute;
+					background:  #dedede;
+					padding: 3px 6px;
+					top: 3px;
+					border-radius: 4px;
+					word-break: break-word;
+					min-width: 100px;
+					max-width: 150px;
+					color:  #313949;
+					z-index: 100;
+				}
+				.zcwf_lblLeft .zcwf_ckbox{
+					float: left;
+				}
+				.zcwf_lblLeft .zcwf_file{
+					width: 55%;
+					box-sizing: border-box;
+					float: left;
+				}
+				.cBoth:after{
+					content: '';
+					display: block;
+					clear: both;
+				}
+				@media all and  (max-width: 600px){
+					.zcwf_lblLeft .zcwf_col_lab, .zcwf_lblLeft .zcwf_col_fld{
+						width: auto;
+						float: none !important;
+					}
+					.zcwf_lblLeft .zcwf_col_help{
+						width: 40%;
+					}
+				}
+			</style>
+			<div class = 'zcwf_title' style = 'max-width: 600px;color: black; font-family:Arial;'>Request a Free Farm Assessment</div>
+			<div class = 'zcwf_row'>
+				<div class = 'zcwf_col_lab' style = 'font-size:12px; font-family: Arial;'>
+					<label for = 'Company'>Company
+						<span style = 'color:red;'>*</span>
+					</label>
+				</div>
+				<div class = 'zcwf_col_fld'>
+					<input type = 'text' id = 'Company' aria-required = 'true' aria-label = 'Company' name = 'Company' aria-valuemax = '200' maxlength = '200'>
+					</input>
+					<div class = 'zcwf_col_help'>
+					</div>
+				</div>
+			</div>
+			<div class = 'zcwf_row'>
+				<div class = 'zcwf_col_lab' style = 'font-size:12px; font-family: Arial;'>
+					<label for = 'Last_Name'>Last Name
+						<span style = 'color:red;'>*</span>
+					</label>
+				</div>
+				<div class = 'zcwf_col_fld'>
+					<input type = 'text' id = 'Last_Name' aria-required = 'true' aria-label = 'Last Name' name = 'Last Name' aria-valuemax = '80' maxlength = '80'>
+					</input>
+					<div class = 'zcwf_col_help'>
+					</div>
+				</div>
+			</div>
+			<div class = 'zcwf_row'>
+				<div class = 'zcwf_col_lab' style = 'font-size:12px; font-family: Arial;'>
+					<label for = 'Mobile'>Mobile</label>
+				</div>
+				<div class = 'zcwf_col_fld'>
+					<input type = 'text' id = 'Mobile' aria-required = 'false' aria-label = 'Mobile' name = 'Mobile' aria-valuemax = '30' maxlength = '30'>
+					</input>
+					<div class = 'zcwf_col_help'>
+					</div>
+				</div>
+			</div>
+			<div class = 'zcwf_row'>
+				<div class = 'zcwf_col_lab' style = 'font-size:12px; font-family: Arial;'>
+					<label for = 'LEADCF1'>Bird Type</label>
+				</div>
+				<div class = 'zcwf_col_fld'>
+					<select class = 'zcwf_col_fld_slt' role = 'combobox' aria-expanded = 'false' aria-haspopup = 'listbox' id = 'LEADCF1' onChange = 'addAriaSelected1425305000000571077()' aria-required = 'false' aria-label = 'LEADCF1' name = 'LEADCF1'>
+						<option value = '-None-'>-None-</option>
+						<option value = 'Broiler'>Broiler</option>
+						<option value = 'Layer'>Layer</option>
+						<option value = 'Breeder'>Breeder</option>
+						<option value = 'Mixed'>Mixed</option>
+					</select>
+					<div class = 'zcwf_col_help'>
+					</div>
+				</div>
+			</div>
+			<div class = 'zcwf_row'>
+				<div class = 'zcwf_col_lab' style = 'font-size:12px; font-family: Arial;'>
+					<label for = 'LEADCF2'>Current Farm Type</label>
+				</div>
+				<div class = 'zcwf_col_fld'>
+					<select class = 'zcwf_col_fld_slt' role = 'combobox' aria-expanded = 'false' aria-haspopup = 'listbox' id = 'LEADCF2' onChange = 'addAriaSelected1425305000000571077()' aria-required = 'false' aria-label = 'LEADCF2' name = 'LEADCF2'>
+						<option value = '-None-'>-None-</option>
+						<option value = 'Traditional'>Traditional</option>
+						<option value = 'Semi-Automated'>Semi-Automated</option>
+						<option value = 'Fully Automated'>Fully Automated</option>
+					</select>
+					<div class = 'zcwf_col_help'>
+					</div>
+				</div>
+			</div>
+			<div class = 'zcwf_row'>
+				<div class = 'zcwf_col_lab' style = 'font-size:12px; font-family: Arial;'>
+					<label for = 'LEADCF52'>Farm Capacity</label>
+				</div>
+				<div class = 'zcwf_col_fld'>
+					<input type = 'text' id = 'LEADCF52' aria-required = 'false' aria-label = 'LEADCF52' name = 'LEADCF52' aria-valuemax = '9' maxlength = '9'>
+					</input>
+					<div class = 'zcwf_col_help'>
+					</div>
+				</div>
+			</div>
+			<div class = 'zcwf_row'>
+				<div class = 'zcwf_col_lab' style = 'font-size:12px; font-family: Arial;'>
+					<label for = 'LEADCF3'>Primary Upgrade Interest</label>
+				</div>
+				<div class = 'zcwf_col_fld'>
+					<select class = 'zcwf_col_fld_slt' role = 'combobox' aria-expanded = 'false' aria-haspopup = 'listbox' id = 'LEADCF3' onChange = 'addAriaSelected1425305000000571077()' aria-required = 'false' aria-label = 'LEADCF3' name = 'LEADCF3' multiple >
+						<option value = 'Climate Control'>Climate Control</option>
+						<option value = 'Automated Feeding'>Automated Feeding</option>
+						<option value = 'Water Management'>Water Management</option>
+						<option value = 'Monitoring'>Monitoring</option>
+						<option value = 'Complete Upgrade'>Complete Upgrade</option>
+					</select>
+					<div class = 'zcwf_col_help'>
+					</div>
+				</div>
+			</div>
+			<div class = 'zcwf_row'>
+				<div class = 'zcwf_col_lab' style = 'font-size:12px; font-family: Arial;'>
+					<label for = 'LEADCF54'>Farm Assessment Required</label>
+				</div>
+				<div class = 'zcwf_col_fld'>
+					<input type = 'checkbox' aria-checked = 'false' class = 'zcwf_ckbox' id = 'LEADCF54' aria-required = 'false' aria-label = 'LEADCF54' name = 'LEADCF54' aria-valuemax = '3' maxlength = '3' onclick = 'addAriaChecked1425305000000571077()'>
+					</input>
+					<div class = 'zcwf_col_help'>
+					</div>
+				</div>
+			</div>
+			<div class = 'zcwf_row'>
+				<div class = 'zcwf_col_lab' style = 'font-size:12px; font-family: Arial;'>
+					<label for = 'LEADCF4'>Expected Upgrade Timeline</label>
+				</div>
+				<div class = 'zcwf_col_fld'>
+					<select class = 'zcwf_col_fld_slt' role = 'combobox' aria-expanded = 'false' aria-haspopup = 'listbox' id = 'LEADCF4' onChange = 'addAriaSelected1425305000000571077()' aria-required = 'false' aria-label = 'LEADCF4' name = 'LEADCF4'>
+						<option value = '-None-'>-None-</option>
+						<option value = 'Immediate'>Immediate</option>
+						<option value = '1-3 Months'>1-3 Months</option>
+						<option value = '3-6 Months'>3-6 Months</option>
+						<option value = 'More Than 6 Months'>More Than 6 Months</option>
+					</select>
+					<div class = 'zcwf_col_help'>
+					</div>
+				</div>
+			</div>
+			<div class = 'zcwf_row'>
+				<div class = 'zcwf_col_lab' style = 'font-size:12px; font-family: Arial;'>
+					<label for = 'Address_-_Flat_/_House_No./_Building_/_Apartment_Name'>Address - Flat / House No./ Building / Apartment Name</label>
+				</div>
+				<div class = 'zcwf_col_fld'>
+					<input type = 'text' id = 'Address_-_Flat_/_House_No./_Building_/_Apartment_Name' aria-required = 'false' aria-label = 'Address - Flat / House No./ Building / Apartment Name' name = 'Address - Flat / House No./ Building / Apartment Name' aria-valuemax = '255' maxlength = '255'>
+					</input>
+					<div class = 'zcwf_col_help'>
+					</div>
+				</div>
+			</div>
+			<div class = 'zcwf_row'>
+				<div class = 'zcwf_col_lab' style = 'font-size:12px; font-family: Arial;'>
+					<label for = 'Address_-_Country_/_Region'>Address - Country / Region</label>
+				</div>
+				<div class = 'zcwf_col_fld'>
+					<select class = 'zcwf_col_fld_slt' role = 'combobox' aria-expanded = 'false' aria-haspopup = 'listbox' id = 'Address_-_Country_/_Region' onChange = 'addAriaSelected1425305000000571077()' aria-required = 'false' aria-label = 'Address - Country / Region' name = 'Address - Country / Region'>
+						<option selected value = '-None-'>-None-</option>
+					</select>
+					<div class = 'zcwf_col_help'>
+					</div>
+				</div>
+			</div>
+			<input type = 'text' type = 'hidden' style = 'display: none;' name = 'aG9uZXlwb3Q' value = ''/>
+			<div class = 'zcwf_row'>
+				<div class = 'zcwf_col_lab'>
+				</div>
+				<div class = 'zcwf_col_fld'>
+					<input type = 'submit' id = 'formsubmit' role = 'button' class = 'formsubmit zcwf_button' value = 'Submit' aria-label = 'Submit' title = 'Submit'>
+						<input type = 'reset' class = 'zcwf_button' role = 'button' name = 'reset' value = 'Reset' aria-label = 'Reset' title = 'Reset'>
+						</div>
+					</div>
+					<script>
+						function addAriaChecked1425305000000571077(){
+							var checkboxElem = event.target;
+							if (checkboxElem != undefined && checkboxElem.checked) {
+								checkboxElem.ariaChecked = 'true';
+							} else if (checkboxElem != undefined && !checkboxElem.checked) {
+								checkboxElem.ariaChecked = 'false';
+							}
+						}
+						function addAriaSelected1425305000000571077(){
+							var optionElem = event.target;
+							var previousSelectedOption = optionElem.querySelector('[aria-selected=true]');
+							if (previousSelectedOption) {
+								previousSelectedOption.removeAttribute('aria-selected');
+							}
+							optionElem.querySelectorAll('option') [optionElem.selectedIndex] .ariaSelected = 'true';
+						}
+						function checkMandatory1425305000000571077(isAjax){
+							var mndFileds = new Array('Company', 'Last Name');
+							var fldLangVal = new Array('Company', 'Last Name');
+							for (i = 0; i < mndFileds.length; i++ ) {
+								var fieldObj = document.forms['WebToLeads1425305000000571077'] [mndFileds[i]];
+								if (fieldObj) {
+									if(((fieldObj.value) .replace (/^\s+|\s+$/g,'') ) .length == 0) {
+										if (fieldObj.type == 'file') {
+											alert('Please select a file to upload.');
+											fieldObj.focus();
+											return false;
+										}
+										alert(fldLangVal[i] + ' cannot be empty.');
+										fieldObj.focus();
+										return false;
+									} else if (fieldObj.nodeName == 'SELECT') {
+										if (fieldObj.options[fieldObj.selectedIndex].value == '-None-') {
+											alert(fldLangVal[i] + ' cannot be none.');
+											fieldObj.focus();
+											return false;
+										}
+									} else if (fieldObj.type == 'checkbox') {
+										if (fieldObj.checked == false) {
+											alert('Please accept  ' + fldLangVal[i]);
+											fieldObj.focus();
+											return false;
+										}
+									}
+									try{
+										if (fieldObj.name == 'Last Name') {
+											name = fieldObj.value;
+										}
+									} catch (e){}
+								}
+							}
+							var urlparams = new URLSearchParams(window.location.search);
+							if (urlparams.has ('service') && (urlparams.get ('service') === 'smarturl') ) {
+								var webform = document.getElementById('webform1425305000000571077');
+								var service = urlparams.get('service');
+								var smarturlfield = document.createElement('input');
+								smarturlfield.setAttribute('type', 'hidden');
+								smarturlfield.setAttribute('value', service);
+								smarturlfield.setAttribute('name', 'service');
+								webform.appendChild(smarturlfield);
+							}
+							document.querySelector('.crmWebToEntityForm .formsubmit').setAttribute('disabled', true);
+						}
+						function captchaFailedHandling1425305000000571077(message){
+							var capErr = document.getElementById('captchaErr1425305000000571077');
+							capErr.innerHTML = message;
+							capErr.style.visibility = 'visible';
+							var capFld = document.getElementById('captchaField1425305000000571077');
+							capFld.focus();
+							setTimeout(function(){
+								capErr.style.visibility = 'hidden';
+							},
+							5000);
+						}
+						document.getElementById('webform1425305000000571077').addEventListener('submit', function(e){
+							var ismandatory = checkMandatory1425305000000571077(true);
+							e.preventDefault();
+							if(ismandatory === undefined || ismandatory) {
+								if(typeof _wfa_track !== 'undefined' && _wfa_track.wfa_submit) {
+									_wfa_track.wfa_submit(e);
+								}
+								var formData = new FormData(this );
+								fetch('https://crm.zoho.in/crm/WebToLeadForm', {
+									method: 'POST',
+									body: formData,
+									cache: 'no-cache'
+								}).then(response => {
+									const contentType = response.headers.get('Content-Type');
+									return contentType.includes('application/json') ? response.json(): response.text();
+								}).then(data => {
+									if(typeof data === 'object') {
+										if(data.actionsubmit === 'Splash Message') {
+											if(data.invalidCaptcha && data.invalidCaptcha == 'true') {
+												captchaFailedHandling1425305000000571077(data.actionvalue);
+											} else {
+												if (typeof reloadImg1425305000000571077 !== 'undefined') {
+													reloadImg1425305000000571077();
+												}
+												var splashinfodom = document.getElementById('wf_splash_info');
+												splashinfodom.innerText = data.actionvalue;
+												var splashdom = document.getElementById('wf_splash');
+												if(splashinfodom) {
+													document.getElementById('webform1425305000000571077').reset.click();
+													splashdom.style.display = '';
+													setTimeout(function(){
+														splashdom.style.display = 'none';
+													},
+													5000);
+												}
+												if(typeof _wfa_track != 'undefined' && _wfa_track.wfa_post_submit) {
+													_wfa_track.wfa_post_submit(e);
+												}
+											}
+										} else if(data.actionsubmit === 'redirect_url' || data.actionsubmit === 'parent_redirect') {
+											if(data.success) {
+												if(typeof _wfa_track !== 'undefined' && _wfa_track.wfa_post_submit) {
+													_wfa_track.wfa_post_submit(e);
+												}
+												if (typeof historyBack1425305000000571077 !== 'undefined') {
+													window.addEventListener('focus', historyBack1425305000000571077);
+												}
+											}
+											if(data.actionsubmit === 'redirect_url') {
+												window.location.assign(data.redirectUrl);
+											} else if(data.actionsubmit === 'parent_redirect') {
+												parent.window.location = data.redirectUrl;
+											}
+										} else if(data.actionsubmit === 'parent_redirect') {
+											parent.window.location = data.redirectUrl;
+										} else if(data.actionsubmit === 'add_hash') {
+											document.location.hash = data.hash;
+										} else if(data.actionsubmit === 'error_msg') {
+											alert(data.message);
+										} else if(data.invalidCaptcha && data.invalidCaptcha === 'true') {
+											captchaFailedHandling1425305000000571077(data.actionvalue);
+											if(data.extraAction === 'parent_signal') {
+												window.parent.postMessage('checkCaptchaError', '*');
+											}
+										} else if(data.actionsubmit === 'captcha_error') {
+											alert(data.message);
+											if(data.extraAction === 'parent_signal') {
+												window.parent.postMessage('checkCaptchaError', '*');
+											}
+										} else if(data.actionsubmit === 'thankyou_page') {
+											if(typeof _wfa_track !== 'undefined' && _wfa_track.wfa_post_submit) {
+												_wfa_track.wfa_post_submit(e);
+												if (typeof historyBack1425305000000571077 !== 'undefined') {
+													window.addEventListener('focus', historyBack1425305000000571077);
+												}
+											}
+											window.location.assign(data.redirectUrl);
+										}
+									} else {
+										document.write(data);
+									}
+									let formDom = document.querySelector('.crmWebToEntityForm .formsubmit');
+									if (formDom) {
+										formDom.removeAttribute('disabled');
+									}
+								}).catch (error => {
+									alert('an error occurred');
+								});
+							}
+						});
+						if (typeof _wfa_fstprtcken == 'undefined') {
+							_wfa_fstprtcken = {};
+						}
+						_wfa_fstprtcken[1425305000000571077] = true;
+						function tooltipShow1425305000000571077(el){
+							var tooltip = el.nextElementSibling;
+							var tooltipDisplay = tooltip.style.display;
+							if (tooltipDisplay == 'none') {
+								var allTooltip = document.getElementsByClassName('zcwf_tooltip_over');
+								for (i = 0; i < allTooltip.length; i++ ) {
+									allTooltip[i].style.display = 'none';
+								}
+								tooltip.style.display = 'block';
+							} else {
+								tooltip.style.display = 'none';
+							}
+						}
+					</script>
+					<script id = 'webformDependencyScript1425305000000571077' src = 'https://crm.zohopublic.in/crm/WebFormDependencies?rid=cb6dc236730b617edd4c96ee4f39517d4de8b01f0df0e9f68f2af2b3940790eb'>
+				</script>
+				<!-- Do not remove this --- Analytics Tracking code starts -->
+				<script id = 'wf_anal' src = 'https://crm.zohopublic.in/crm/WebFormAnalyticsServeServlet?rid=f34183fd23c6abd0d630bf682b6aef6da259b4d0e3b6fb2952628d5bf5b56da26f0efec8683d0288023c6d529112c9a9gidd8f231ab0c0f8dad60420b161227547ca78cef9f4c86ed4de69001d3c11d84ebgid9a15d5157fa6c5cc3c60696f37c26c1820f839b81e9a8e47955b1c279ca75cd1gidf8e863bab7117d8731258af72409ed91735d442c60f1d212b4875e507255b324&tw=d3059e8d44b5efac8a3246650cd5fe13b97300ff4a257a0bbf52068c94468550&version=v2'>
+			</script>
+			<!-- Do not remove this --- Analytics Tracking code ends. -->
+		</form>
+	</div>
 
-      <!-- status messages are announced to screen readers as they appear -->
-      <div class="status" id="formStatus" role="status" aria-live="polite"></div>
-
-      <form id="leadForm" novalidate>
-
-        <!-- ===== Hidden values written to the CRM with every lead =====
-             These satisfy the "Lead Source = Website",
-             "Lead Status = Not Contacted" and lead-assignment rules.
-             They are ordinary hidden inputs, NOT secrets. Nothing
-             sensitive (API key, token, client secret) belongs here.  -->
-        <input type="hidden" name="Lead_Source" value="Website">
-        <input type="hidden" name="Lead_Status" value="Not Contacted">
-        <input type="hidden" name="Lead_Owner_Role" value="Farm Solutions Executive">
-        <input type="hidden" name="Page_URL" id="pageUrl" value="">
-        <input type="hidden" name="Submitted_At" id="submittedAt" value="">
-
-        <!-- honeypot: hidden from people, irresistible to bots -->
-        <div class="hp" aria-hidden="true">
-          <label for="website">Do not fill this in</label>
-          <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
-        </div>
-
-        <fieldset>
-          <legend>Your details</legend>
-          <div class="fields">
-
-            <div class="field">
-              <label for="firstName">First name <span class="req">*</span></label>
-              <input type="text" id="firstName" name="First_Name" autocomplete="given-name" required aria-describedby="firstName-error">
-              <p class="error" id="firstName-error"></p>
-            </div>
-
-            <div class="field">
-              <label for="lastName">Last name <span class="req">*</span></label>
-              <input type="text" id="lastName" name="Last_Name" autocomplete="family-name" required aria-describedby="lastName-error">
-              <p class="error" id="lastName-error"></p>
-            </div>
-
-            <div class="field field--full">
-              <label for="company">Farm or company name <span class="req">*</span></label>
-              <input type="text" id="company" name="Company" autocomplete="organization" required aria-describedby="company-error">
-              <p class="error" id="company-error"></p>
-            </div>
-
-            <div class="field">
-              <label for="phone">Phone number <span class="req">*</span></label>
-              <input type="tel" id="phone" name="Phone" autocomplete="tel" inputmode="tel" placeholder="98765 43210" required aria-describedby="phone-hint phone-error">
-              <p class="hint" id="phone-hint">10-digit mobile, or add +91 / your country code.</p>
-              <p class="error" id="phone-error"></p>
-            </div>
-
-            <div class="field">
-              <label for="email">Email <span class="opt">(optional)</span></label>
-              <input type="email" id="email" name="Email" autocomplete="email" aria-describedby="email-error">
-              <p class="error" id="email-error"></p>
-            </div>
-
-            <div class="field">
-              <label for="city">City <span class="req">*</span></label>
-              <input type="text" id="city" name="City" autocomplete="address-level2" required aria-describedby="city-error">
-              <p class="error" id="city-error"></p>
-            </div>
-
-            <div class="field">
-              <label for="state">State <span class="req">*</span></label>
-              <select id="state" name="State" required aria-describedby="state-error">
-                <option value="">Select your state</option>
-                <option>Andhra Pradesh</option><option>Assam</option><option>Bihar</option>
-                <option>Chhattisgarh</option><option>Delhi</option><option>Goa</option>
-                <option>Gujarat</option><option>Haryana</option><option>Himachal Pradesh</option>
-                <option>Jharkhand</option><option>Karnataka</option><option>Kerala</option>
-                <option>Madhya Pradesh</option><option>Maharashtra</option><option>Manipur</option>
-                <option>Meghalaya</option><option>Odisha</option><option>Punjab</option>
-                <option>Rajasthan</option><option>Tamil Nadu</option><option>Telangana</option>
-                <option>Tripura</option><option>Uttar Pradesh</option><option>Uttarakhand</option>
-                <option>West Bengal</option><option>Other</option>
-              </select>
-              <p class="error" id="state-error"></p>
-            </div>
-
-          </div>
-        </fieldset>
-
-        <fieldset>
-          <legend>About your farm</legend>
-          <div class="fields">
-
-            <div class="field">
-              <label for="birdType">Bird type</label>
-              <select id="birdType" name="Bird_Type">
-                <option value="">Select</option>
-                <option>Broiler</option>
-                <option>Layer</option>
-                <option>Breeder</option>
-                <option>Other</option>
-              </select>
-            </div>
-
-            <div class="field">
-              <label for="farmType">Current farm type</label>
-              <select id="farmType" name="Current_Farm_Type">
-                <option value="">Select</option>
-                <option>Traditional</option>
-                <option>Semi-Automated</option>
-                <option>Automated</option>
-              </select>
-            </div>
-
-            <div class="field">
-              <label for="capacity">Farm capacity <span class="opt">(number of birds)</span></label>
-              <input type="number" id="capacity" name="Farm_Capacity" min="0" step="100" inputmode="numeric" placeholder="e.g. 20000">
-            </div>
-
-            <div class="field">
-              <label for="sheds">Number of sheds</label>
-              <input type="number" id="sheds" name="Number_of_Sheds" min="0" step="1" inputmode="numeric" placeholder="e.g. 4">
-            </div>
-
-          </div>
-        </fieldset>
-
-        <fieldset>
-          <legend>What you need</legend>
-          <div class="fields">
-
-            <div class="field">
-              <label for="interest">Upgrade interest</label>
-              <select id="interest" name="Upgrade_Interest">
-                <option value="">Select</option>
-                <option>Climate Control</option>
-                <option>Feeding Automation</option>
-                <option>Water Management</option>
-                <option>Farm Monitoring</option>
-                <option>Complete Upgrade</option>
-              </select>
-            </div>
-
-            <div class="field">
-              <label for="timeline">Expected timeline</label>
-              <select id="timeline" name="Expected_Timeline">
-                <option value="">Select</option>
-                <option>Immediately</option>
-                <option>1-3 Months</option>
-                <option>3-6 Months</option>
-                <option>Just Exploring</option>
-              </select>
-            </div>
-
-            <div class="field field--full">
-              <span class="label" id="assessLabel">Would you like a free farm assessment visit?</span>
-              <div class="radios" role="radiogroup" aria-labelledby="assessLabel">
-                <label class="radio"><input type="radio" name="Farm_Assessment_Required" value="Yes" checked> Yes</label>
-                <label class="radio"><input type="radio" name="Farm_Assessment_Required" value="No"> No</label>
-              </div>
-            </div>
-
-            <div class="field field--full">
-              <label for="message">Message <span class="opt">(optional)</span></label>
-              <textarea id="message" name="Description" placeholder="Anything that helps us prepare - shed sizes, current equipment, problems you are facing."></textarea>
-            </div>
-
-          </div>
-        </fieldset>
-
-        <!-- ===== Spam check =====
-             A simple arithmetic question. It works without any third-party
-             script and is readable by screen readers.
-             TODO (recommended for a live site): swap this for Cloudflare
-             Turnstile or Google reCAPTCHA v3 and verify the token on your
-             server. See the notes at the bottom of this file. -->
-        <div class="field field--full" style="margin-bottom:1.25rem;">
-          <label for="captcha">Quick check: what is <span id="captchaQuestion">3 + 4</span>? <span class="req">*</span></label>
-          <input type="text" id="captcha" inputmode="numeric" autocomplete="off" required aria-describedby="captcha-hint captcha-error" style="max-width:220px;">
-          <p class="hint" id="captcha-hint">This confirms you are not an automated script.</p>
-          <p class="error" id="captcha-error"></p>
-        </div>
-
-        <div class="consent">
-          <input type="checkbox" id="consent" name="Consent_to_Contact" value="Yes" required aria-describedby="consent-error">
-          <div>
-            <label for="consent">I agree to be contacted by Anthony Poultry Smart Service about this
-            enquiry by phone, WhatsApp or email. <span class="req">*</span></label>
-            <p class="error" id="consent-error"></p>
-          </div>
-        </div>
-
-        <div class="form-foot">
-          <button class="btn btn--primary" type="submit" id="submitBtn">
-            Request my free farm assessment
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-          </button>
-          <p class="hint" style="flex:1 1 200px;">We use your details only to respond to this
-          enquiry. See our <a href="#privacy">privacy policy</a>.</p>
-        </div>
-
-      </form>
-
-      <!-- ############################################################
-           ▲▲▲  END OF THE TEMPORARY FORM - PASTE ZOHO'S CODE ABOVE ▲▲▲
-           ############################################################ -->
 
     </div>
   </div>
@@ -1723,66 +2148,10 @@ input:focus,select:focus,textarea:focus{
 
 <script>
 /* ============================================================
-   CONFIGURATION  -  THIS IS THE ONLY BLOCK YOU MUST EDIT
-   ============================================================
-
-   HOW TO CONNECT THIS FORM TO ZOHO CRM
-   ------------------------------------
-   Pick ONE of the three options below.
-
-   OPTION A - Server-side API (recommended, most control)
-     Deploy the sample handler shipped next to this file
-     (zoho-lead-proxy.example.js) to Vercel, Netlify, Cloudflare
-     Workers or your own Node server. It holds the Zoho refresh
-     token as an environment variable, so the credentials never
-     reach the browser. Then set:
-         leadEndpoint: "https://your-api.example.com/api/lead"
-
-   OPTION B - Zoho CRM Web-to-Lead form
-     In Zoho CRM: Setup > Developer Space > Webforms > Leads.
-     Build the form, copy the generated form action URL and the
-     two hidden ids (xnQsjsdp and xmIwtLD), then set:
-         zohoWebToLead: {
-           action: "https://crm.zoho.in/crm/WebToLeadForm",
-           xnQsjsdp: "PASTE_VALUE",
-           xmIwtLD:  "PASTE_VALUE"
-         }
-     Field names in the markup above already use Zoho API names,
-     but Web-to-Lead expects display names - the mapping table
-     at the bottom of this file shows both.
-
-   OPTION C - Zoho Forms
-     Create a Zoho Form, connect it to the CRM Leads module in
-     its integration tab, and put its submit URL in leadEndpoint.
-
-   WHILE NOTHING IS CONFIGURED the form runs in demo mode: it
-   validates fully and shows the success message, but no data
-   leaves the page. That lets you test the design before the CRM
-   is ready. A warning is logged to the browser console.
-   ============================================================ */
-const CONFIG = {
-  /* TODO: your endpoint from Option A or C. Leave "" for demo mode. */
-  leadEndpoint: "",
-
-  /* TODO: fill these in only if you chose Option B. */
-  zohoWebToLead: {
-    action: "",
-    xnQsjsdp: "",
-    xmIwtLD: ""
-  },
-
-  /* Shown after a successful submission. */
-  successTitle: "Thank you. Your farm-assessment request has been received.",
-  successBody: "Our team will contact you shortly.",
-
-  /* A second submission with the same phone inside this many hours
-     is blocked in the browser. Real de-duplication must also be
-     switched on in Zoho (see the notes at the end of this file). */
-  duplicateWindowHours: 24
-};
-
-/* ============================================================
-   MOBILE NAVIGATION
+   PAGE SCRIPT
+   Only two jobs left here: the mobile navigation and the footer
+   year. The enquiry form is Zoho's now - it ships with its own
+   validation and submit handler, which are left untouched.
    ============================================================ */
 (function(){
   const burger = document.getElementById("burger");
@@ -1815,307 +2184,48 @@ const CONFIG = {
   });
 })();
 
-/* small housekeeping */
 document.getElementById("year").textContent = new Date().getFullYear();
-document.getElementById("pageUrl").value = location.href;
-
-/* ============================================================
-   SPAM CHECK
-   A random sum, regenerated on every page load.
-   ============================================================ */
-const captcha = { a:0, b:0 };
-(function newCaptcha(){
-  captcha.a = 2 + Math.floor(Math.random() * 7);
-  captcha.b = 1 + Math.floor(Math.random() * 6);
-  document.getElementById("captchaQuestion").textContent = captcha.a + " + " + captcha.b;
-})();
-
-/* bots submit instantly; people take longer than 4 seconds */
-const pageLoadedAt = Date.now();
-
-/* ============================================================
-   VALIDATION
-   Each rule returns an error message, or "" when the value is fine.
-   ============================================================ */
-const form = document.getElementById("leadForm");
-const statusBox = document.getElementById("formStatus");
-const submitBtn = document.getElementById("submitBtn");
-
-const RULES = {
-  firstName: v => !v.trim() ? "Please enter your first name."
-            : v.trim().length < 2 ? "That looks too short." : "",
-
-  lastName:  v => !v.trim() ? "Please enter your last name."
-            : v.trim().length < 2 ? "That looks too short." : "",
-
-  company:   v => !v.trim() ? "Please enter your farm or company name." : "",
-
-  phone: v => {
-    const digits = v.replace(/\D/g, "");
-    if (!digits) return "Please enter a phone number we can reach you on.";
-    if (digits.length === 10 && !/^[6-9]/.test(digits))
-      return "An Indian mobile number starts with 6, 7, 8 or 9.";
-    if (digits.length < 10 || digits.length > 13)
-      return "Please enter a valid phone number, including the country code if it is not Indian.";
-    return "";
-  },
-
-  /* optional, but must be a real address when it is filled in */
-  email: v => !v.trim() ? ""
-          : /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(v.trim()) ? ""
-          : "Please check this email address.",
-
-  city:  v => !v.trim() ? "Please enter your city or town." : "",
-  state: v => !v ? "Please select your state." : "",
-
-  captcha: v => {
-    const n = parseInt(v.trim(), 10);
-    if (isNaN(n)) return "Please answer the sum above.";
-    return n === captcha.a + captcha.b ? "" : "That answer is not correct - please try again.";
-  }
-};
-
-function showError(id, message){
-  const input = document.getElementById(id);
-  const slot = document.getElementById(id + "-error");
-  if (slot) slot.textContent = message;
-  if (input) input.setAttribute("aria-invalid", message ? "true" : "false");
-  return !message;
-}
-
-function validateField(id){
-  const input = document.getElementById(id);
-  return showError(id, RULES[id](input.value));
-}
-
-/* re-check a field once it has been visited, so the message
-   clears as soon as the person fixes it */
-Object.keys(RULES).forEach(id => {
-  const input = document.getElementById(id);
-  input.addEventListener("blur", () => validateField(id));
-  input.addEventListener("input", () => {
-    if (input.getAttribute("aria-invalid") === "true") validateField(id);
-  });
-});
-
-const consentBox = document.getElementById("consent");
-consentBox.addEventListener("change", () => {
-  showError("consent", consentBox.checked ? "" : "Please tick this box so we can contact you.");
-});
-
-function validateAll(){
-  let firstBad = null;
-
-  Object.keys(RULES).forEach(id => {
-    if (!validateField(id) && !firstBad) firstBad = document.getElementById(id);
-  });
-
-  if (!consentBox.checked){
-    showError("consent", "Please tick this box so we can contact you.");
-    if (!firstBad) firstBad = consentBox;
-  } else {
-    showError("consent", "");
-  }
-
-  if (firstBad){
-    firstBad.focus();
-    firstBad.scrollIntoView({ block:"center", behavior:"smooth" });
-  }
-  return !firstBad;
-}
-
-/* ============================================================
-   STATUS MESSAGES
-   ============================================================ */
-function setStatus(type, text){
-  if (!type){ statusBox.innerHTML = ""; return; }
-  const icon = type === "error"
-    ? '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M12 7.5v5M12 16.2v.3"/></svg>'
-    : '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v5.5M12 7.7v.3"/></svg>';
-  statusBox.innerHTML =
-    '<div class="alert alert--' + type + '">' + icon + '<span>' + text + '</span></div>';
-}
-
-function showSuccess(){
-  form.closest(".form-card").innerHTML =
-    '<div class="success">' +
-      '<span class="success__mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>' +
-      '<h3>' + CONFIG.successTitle + '</h3>' +
-      '<p>' + CONFIG.successBody + '</p>' +
-      '<p><a class="btn btn--green" href="#services">Explore smart solutions</a></p>' +
-    '</div>';
-  document.querySelector(".success").scrollIntoView({ block:"center", behavior:"smooth" });
-}
-
-/* ============================================================
-   DUPLICATE GUARD (browser side)
-   This stops the same person double-tapping submit or refilling
-   the form twice in a day. It cannot stop a determined duplicate
-   from another device - that check belongs in Zoho.
-   ============================================================ */
-function duplicateKey(){
-  return "apss_lead_" + document.getElementById("phone").value.replace(/\D/g, "");
-}
-
-function isDuplicate(){
-  try{
-    const last = localStorage.getItem(duplicateKey());
-    if (!last) return false;
-    const hours = (Date.now() - Number(last)) / 36e5;
-    return hours < CONFIG.duplicateWindowHours;
-  }catch(e){ return false; }
-}
-
-function rememberSubmission(){
-  try{ localStorage.setItem(duplicateKey(), String(Date.now())); }catch(e){}
-}
-
-/* ============================================================
-   SUBMIT
-   ============================================================ */
-form.addEventListener("submit", async function(event){
-  event.preventDefault();
-  setStatus(null);
-
-  /* 1. bot traps - fail silently so a bot learns nothing */
-  if (document.getElementById("website").value !== ""){ showSuccess(); return; }
-  if (Date.now() - pageLoadedAt < 4000){
-    setStatus("error", "That was very quick. Please take a moment and submit again.");
-    return;
-  }
-
-  /* 2. field validation */
-  if (!validateAll()){
-    setStatus("error", "Please correct the highlighted fields and try again.");
-    return;
-  }
-
-  /* 3. duplicate guard */
-  if (isDuplicate()){
-    setStatus("info", "We already have a recent request from this number. Our team will call you shortly - no need to send it again.");
-    return;
-  }
-
-  /* 4. collect the values */
-  document.getElementById("submittedAt").value = new Date().toISOString();
-  const data = Object.fromEntries(new FormData(form).entries());
-  delete data.website;            // never send the honeypot on
-
-  /* 5. send */
-  submitBtn.disabled = true;
-  const originalLabel = submitBtn.innerHTML;
-  submitBtn.textContent = "Sending your request...";
-
-  try{
-    if (CONFIG.leadEndpoint){
-      const response = await fetch(CONFIG.leadEndpoint, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
-      });
-      if (!response.ok) throw new Error("Server responded " + response.status);
-
-    } else if (CONFIG.zohoWebToLead.action){
-      /* Option B posts the form straight to Zoho, which needs a
-         normal form POST rather than fetch. */
-      postToZohoWebToLead(data);
-      return;
-
-    } else {
-      console.warn("[Anthony Poultry Smart Service] No CRM endpoint configured - running in demo mode. Set CONFIG.leadEndpoint to send leads to Zoho.");
-      await new Promise(r => setTimeout(r, 600));   // pretend to be a network
-    }
-
-    rememberSubmission();
-    showSuccess();
-
-  }catch(err){
-    console.error(err);
-    submitBtn.disabled = false;
-    submitBtn.innerHTML = originalLabel;
-    setStatus("error",
-      "Sorry - we could not send your request just now. Please try again, " +
-      'or call us on <a href="tel:+910000000000" style="color:inherit;">+91 00000 00000</a>.');
-  }
-});
-
-/* Option B helper: builds a hidden Zoho Web-to-Lead form and posts it. */
-function postToZohoWebToLead(data){
-  const f = document.createElement("form");
-  f.method = "POST";
-  f.action = CONFIG.zohoWebToLead.action;
-  f.style.display = "none";
-
-  const fields = Object.assign({
-    xnQsjsdp: CONFIG.zohoWebToLead.xnQsjsdp,
-    xmIwtLD: CONFIG.zohoWebToLead.xmIwtLD,
-    actionType: "TGVhZHM=",               // base64 for "Leads"
-    returnURL: location.href.split("#")[0] + "?enquiry=thanks"
-  }, data);
-
-  Object.entries(fields).forEach(([name, value]) => {
-    const input = document.createElement("input");
-    input.type = "hidden";
-    input.name = name;
-    input.value = value;
-    f.appendChild(input);
-  });
-
-  document.body.appendChild(f);
-  rememberSubmission();
-  f.submit();
-}
-
-/* If Zoho sent the visitor back with ?enquiry=thanks, show the
-   success panel instead of an empty form. */
-if (new URLSearchParams(location.search).get("enquiry") === "thanks"){
-  showSuccess();
-}
 </script>
 
 <!-- ============================================================
-     ZOHO CRM FIELD MAPPING
-     Every input above already carries its Zoho API name in the
-     "name" attribute, so a server-side POST needs no translation.
+     WHAT THE ZOHO WEBFORM COLLECTS
+     These are the fields in the generated form, exactly as Zoho
+     named them. Nothing here was renamed.
 
-     FORM FIELD                 ZOHO LEADS FIELD          TYPE
-     -------------------------  ------------------------  --------------
-     First name                 First_Name                standard
-     Last name                  Last_Name                 standard (required)
-     Farm or company name       Company                   standard (required)
-     Email                      Email                     standard
-     Phone number               Phone                     standard
-     City                       City                      standard
-     State                      State                     standard
-     Bird type                  Bird_Type                 CUSTOM picklist
-     Current farm type          Current_Farm_Type         CUSTOM picklist
-     Farm capacity              Farm_Capacity             CUSTOM number
-     Number of sheds            Number_of_Sheds           CUSTOM number
-     Upgrade interest           Upgrade_Interest          CUSTOM picklist
-     Expected timeline          Expected_Timeline         CUSTOM picklist
-     Assessment required        Farm_Assessment_Required  CUSTOM picklist (Yes/No)
-     Message                    Description               standard
-     Consent checkbox           Consent_to_Contact        CUSTOM checkbox
-     (fixed)                    Lead_Source = "Website"   standard
-     (fixed)                    Lead_Status = "Not Contacted"  standard
-     Page URL                   Page_URL                  CUSTOM single line
-     Submitted at               Submitted_At              CUSTOM date/time
+     LABEL ON THE PAGE           ZOHO FIELD NAME     MANDATORY
+     --------------------------  ------------------  ---------
+     Company                     Company             yes
+     Last Name                   Last Name           yes
+     Mobile                      Mobile              no
+     Bird Type                   LEADCF1             no
+     Current Farm Type           LEADCF2             no
+     Farm Capacity               LEADCF52            no
+     Primary Upgrade Interest    LEADCF3             no (multi-select)
+     Farm Assessment Required    LEADCF54            no (checkbox)
+     Expected Upgrade Timeline   LEADCF4             no
+     Address - Flat / House ...  Address - Flat...   no
+     Address - Country / Region  Address - Country.. no
 
-     BEFORE GOING LIVE - checklist
-     1. Create the CUSTOM fields above in Zoho CRM
-        (Setup > Customization > Modules > Leads > Layout).
-     2. Set CONFIG.leadEndpoint (or the Web-to-Lead values).
-     3. Turn on duplicate checking in Zoho: make Phone or Email a
-        unique field on the Leads layout, and pass
-        duplicate_check_fields when using the API.
-     4. Create an assignment rule that routes Lead Source =
-        "Website" to your Farm Solutions Executive
-        (Setup > Automation > Assignment Rules).
-     5. Replace the arithmetic spam check with Cloudflare Turnstile
-        or reCAPTCHA and verify the token in your server handler.
-     6. Search this file for "TODO" and replace every placeholder:
-        phone, email, address, service regions, social links,
-        policy pages, canonical URL and the structured data block.
+     Hidden, required by Zoho: xnQsjsdp, xmIwtLD, actionType,
+     returnURL, zc_gad, and aG9uZXlwb3Q (Zoho's own honeypot).
+
+     NOT IN THIS FORM - add them in Zoho if you want them
+     The original brief also asked for First Name, Email, City,
+     State, Number of Sheds, a Message box, and a consent
+     checkbox, plus Lead Source = "Website" and Lead Status =
+     "Not Contacted". None of those are in the generated form.
+     To add them: Zoho CRM > Setup > Developer Space > Webforms >
+     edit this form > drag the fields in > regenerate the code,
+     then paste the new code over the block in this page.
+
+     Lead Source and Lead Status are set on the Zoho side, not
+     here: open the webform's settings and set the default field
+     values, or use a workflow rule on the Leads module.
+
+     STILL TO DO ON THIS PAGE
+     Search this file for "TODO" and replace every placeholder:
+     phone number, email, office address, service regions, social
+     links, policy pages, canonical URL and the structured data.
      ============================================================ -->
 
 </body>
