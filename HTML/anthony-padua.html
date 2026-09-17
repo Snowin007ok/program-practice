@@ -2118,6 +2118,40 @@ input:focus,select:focus,textarea:focus{
         if (email){ email.inputMode = "email"; email.autocapitalize = "off"; }
         const mobile = form.querySelector("#Mobile");
         if (mobile) mobile.inputMode = "tel";
+
+        /* ---------------------------------------------------------
+           COUNTRY: India only, pre-selected
+           The company serves India, so the country dropdown offers
+           one option instead of a list of two hundred.
+
+           Zoho ships this dropdown holding only "-None-" and fills
+           the real country list later, from its dependency script.
+           That is why a MutationObserver is used: it puts India back
+           whenever that script rewrites the options. The guard inside
+           lockCountry stops it reacting to its own change.
+
+           The field is left enabled on purpose - a disabled field is
+           not submitted, and Zoho needs to receive the value.
+           --------------------------------------------------------- */
+        const country = form.querySelector("[name='Address - Country / Region']");
+        if (country){
+          const lockCountry = () => {
+            const already = country.options.length === 1 &&
+                            country.options[0].value === "India";
+            if (!already){
+              country.textContent = "";
+              const india = document.createElement("option");
+              india.value = "India";
+              india.textContent = "India";
+              india.selected = true;
+              country.appendChild(india);
+            }
+            country.value = "India";
+          };
+
+          lockCountry();
+          new MutationObserver(lockCountry).observe(country, { childList: true });
+        }
       })();
       </script>
 
@@ -2355,7 +2389,7 @@ document.getElementById("year").textContent = new Date().getFullYear();
      Farm Assessment Required    LEADCF54       no (checkbox)
      Expected Upgrade Timeline   LEADCF4      * yes
      Address - Flat / House ...  Address...   * yes
-     Address - Country / Region  Address...     no
+     Address - Country / Region  Address...     no (locked to India)
      Description                 Description    no
 
      Hidden, required by Zoho: xnQsjsdp, xmIwtLD, actionType,
